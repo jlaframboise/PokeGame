@@ -19,3 +19,4 @@ BLUE = (0,0,255)
 #player settings:
 PLAYER_SPEED = 150
 ROTATION_SPEED = 100
+PLAYER_IMG = 'trainer.png'

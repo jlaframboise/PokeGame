@@ -19,7 +19,9 @@ class Game:
         self.load_data()
 
     def load_data(self):
-        pass
+        game_folder = path.dirname(__file__)
+        img_folder = path.join(game_folder, 'img')
+        self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
 
     def new(self):
         self.all_sprites = pg.sprite.Group()

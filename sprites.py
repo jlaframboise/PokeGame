@@ -11,8 +11,8 @@ class Player(pg.sprite.Sprite):
         self.game = game
         self.pos = vec(x,y)
         self.vel = vec(0,0)
-        self.image = pg.Surface((30,30))
-        self.image.fill(BLUE)
+        self.image = game.player_img
+        #self.image.fill(BLUE)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.rot = 0
@@ -21,6 +21,7 @@ class Player(pg.sprite.Sprite):
     def get_keys(self):
         keys = pg.key.get_pressed()
         self.vel = vec(0,0)
+        self.rot_speed = 0
         if keys[pg.K_a]:
             self.rot_speed = ROTATION_SPEED
         if keys[pg.K_d]:
