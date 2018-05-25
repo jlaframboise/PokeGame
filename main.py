@@ -21,7 +21,12 @@ class Game:
     def load_data(self):
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'img')
+        map_folder = path.join(game_folder, 'maps')
+
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
+        self.map1 = TiledMap(path.join(map_folder, 'map1.tmx'))
+        self.map1_img = self.map1.make_map()
+        self.map_rect = self.map1_img.get_rect()
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
@@ -49,7 +54,7 @@ class Game:
         pass
 
     def draw(self):
-        self.screen.fill(BLACK)
+        self.screen.blit(self.map1_img, self.map_rect)
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, sprite.rect)
         pg.display.flip()

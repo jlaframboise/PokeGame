@@ -1,7 +1,11 @@
-WIDTH=600
-HEIGHT = 600
+WIDTH=1024
+HEIGHT = 768
 TITLE = 'PokeGame'
 FPS = 60
+TILE_SIZE = 64
+
+
+
 
 # define some colors (R, G, B)
 WHITE = (255, 255, 255)
@@ -17,6 +21,6 @@ BLUE = (0,0,255)
 
 
 #player settings:
-PLAYER_SPEED = 150
-ROTATION_SPEED = 100
+PLAYER_SPEED = 200
+ROTATION_SPEED = 250
 PLAYER_IMG = 'trainer.png'
