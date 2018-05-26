@@ -5,8 +5,8 @@ from random import choice, randint, uniform
 import sys
 from os import path
 import pygame as pg
-vec = pg.math.Vector2
 
+vec = pg.math.Vector2
 
 
 class Game:
@@ -30,11 +30,11 @@ class Game:
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
-        self.player = Player(self, 100,100)
-        pass
+        self.player = Player(self, 100, 100)
+        self.camera = Camera(self.map1.width, self.map1.height)
 
     def run(self):
-        #game loop
+        # game loop
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
@@ -49,14 +49,16 @@ class Game:
 
     def update(self):
         self.all_sprites.update()
+        self.camera.update(self.player)
 
-    def draw_drid(self):
+    def draw_grid(self):
         pass
 
     def draw(self):
-        self.screen.blit(self.map1_img, self.map_rect)
+        self.screen.fill(BLACK)
+        self.screen.blit(self.map1_img, self.camera.apply_rect(self.map_rect))
         for sprite in self.all_sprites:
-            self.screen.blit(sprite.image, sprite.rect)
+            self.screen.blit(sprite.image, self.camera.apply_rect(sprite.rect))
         pg.display.flip()
 
     def events(self):
@@ -66,9 +68,6 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.quit()
-
-
-
 
 
 g = Game()
