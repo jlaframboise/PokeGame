@@ -30,8 +30,13 @@ class Game:
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
+        self.walls = pg.sprite.Group()
         self.player = Player(self, 100, 100)
         self.camera = Camera(self.map1.width, self.map1.height)
+        for obj in self.map1.tmxdata.objects:  #TODO make wall objects and players based on map
+            obj_center = vec(obj.x, obj.y)
+            if obj.name == 'wall':
+                Wall(self, obj.x, obj.y, obj.width, obj.height)
 
     def run(self):
         # game loop
