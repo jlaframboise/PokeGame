@@ -26,7 +26,7 @@ class Player(pg.sprite.Sprite):
             self.rot_speed = ROTATION_SPEED
         if keys[pg.K_d]:
             self.rot_speed = -ROTATION_SPEED
-        self.rot+=self.rot_speed * self.game.dt
+        self.rot+=self.rot_speed * self.game.dt %360
         if keys[pg.K_w]:
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_s]:
@@ -37,6 +37,9 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.get_keys()
         self.pos += self.vel * self.game.dt
+
+        self.image = pg.transform.rotate(self.game.player_img, self.rot)
+        self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
 
