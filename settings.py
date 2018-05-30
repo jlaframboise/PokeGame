@@ -23,7 +23,7 @@ BLUE = (0,0,255)
 
 
 #player settings:
-PLAYER_SPEED = 200
+PLAYER_SPEED = 500
 ROTATION_SPEED = 250
 PLAYER_IMG = 'trainer.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
