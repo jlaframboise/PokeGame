@@ -62,6 +62,12 @@ class Game:
     def update(self):
         self.all_sprites.update()
         self.camera.update(self.player)
+        hits = pg.sprite.spritecollide(self.player, self.pokemon, True, collide_hit_rect)
+        if hits:
+            self.on_contact_pokemon()
+
+    def on_contact_pokemon(self):
+        print('Collided with pokemon!')
 
     def draw_grid(self):
         pass
