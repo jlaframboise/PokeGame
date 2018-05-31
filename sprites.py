@@ -1,6 +1,7 @@
 import pygame as pg
 from settings import *
 from tilemap import collide_hit_rect
+from random import choice
 
 vec = pg.math.Vector2
 
@@ -82,3 +83,37 @@ class Wall(pg.sprite.Sprite):
         self.height = height
 
         self.rect = pg.Rect(x, y, width, height)
+
+
+class Pokemon(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self.groups = self.game.all_sprites, self.game.pokemon
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.pos = vec(x, y)
+        self.spawn_pos = self.pos
+        self.image = self.game.turtle_img
+        self.rect = self.image.get_rect()
+        self.hit_rect = self.rect
+        self.vel = vec(0, 0)
+        self.last_moved = pg.time.get_ticks()
+        self.rect.center = self.pos
+        self.rot = 0
+
+    def move(self):
+        self.rot = choice([0, 90, 180, 270])
+        self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
+
+
+    def update(self):
+        if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
+            self.move()
+            self.last_moved = pg.time.get_ticks()
+        self.pos += self.vel * self.game.dt
+        self.hit_rect.centerx = self.pos.x
+        collide_with_walls(self, self.game.walls, 'x')
+        self.hit_rect.centery = self.pos.y
+        collide_with_walls(self, self.game.walls, 'y')
+        self.rect = self.hit_rect
+        self.pos = self.rect.center
+

@@ -27,16 +27,22 @@ class Game:
         self.map1 = TiledMap(path.join(map_folder, 'map1.tmx'))
         self.map1_img = self.map1.make_map()
         self.map_rect = self.map1_img.get_rect()
+        self.turtle_img = pg.image.load(path.join(img_folder, TURTLE_IMG)).convert_alpha()
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
-        self.player = Player(self, 100, 100)
+        self.pokemon = pg.sprite.Group()
+
         self.camera = Camera(self.map1.width, self.map1.height)
         for obj in self.map1.tmxdata.objects:  #TODO make players based on map
             obj_center = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
+            if obj.name == 'pokemon':
+                Pokemon(self, obj.x, obj.y)
+            if obj.name == 'player':
+                self.player = Player(self, obj.x, obj.y)
         self.debug_mode = False
 
     def run(self):
