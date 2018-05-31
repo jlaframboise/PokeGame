@@ -33,10 +33,11 @@ class Game:
         self.walls = pg.sprite.Group()
         self.player = Player(self, 100, 100)
         self.camera = Camera(self.map1.width, self.map1.height)
-        for obj in self.map1.tmxdata.objects:  #TODO make wall objects and players based on map
+        for obj in self.map1.tmxdata.objects:  #TODO make players based on map
             obj_center = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
+        self.debug_mode = False
 
     def run(self):
         # game loop
@@ -64,7 +65,16 @@ class Game:
         self.screen.blit(self.map1_img, self.camera.apply_rect(self.map_rect))
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply_rect(sprite.rect))
+            if self.debug_mode:
+                pg.draw.rect(self.screen, CYAN, self.camera.apply_rect(sprite.hit_rect), 1  )
+        for wall in self.walls:
+            if self.debug_mode:
+                pg.draw.rect(self.screen, CYAN, self.camera.apply(wall), 1)
+
         pg.display.flip()
+        #if self.debug_mode:
+
+
 
     def events(self):
         for event in pg.event.get():
@@ -73,6 +83,8 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.quit()
+                if event.key == pg.K_h:
+                    self.debug_mode = not self.debug_mode
 
 
 g = Game()
