@@ -64,10 +64,12 @@ class Game:
         self.camera.update(self.player)
         hits = pg.sprite.spritecollide(self.player, self.pokemon, True, collide_hit_rect)
         if hits:
-            self.on_contact_pokemon()
+            self.on_contact_pokemon(hits[0])
 
-    def on_contact_pokemon(self):
+    def on_contact_pokemon(self, pokemon):
         print('Collided with pokemon!')
+        self.player.before_battle_pos = self.player.pos
+        battle = Battle(self, pokemon)
 
     def draw_grid(self):
         pass
@@ -97,6 +99,65 @@ class Game:
                     self.quit()
                 if event.key == pg.K_h:
                     self.debug_mode = not self.debug_mode
+
+
+class Battle:
+    def __init__(self, game, pokemon):
+        self.game = game
+        self.wild_pokemon = pokemon
+        self.sprites_in_battle = pg.sprite.Group()
+        self.sprites_in_battle.add(self.wild_pokemon)
+        self.battle_walls = pg.sprite.Group()
+        self.load_battle_data()
+        self.game.player.pos = self.spawn_pos
+        self.run()
+
+    def load_battle_data(self):
+        game_folder = path.dirname(__file__)
+        img_folder = path.join(game_folder, 'img')
+        map_folder = path.join(game_folder, 'maps')
+
+        self.b_map = TiledMap(path.join(map_folder, 'b_map.tmx'))
+        self.b_map_img = self.b_map.make_map()
+        self.b_map_rect = self.b_map_img.get_rect()
+
+        for obj in self.b_map.tmxdata.objects:
+            if obj.name == 'trained_pokemon':
+                self.spawn_pos = vec(obj.x,obj.y)
+            if obj.name == 'wild_pokemon':
+                self.wild_pokemon.pos = vec(obj.x, obj.y)
+            if obj.name == 'wall':
+
+
+    def events(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.game.quit()
+
+    def update(self):
+        self.game.player.get_keys()
+        self.game.player.update()
+        self.wild_pokemon.update()
+
+    def draw(self):
+        self.game.screen.fill(BLACK)
+        self.game.screen.blit(self.b_map_img, self.b_map_rect)
+        for sprite in self.sprites_in_battle:
+            self.game.screen.blit(sprite.image, sprite.rect)
+        self.game.screen.blit(self.game.player.image, self.game.player.rect)
+        pg.display.flip()
+
+    def run(self):
+        # game loop
+        self.fighting = True
+        while self.fighting:
+            self.dt = self.game.clock.tick(FPS) / 1000
+            self.events()
+            self.update()
+            self.draw()
+
+
+
 
 
 g = Game()

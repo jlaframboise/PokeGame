@@ -41,6 +41,7 @@ class Player(pg.sprite.Sprite):
         self.hit_rect.center = self.rect.center
         self.rot = 0
         self.rot_speed = 0
+        self.in_battle = False
 
     def get_keys(self):
 
@@ -84,6 +85,21 @@ class Wall(pg.sprite.Sprite):
 
         self.rect = pg.Rect(x, y, width, height)
 
+class Battle_Wall(pg.sprite.Sprite):
+    def __init__(self, battle, x, y, width, height):
+        self.battle = battle
+        self.groups = self.battle.battle_walls
+        pg.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+        self.rect = pg.Rect(x, y, width, height)
+
+
+
 
 class Pokemon(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -99,6 +115,7 @@ class Pokemon(pg.sprite.Sprite):
         self.last_moved = pg.time.get_ticks()
         self.rect.center = self.pos
         self.rot = 0
+        self.in_battle = False
 
     def move(self):
         self.rot = choice([0, 90, 180, 270])

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="10" height="12" tilewidth="64" tileheight="64" infinite="0" nextobjectid="11">
+ <tileset firstgid="1" source="spritesheet_tiles.tsx"/>
+ <layer name="Ground" width="10" height="12">
+  <data encoding="csv">
+3,3,2,3,3,1,2,1,2,3,
+3,2,4,4,3,2,3,3,3,4,
+1,4,3,343,371,371,345,4,1,4,
+1,1,2,1,397,399,1,1,3,4,
+4,3,2,1,397,399,2,3,4,2,
+2,1,370,371,373,375,371,372,2,2,
+1,4,424,425,427,429,425,426,4,4,
+2,3,3,4,397,399,1,2,1,4,
+4,1,3,4,397,399,1,1,4,2,
+3,1,1,343,425,425,345,1,2,1,
+2,2,4,1,3,2,3,4,4,3,
+3,2,3,1,1,3,2,4,2,3
+</data>
+ </layer>
+ <layer name="trees" width="10" height="12">
+  <data encoding="csv">
+186,186,183,183,183,183,183,183,186,186,
+186,0,0,0,0,0,0,0,0,186,
+183,0,0,0,0,0,0,0,0,183,
+183,0,0,0,0,0,0,0,0,183,
+183,0,0,0,0,0,0,0,0,183,
+183,186,0,0,0,0,0,0,186,183,
+183,186,0,0,0,0,0,0,186,183,
+183,0,0,0,0,0,0,0,0,183,
+183,0,0,0,0,0,0,0,0,183,
+183,0,0,0,0,0,0,0,0,183,
+186,0,0,0,0,0,0,0,0,186,
+186,186,183,183,183,183,183,183,186,186
+</data>
+ </layer>
+ <objectgroup name="Obstacles">
+  <object id="1" name="wall" x="0" y="0" width="64" height="768"/>
+  <object id="4" name="wall" x="576" y="0" width="64" height="768"/>
+  <object id="5" name="wall" x="64" y="0" width="512" height="64"/>
+  <object id="6" name="wall" x="64" y="704" width="512" height="64"/>
+  <object id="7" name="wild_pokemon" x="288" y="144" width="64" height="64"/>
+  <object id="8" name="wall" x="512" y="320" width="64" height="128"/>
+  <object id="9" name="wall" x="64" y="320" width="64" height="128"/>
+  <object id="10" name="trained_pokemon" x="288" y="560" width="64" height="64"/>
+ </objectgroup>
+</map>
