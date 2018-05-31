@@ -104,12 +104,14 @@ class Game:
 class Battle:
     def __init__(self, game, pokemon):
         self.game = game
+        game.battle = self
         self.wild_pokemon = pokemon
         self.sprites_in_battle = pg.sprite.Group()
         self.sprites_in_battle.add(self.wild_pokemon)
         self.battle_walls = pg.sprite.Group()
         self.load_battle_data()
         self.game.player.pos = self.spawn_pos
+        self.game.player.in_battle = True
         self.run()
 
     def load_battle_data(self):
@@ -127,6 +129,7 @@ class Battle:
             if obj.name == 'wild_pokemon':
                 self.wild_pokemon.pos = vec(obj.x, obj.y)
             if obj.name == 'wall':
+                Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
 
 
     def events(self):

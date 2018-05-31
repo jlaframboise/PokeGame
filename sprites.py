@@ -66,9 +66,15 @@ class Player(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.pos += self.vel * self.game.dt
         self.hit_rect.centerx = self.pos.x
-        collide_with_walls(self, self.game.walls, 'x')
+        if not self.in_battle:
+            collide_with_walls(self, self.game.walls, 'x')
+        elif self.in_battle:
+            collide_with_walls(self, self.game.battle.battle_walls, 'x')
         self.hit_rect.centery = self.pos.y
-        collide_with_walls(self, self.game.walls, 'y')
+        if not self.in_battle:
+            collide_with_walls(self, self.game.walls, 'y')
+        elif self.in_battle:
+            collide_with_walls(self, self.game.battle.battle_walls, 'y')
         self.rect.center = self.hit_rect.center
 
 
@@ -128,9 +134,11 @@ class Pokemon(pg.sprite.Sprite):
             self.last_moved = pg.time.get_ticks()
         self.pos += self.vel * self.game.dt
         self.hit_rect.centerx = self.pos.x
-        collide_with_walls(self, self.game.walls, 'x')
+        if not self.in_battle:
+            collide_with_walls(self, self.game.walls, 'x')
         self.hit_rect.centery = self.pos.y
-        collide_with_walls(self, self.game.walls, 'y')
+        if not self.in_battle:
+            collide_with_walls(self, self.game.walls, 'y')
         self.rect = self.hit_rect
         self.pos = self.rect.center
 
