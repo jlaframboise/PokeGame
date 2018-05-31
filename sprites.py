@@ -136,9 +136,13 @@ class Pokemon(pg.sprite.Sprite):
         self.hit_rect.centerx = self.pos.x
         if not self.in_battle:
             collide_with_walls(self, self.game.walls, 'x')
+        elif self.in_battle:
+            collide_with_walls(self, self.game.battle.battle_walls, 'x')
         self.hit_rect.centery = self.pos.y
         if not self.in_battle:
             collide_with_walls(self, self.game.walls, 'y')
+        elif self.in_battle:
+            collide_with_walls(self, self.game.battle.battle_walls, 'y')
         self.rect = self.hit_rect
         self.pos = self.rect.center
 

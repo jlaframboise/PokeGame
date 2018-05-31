@@ -123,6 +123,9 @@ class Battle:
         self.b_map_img = self.b_map.make_map()
         self.b_map_rect = self.b_map_img.get_rect()
 
+
+        BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth *self.b_map.tmxdata.width
+        self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH, HEIGHT))
         for obj in self.b_map.tmxdata.objects:
             if obj.name == 'trained_pokemon':
                 self.spawn_pos = vec(obj.x,obj.y)
