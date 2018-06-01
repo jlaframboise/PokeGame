@@ -1,13 +1,10 @@
 import pygame as pg
 
-WIDTH=1024
+WIDTH = 1024
 HEIGHT = 768
 TITLE = 'PokeGame'
 FPS = 60
 TILE_SIZE = 64
-
-
-
 
 # define some colors (R, G, B)
 WHITE = (255, 255, 255)
@@ -19,16 +16,15 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 BROWN = (106, 55, 5)
 CYAN = (0, 255, 255)
-BLUE = (0,0,255)
+BLUE = (0, 0, 255)
 
-
-#player settings:
+# player settings:
 PLAYER_SPEED = 500
 ROTATION_SPEED = 250
 PLAYER_IMG = 'trainer.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 
-#Pokemon settings
+# Pokemon settings
 TURTLE_IMG = 'turtle.png'
 POKEMON_SPEED = 200
 POKEMON_MOVE_DELAY = 500

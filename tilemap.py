@@ -6,6 +6,7 @@ import pygame as pg
 def collide_hit_rect(one, two):
     return one.hit_rect.colliderect(two.rect)
 
+
 class TiledMap:
     def __init__(self, filename):
         tm = pytmx.load_pygame(filename, pixelalpha=True)
@@ -43,14 +44,12 @@ class Camera:
         return rect.move(self.camera.topleft)
 
     def update(self, target):
-        x = -target.rect.centerx +int(WIDTH/2)
-        y = -target.rect.centery +int(HEIGHT/2)
+        x = -target.rect.centerx + int(WIDTH / 2)
+        y = -target.rect.centery + int(HEIGHT / 2)
 
-        x = min(0,x)
-        y = min(0,y)
+        x = min(0, x)
+        y = min(0, y)
         x = max(x, -(self.width - WIDTH))
         y = max(y, -(self.height - HEIGHT))
-
-
 
         self.camera = pg.Rect(x, y, self.width, self.height)

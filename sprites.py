@@ -91,6 +91,7 @@ class Wall(pg.sprite.Sprite):
 
         self.rect = pg.Rect(x, y, width, height)
 
+
 class Battle_Wall(pg.sprite.Sprite):
     def __init__(self, battle, x, y, width, height):
         self.battle = battle
@@ -103,8 +104,6 @@ class Battle_Wall(pg.sprite.Sprite):
         self.height = height
 
         self.rect = pg.Rect(x, y, width, height)
-
-
 
 
 class Pokemon(pg.sprite.Sprite):
@@ -127,7 +126,6 @@ class Pokemon(pg.sprite.Sprite):
         self.rot = choice([0, 90, 180, 270])
         self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
 
-
     def update(self):
         if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
             self.move()
@@ -145,4 +143,3 @@ class Pokemon(pg.sprite.Sprite):
             collide_with_walls(self, self.game.battle.battle_walls, 'y')
         self.rect = self.hit_rect
         self.pos = self.rect.center
-

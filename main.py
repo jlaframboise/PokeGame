@@ -35,7 +35,7 @@ class Game:
         self.pokemon = pg.sprite.Group()
 
         self.camera = Camera(self.map1.width, self.map1.height)
-        for obj in self.map1.tmxdata.objects:  #TODO make players based on map
+        for obj in self.map1.tmxdata.objects:  # TODO make players based on map
             obj_center = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
@@ -80,15 +80,13 @@ class Game:
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply_rect(sprite.rect))
             if self.debug_mode:
-                pg.draw.rect(self.screen, CYAN, self.camera.apply_rect(sprite.hit_rect), 1  )
+                pg.draw.rect(self.screen, CYAN, self.camera.apply_rect(sprite.hit_rect), 1)
         for wall in self.walls:
             if self.debug_mode:
                 pg.draw.rect(self.screen, CYAN, self.camera.apply(wall), 1)
 
         pg.display.flip()
-        #if self.debug_mode:
-
-
+        # if self.debug_mode:
 
     def events(self):
         for event in pg.event.get():
@@ -123,17 +121,15 @@ class Battle:
         self.b_map_img = self.b_map.make_map()
         self.b_map_rect = self.b_map_img.get_rect()
 
-
-        BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth *self.b_map.tmxdata.width
+        BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
         self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH, HEIGHT))
         for obj in self.b_map.tmxdata.objects:
             if obj.name == 'trained_pokemon':
-                self.spawn_pos = vec(obj.x,obj.y)
+                self.spawn_pos = vec(obj.x, obj.y)
             if obj.name == 'wild_pokemon':
                 self.wild_pokemon.pos = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
-
 
     def events(self):
         for event in pg.event.get():
@@ -154,7 +150,6 @@ class Battle:
         self.game.player.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
 
-
     def draw(self):
         self.game.screen.fill(BLACK)
         self.game.screen.blit(self.b_map_img, self.b_map_rect)
@@ -171,9 +166,6 @@ class Battle:
             self.events()
             self.update()
             self.draw()
-
-
-
 
 
 g = Game()
