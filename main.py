@@ -144,6 +144,16 @@ class Battle:
         self.game.player.get_keys()
         self.game.player.update()
         self.wild_pokemon.update()
+        hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
+        if hits:
+            self.leave_battle()
+
+    def leave_battle(self):
+        self.fighting = False
+        self.game.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        self.game.player.in_battle = False
+        self.game.player.pos = self.game.player.before_battle_pos
+
 
     def draw(self):
         self.game.screen.fill(BLACK)
