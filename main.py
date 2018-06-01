@@ -130,7 +130,7 @@ class Battle:
                 self.wild_pokemon.pos = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
-
+        self.game.player.rot = 90
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
