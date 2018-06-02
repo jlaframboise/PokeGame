@@ -38,9 +38,9 @@
   <object id="4" name="wall" x="576" y="0" width="64" height="768"/>
   <object id="5" name="wall" x="64" y="0" width="512" height="64"/>
   <object id="6" name="wall" x="64" y="704" width="512" height="64"/>
-  <object id="7" name="wild_pokemon" x="288" y="144" width="64" height="64"/>
+  <object id="7" name="wild_pokemon" x="304" y="144" width="32" height="32"/>
   <object id="8" name="wall" x="512" y="320" width="64" height="128"/>
   <object id="9" name="wall" x="64" y="320" width="64" height="128"/>
-  <object id="10" name="trained_pokemon" x="288" y="560" width="64" height="64"/>
+  <object id="10" name="trained_pokemon" x="304" y="592" width="32" height="32"/>
  </objectgroup>
 </map>

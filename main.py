@@ -110,6 +110,7 @@ class Battle:
         self.load_battle_data()
         self.game.player.pos = self.spawn_pos
         self.game.player.in_battle = True
+        self.wild_pokemon.in_battle = True
         self.run()
 
     def load_battle_data(self):
@@ -135,6 +136,9 @@ class Battle:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.game.quit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_h:
+                    self.game.debug_mode = not self.game.debug_mode
 
     def update(self):
         self.game.player.get_keys()
@@ -156,6 +160,13 @@ class Battle:
         for sprite in self.sprites_in_battle:
             self.game.screen.blit(sprite.image, sprite.rect)
         self.game.screen.blit(self.game.player.image, self.game.player.rect)
+        if self.game.debug_mode:
+            for wall in self.battle_walls:
+                pg.draw.rect(self.game.screen, CYAN, wall.rect, 1)
+            pg.draw.rect(self.game.screen, CYAN, self.game.player.hit_rect, 1)
+            for pokemon in self.sprites_in_battle:
+                pg.draw.rect(self.game.screen, CYAN, pokemon.hit_rect, 1)
+
         pg.display.flip()
 
     def run(self):

@@ -6,7 +6,7 @@ from random import choice
 vec = pg.math.Vector2
 
 
-def collide_with_walls(sprite, group, dim):  # TODO finish the collisions
+def collide_with_walls(sprite, group, dim):
     if dim == 'x':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         if hits:
@@ -112,17 +112,31 @@ class Pokemon(pg.sprite.Sprite):
         self.groups = self.game.all_sprites, self.game.pokemon
         pg.sprite.Sprite.__init__(self, self.groups)
         self.pos = vec(x, y)
+        self.vel = vec(0, 0)
         self.spawn_pos = self.pos
         self.image = self.game.turtle_img
         self.rect = self.image.get_rect()
         self.hit_rect = self.rect
-        self.vel = vec(0, 0)
         self.last_moved = pg.time.get_ticks()
         self.rect.center = self.pos
         self.rot = 0
         self.in_battle = False
 
     def move(self):
+        #The following code is enables control of all pokemon with the ijkl keys.
+        '''
+        self.vel = vec(0, 0)
+        keys = pg.key.get_pressed()
+        if keys[pg.K_i]:
+            self.vel = vec(POKEMON_SPEED, 0).rotate(-90)
+        if keys[pg.K_j]:
+            self.vel = vec(POKEMON_SPEED, 0).rotate(-180)
+        if keys[pg.K_k]:
+            self.vel = vec(POKEMON_SPEED, 0).rotate(-270)
+        if keys[pg.K_l]:
+            self.vel = vec(POKEMON_SPEED, 0).rotate(-360)
+        '''
+
         self.rot = choice([0, 90, 180, 270])
         self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
 
@@ -130,16 +144,20 @@ class Pokemon(pg.sprite.Sprite):
         if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
             self.move()
             self.last_moved = pg.time.get_ticks()
+
+
         self.pos += self.vel * self.game.dt
+
         self.hit_rect.centerx = self.pos.x
         if not self.in_battle:
             collide_with_walls(self, self.game.walls, 'x')
-        elif self.in_battle:
+        if self.in_battle:
             collide_with_walls(self, self.game.battle.battle_walls, 'x')
         self.hit_rect.centery = self.pos.y
         if not self.in_battle:
             collide_with_walls(self, self.game.walls, 'y')
-        elif self.in_battle:
+        if self.in_battle:
             collide_with_walls(self, self.game.battle.battle_walls, 'y')
-        self.rect = self.hit_rect
-        self.pos = self.rect.center
+
+        self.rect.center = self.hit_rect.center
+        #self.pos = self.rect.center
