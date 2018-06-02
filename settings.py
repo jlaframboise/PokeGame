@@ -6,6 +6,10 @@ TITLE = 'PokeGame'
 FPS = 60
 TILE_SIZE = 64
 
+#Menu Settings
+MENU_WIDTH = 300
+MENU_HEIGHT = HEIGHT
+
 # define some colors (R, G, B)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

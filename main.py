@@ -5,6 +5,7 @@ from random import choice, randint, uniform
 import sys
 from os import path
 import pygame as pg
+from menu import *
 
 vec = pg.math.Vector2
 
@@ -13,7 +14,7 @@ class Game:
 
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pg.display.set_mode((WIDTH+MENU_WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.load_data()
@@ -28,6 +29,8 @@ class Game:
         self.map1_img = self.map1.make_map()
         self.map_rect = self.map1_img.get_rect()
         self.turtle_img = pg.image.load(path.join(img_folder, TURTLE_IMG)).convert_alpha()
+
+
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
@@ -44,6 +47,8 @@ class Game:
             if obj.name == 'player':
                 self.player = Player(self, obj.x, obj.y)
         self.debug_mode = False
+
+        self.menu = Menu(self)
 
     def run(self):
         # game loop
@@ -84,7 +89,7 @@ class Game:
         for wall in self.walls:
             if self.debug_mode:
                 pg.draw.rect(self.screen, CYAN, self.camera.apply(wall), 1)
-
+        self.screen.blit(self.menu.image, self.menu.rect)
         pg.display.flip()
         # if self.debug_mode:
 
