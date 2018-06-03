@@ -43,10 +43,13 @@ class Game:
             obj_center = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
-            if obj.name == 'pokemon':
-                Woterpitter(self, obj.x, obj.y)
-                Leafcoon(self, obj.x, obj.y)
-                FirePenguin(self, obj.x, obj.y)
+            if obj.type == 'pokemon':
+                if obj.name == 'leafcoon':
+                    Leafcoon(self, obj.x, obj.y)
+                elif obj.name == 'firepenguin':
+                    FirePenguin(self, obj.x, obj.y)
+                elif obj.name == 'woterpitter':
+                    Woterpitter(self, obj.x, obj.y)
             if obj.name == 'player':
                 self.player = Player(self, obj.x, obj.y)
         self.debug_mode = False

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="64" tileheight="64" infinite="0" nextobjectid="166">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="64" tileheight="64" infinite="0" nextobjectid="215">
  <tileset firstgid="1" source="spritesheet_tiles.tsx"/>
  <layer name="Ground" width="60" height="60">
   <data encoding="csv">
@@ -219,7 +219,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,0,0,0,0,0,0,0,205,0,0,0,205,205,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,205,0,0,0,0,0,0,205,0,0,0,205,0,0,0,0,0,205,205,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,205,0,0,0,0,0,205,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,205,0,0,0,0,205,205,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,0,205,205,0,0,0,0,205,205,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,205,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,205,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,0,205,205,0,0,0,0,205,0,0,0,0,0,0,0,
@@ -257,7 +257,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="Obstacles">
+ <objectgroup name="Obstacles" visible="0">
   <object id="9" name="wall" x="384" y="2112" width="64" height="576"/>
   <object id="10" name="wall" x="960" y="2112" width="64" height="576"/>
   <object id="11" name="wall" x="1280" y="2880" width="64" height="576"/>
@@ -397,20 +397,48 @@
   <object id="148" name="wall" x="1280" y="64" width="64" height="64"/>
   <object id="149" name="wall" x="3712" y="64" width="64" height="64"/>
   <object id="150" name="wall" x="3712" y="1088" width="64" height="64"/>
-  <object id="151" name="pokemon" x="1200" y="2352" width="64" height="64"/>
-  <object id="152" name="pokemon" x="1280" y="2048" width="64" height="64"/>
-  <object id="153" name="pokemon" x="1104" y="2768" width="64" height="64"/>
-  <object id="154" name="pokemon" x="1056" y="3392" width="64" height="64"/>
-  <object id="155" name="pokemon" x="288" y="3568" width="64" height="64"/>
-  <object id="156" name="pokemon" x="1728" y="3584" width="64" height="64"/>
-  <object id="157" name="pokemon" x="1088" y="1488" width="64" height="64"/>
-  <object id="158" name="pokemon" x="240" y="1648" width="64" height="64"/>
-  <object id="159" name="pokemon" x="992" y="928" width="64" height="64"/>
-  <object id="160" name="pokemon" x="3568" y="2096" width="64" height="64"/>
-  <object id="161" name="pokemon" x="3040" y="3008" width="64" height="64"/>
-  <object id="162" name="pokemon" x="2320" y="752" width="64" height="64"/>
-  <object id="163" name="pokemon" x="1792" y="496" width="64" height="64"/>
-  <object id="164" name="pokemon" x="2656" y="240" width="64" height="64"/>
-  <object id="165" name="pokemon" x="256" y="208" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup name="Pokemon">
+  <object id="166" name="leafcoon" type="pokemon" x="1184" y="2320" width="32" height="32"/>
+  <object id="168" name="firepenguin" type="pokemon" x="928" y="1808" width="32" height="32"/>
+  <object id="171" name="woterpitter" type="pokemon" x="1840" y="1952" width="32" height="32"/>
+  <object id="174" name="turtle" type="pokemon" x="1408" y="1472" width="32" height="32"/>
+  <object id="177" name="leafcoon" type="pokemon" x="1120" y="3584" width="32" height="32"/>
+  <object id="178" name="leafcoon" type="pokemon" x="2048" y="3600" width="32" height="32"/>
+  <object id="179" name="leafcoon" type="pokemon" x="2096" y="2304" width="32" height="32"/>
+  <object id="180" name="leafcoon" type="pokemon" x="192" y="2800" width="32" height="32"/>
+  <object id="181" name="leafcoon" type="pokemon" x="176" y="2176" width="32" height="32"/>
+  <object id="182" name="leafcoon" type="pokemon" x="304" y="1616" width="32" height="32"/>
+  <object id="183" name="leafcoon" type="pokemon" x="1280" y="1680" width="32" height="32"/>
+  <object id="184" name="leafcoon" type="pokemon" x="256" y="512" width="32" height="32"/>
+  <object id="185" name="leafcoon" type="pokemon" x="752" y="528" width="32" height="32"/>
+  <object id="186" name="leafcoon" type="pokemon" x="1168" y="1024" width="32" height="32"/>
+  <object id="187" name="firepenguin" type="pokemon" x="3184" y="3216" width="32" height="32"/>
+  <object id="188" name="firepenguin" type="pokemon" x="2576" y="3088" width="32" height="32"/>
+  <object id="189" name="firepenguin" type="pokemon" x="3344" y="2464" width="32" height="32"/>
+  <object id="190" name="firepenguin" type="pokemon" x="2672" y="2368" width="32" height="32"/>
+  <object id="191" name="firepenguin" type="pokemon" x="3504" y="1664" width="32" height="32"/>
+  <object id="192" name="firepenguin" type="pokemon" x="2640" y="1424" width="32" height="32"/>
+  <object id="193" name="firepenguin" type="pokemon" x="3008" y="992" width="32" height="32"/>
+  <object id="194" name="firepenguin" type="pokemon" x="2272" y="496" width="32" height="32"/>
+  <object id="195" name="firepenguin" type="pokemon" x="1440" y="544" width="32" height="32"/>
+  <object id="196" name="firepenguin" type="pokemon" x="416" y="112" width="32" height="32"/>
+  <object id="197" name="firepenguin" type="pokemon" x="1104" y="3152" width="32" height="32"/>
+  <object id="198" name="woterpitter" type="pokemon" x="240" y="1056" width="32" height="32"/>
+  <object id="199" name="woterpitter" type="pokemon" x="720" y="208" width="32" height="32"/>
+  <object id="200" name="woterpitter" type="pokemon" x="768" y="928" width="32" height="32"/>
+  <object id="201" name="woterpitter" type="pokemon" x="1104" y="576" width="32" height="32"/>
+  <object id="202" name="woterpitter" type="pokemon" x="1792" y="256" width="32" height="32"/>
+  <object id="203" name="woterpitter" type="pokemon" x="1776" y="976" width="32" height="32"/>
+  <object id="204" name="woterpitter" type="pokemon" x="3488" y="2176" width="32" height="32"/>
+  <object id="205" name="woterpitter" type="pokemon" x="320" y="3568" width="32" height="32"/>
+  <object id="206" name="woterpitter" type="pokemon" x="1952" y="2640" width="32" height="32"/>
+  <object id="208" name="leafcoon" type="pokemon" x="2944" y="1984" width="32" height="32"/>
+  <object id="209" name="turtle" type="pokemon" x="2064" y="3088" width="32" height="32"/>
+  <object id="210" name="turtle" type="pokemon" x="672" y="1632" width="32" height="32"/>
+  <object id="211" name="turtle" type="pokemon" x="736" y="1136" width="32" height="32"/>
+  <object id="212" name="turtle" type="pokemon" x="2176" y="1264" width="32" height="32"/>
+  <object id="213" name="turtle" type="pokemon" x="3264" y="3568" width="32" height="32"/>
+  <object id="214" name="turtle" type="pokemon" x="2416" y="768" width="32" height="32"/>
  </objectgroup>
 </map>
