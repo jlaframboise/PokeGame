@@ -35,5 +35,8 @@ PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 
 # Pokemon settings
 TURTLE_IMG = 'turtle.png'
+FIRE_PENGUIN_IMG = 'flaminghotpingu.png'
+LEAFCOON_IMG = 'leafcoon.png'
+WOTERPITTER_IMG = 'woterpitter.png'
 POKEMON_SPEED = 200
 POKEMON_MOVE_DELAY = 500

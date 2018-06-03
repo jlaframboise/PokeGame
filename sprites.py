@@ -161,3 +161,21 @@ class Pokemon(pg.sprite.Sprite):
 
         self.rect.center = self.hit_rect.center
         # self.pos = self.rect.center
+
+class FirePenguin(Pokemon):
+    def __init__(self, game, x ,y):
+        Pokemon.__init__(self, game, x, y)
+        self.type = 'fire'
+        self.image = self.game.fire_penguin_img
+
+class Leafcoon(Pokemon):
+    def __init__(self, game, x ,y):
+        Pokemon.__init__(self, game, x, y)
+        self.type = 'grass'
+        self.image = self.game.leafcoon_img
+
+class Woterpitter(Pokemon):
+    def __init__(self, game, x ,y):
+        Pokemon.__init__(self, game, x, y)
+        self.type = 'water'
+        self.image = self.game.woterpitter_img

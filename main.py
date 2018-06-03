@@ -29,6 +29,9 @@ class Game:
         self.map1_img = self.map1.make_map()
         self.map_rect = self.map1_img.get_rect()
         self.turtle_img = pg.image.load(path.join(img_folder, TURTLE_IMG)).convert_alpha()
+        self.fire_penguin_img = pg.image.load(path.join(img_folder, FIRE_PENGUIN_IMG)).convert_alpha()
+        self.leafcoon_img = pg.image.load(path.join(img_folder, LEAFCOON_IMG)).convert_alpha()
+        self.woterpitter_img = pg.image.load(path.join(img_folder, WOTERPITTER_IMG)).convert_alpha()
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
@@ -41,7 +44,9 @@ class Game:
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.name == 'pokemon':
-                Pokemon(self, obj.x, obj.y)
+                Woterpitter(self, obj.x, obj.y)
+                Leafcoon(self, obj.x, obj.y)
+                FirePenguin(self, obj.x, obj.y)
             if obj.name == 'player':
                 self.player = Player(self, obj.x, obj.y)
         self.debug_mode = False
