@@ -89,7 +89,7 @@ class Game:
         for wall in self.walls:
             if self.debug_mode:
                 pg.draw.rect(self.screen, CYAN, self.camera.apply(wall), 1)
-        self.screen.blit(self.menu.image, self.menu.rect)
+        self.screen.blit(self.menu.bg_image, self.menu.bg_rect)
         pg.display.flip()
         # if self.debug_mode:
 
@@ -116,6 +116,7 @@ class Battle:
         self.game.player.pos = self.spawn_pos
         self.game.player.in_battle = True
         self.wild_pokemon.in_battle = True
+        self.game.menu.in_battle = True
         self.run()
 
     def load_battle_data(self):
@@ -127,8 +128,8 @@ class Battle:
         self.b_map_img = self.b_map.make_map()
         self.b_map_rect = self.b_map_img.get_rect()
 
-        BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
-        self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH, HEIGHT))
+        #BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
+        self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH + MENU_WIDTH, HEIGHT))
         for obj in self.b_map.tmxdata.objects:
             if obj.name == 'trained_pokemon':
                 self.spawn_pos = vec(obj.x, obj.y)
@@ -152,11 +153,13 @@ class Battle:
         hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
         if hits:
             self.leave_battle()
+        self.game.menu.update()
 
     def leave_battle(self):
         self.fighting = False
-        self.game.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        self.game.screen = pg.display.set_mode((WIDTH +MENU_WIDTH, HEIGHT))
         self.game.player.in_battle = False
+        self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
 
     def draw(self):
@@ -171,6 +174,7 @@ class Battle:
             pg.draw.rect(self.game.screen, CYAN, self.game.player.hit_rect, 1)
             for pokemon in self.sprites_in_battle:
                 pg.draw.rect(self.game.screen, CYAN, pokemon.hit_rect, 1)
+        self.game.screen.blit(self.game.menu.bg_image, self.game.menu.bg_rect)
 
         pg.display.flip()
 
