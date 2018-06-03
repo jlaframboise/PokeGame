@@ -18,14 +18,12 @@ class Menu:
         self.bg_rect.x = WIDTH
         self.in_battle = False
 
-        #for x in range(NUMBER_OF_CIRCLES):
-            #pg.draw.circle(self.bg_image, BLUE,
-                           #(MENU_WIDTH // 2,
-                            #HEADER_SPACE + int((MENU_HEIGHT - HEADER_SPACE) // NUMBER_OF_CIRCLES * (x + 0.5))),
-                           #CIRCLE_RADIUS,
-                           #CIRCLE_WIDTH)
-
-
+        # for x in range(NUMBER_OF_CIRCLES):
+        # pg.draw.circle(self.bg_image, BLUE,
+        # (MENU_WIDTH // 2,
+        # HEADER_SPACE + int((MENU_HEIGHT - HEADER_SPACE) // NUMBER_OF_CIRCLES * (x + 0.5))),
+        # CIRCLE_RADIUS,
+        # CIRCLE_WIDTH)
 
     def update(self):
         self.bg_image.fill(BLACK)
@@ -35,10 +33,14 @@ class Menu:
             self.bg_rect.x = WIDTH
 
         for count, pokemon in enumerate(self.game.player.cap_pokemon):
-            self.bg_image.blit(pokemon.image, pg.Rect(MENU_WIDTH // 2,
-                            HEADER_SPACE + int(MENU_HEIGHT - HEADER_SPACE), 60,60))
+            y_location = HEADER_SPACE + int(
+                (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon) * (count + 0.5))
+
+            pokemon.rect.centerx = MENU_WIDTH // 2
+            pokemon.rect.centery = y_location
+            self.bg_image.blit(pokemon.image, pokemon.rect)
             pg.draw.circle(self.bg_image, BLUE,
                            (MENU_WIDTH // 2,
-                            HEADER_SPACE + int((MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon) * (count + 0.5))),
+                            y_location),
                            CIRCLE_RADIUS,
                            CIRCLE_WIDTH)
