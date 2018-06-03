@@ -39,7 +39,7 @@ class Game:
         self.pokemon = pg.sprite.Group()
 
         self.camera = Camera(self.map1.width, self.map1.height)
-        for obj in self.map1.tmxdata.objects:  # TODO make players based on map
+        for obj in self.map1.tmxdata.objects:
             obj_center = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
@@ -50,6 +50,8 @@ class Game:
                     FirePenguin(self, obj.x, obj.y)
                 elif obj.name == 'woterpitter':
                     Woterpitter(self, obj.x, obj.y)
+                elif obj.name == 'turtle':
+                    Pokemon(self, obj.x, obj.y)
             if obj.name == 'player':
                 self.player = Player(self, obj.x, obj.y)
         self.debug_mode = False
@@ -78,7 +80,7 @@ class Game:
             self.on_contact_pokemon(hits[0])
 
     def on_contact_pokemon(self, pokemon):
-        print('Collided with pokemon!')
+        #print('Collided with pokemon!')
         self.player.before_battle_pos = self.player.pos
         battle = Battle(self, pokemon)
 
