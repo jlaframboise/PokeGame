@@ -28,6 +28,7 @@ class Menu:
 
 
     def update(self):
+        self.bg_image.fill(BLACK)
         if self.in_battle:
             self.bg_rect.x = BATTLE_SCREEN_WIDTH
         else:
@@ -38,6 +39,6 @@ class Menu:
                             HEADER_SPACE + int(MENU_HEIGHT - HEADER_SPACE), 60,60))
             pg.draw.circle(self.bg_image, BLUE,
                            (MENU_WIDTH // 2,
-                            HEADER_SPACE + int((MENU_HEIGHT - HEADER_SPACE) // NUMBER_OF_CIRCLES * (count + 0.5))),
+                            HEADER_SPACE + int((MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon) * (count + 0.5))),
                            CIRCLE_RADIUS,
                            CIRCLE_WIDTH)
