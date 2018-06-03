@@ -6,7 +6,7 @@ TITLE = 'PokeGame'
 FPS = 60
 TILE_SIZE = 64
 
-#Menu Settings
+# Menu Settings
 MENU_WIDTH = 300
 MENU_HEIGHT = HEIGHT
 CIRCLE_RADIUS = 80

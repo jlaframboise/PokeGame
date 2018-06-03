@@ -14,7 +14,7 @@ class Game:
 
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mode((WIDTH+MENU_WIDTH, HEIGHT))
+        self.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.load_data()
@@ -29,8 +29,6 @@ class Game:
         self.map1_img = self.map1.make_map()
         self.map_rect = self.map1_img.get_rect()
         self.turtle_img = pg.image.load(path.join(img_folder, TURTLE_IMG)).convert_alpha()
-
-
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
@@ -128,7 +126,7 @@ class Battle:
         self.b_map_img = self.b_map.make_map()
         self.b_map_rect = self.b_map_img.get_rect()
 
-        #BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
+        # BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
         self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH + MENU_WIDTH, HEIGHT))
         for obj in self.b_map.tmxdata.objects:
             if obj.name == 'trained_pokemon':
@@ -138,6 +136,7 @@ class Battle:
             if obj.name == 'wall':
                 Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
         self.game.player.rot = 90
+
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -152,12 +151,17 @@ class Battle:
         self.wild_pokemon.update()
         hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
         if hits:
+            self.game.player.cap_pokemon.add(self.wild_pokemon)
+            self.sprites_in_battle.remove(self.wild_pokemon)
+            self.game.pokemon.remove(self.wild_pokemon)
+            self.game.all_sprites.remove(self.wild_pokemon)
             self.leave_battle()
+            self.game.menu.update()
         self.game.menu.update()
 
     def leave_battle(self):
         self.fighting = False
-        self.game.screen = pg.display.set_mode((WIDTH +MENU_WIDTH, HEIGHT))
+        self.game.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
         self.game.player.in_battle = False
         self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos

@@ -42,6 +42,7 @@ class Player(pg.sprite.Sprite):
         self.rot = 0
         self.rot_speed = 0
         self.in_battle = False
+        self.cap_pokemon = pg.sprite.Group()
 
     def get_keys(self):
 
@@ -123,7 +124,7 @@ class Pokemon(pg.sprite.Sprite):
         self.in_battle = False
 
     def move(self):
-        #The following code is enables control of all pokemon with the ijkl keys.
+        # The following code is enables control of all pokemon with the ijkl keys.
         '''
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
@@ -145,7 +146,6 @@ class Pokemon(pg.sprite.Sprite):
             self.move()
             self.last_moved = pg.time.get_ticks()
 
-
         self.pos += self.vel * self.game.dt
 
         self.hit_rect.centerx = self.pos.x
@@ -160,4 +160,4 @@ class Pokemon(pg.sprite.Sprite):
             collide_with_walls(self, self.game.battle.battle_walls, 'y')
 
         self.rect.center = self.hit_rect.center
-        #self.pos = self.rect.center
+        # self.pos = self.rect.center
