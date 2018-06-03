@@ -80,7 +80,7 @@ class Game:
             self.on_contact_pokemon(hits[0])
 
     def on_contact_pokemon(self, pokemon):
-        #print('Collided with pokemon!')
+        # print('Collided with pokemon!')
         self.player.before_battle_pos = self.player.pos
         battle = Battle(self, pokemon)
 
