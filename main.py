@@ -33,6 +33,8 @@ class Game:
         self.leafcoon_img = pg.image.load(path.join(img_folder, LEAFCOON_IMG)).convert_alpha()
         self.woterpitter_img = pg.image.load(path.join(img_folder, WOTERPITTER_IMG)).convert_alpha()
 
+
+
     def new(self):
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
@@ -57,6 +59,8 @@ class Game:
         self.debug_mode = False
 
         self.menu = Menu(self)
+        # TODO remove this
+        #self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
 
     def run(self):
         # game loop
@@ -171,7 +175,6 @@ class Battle:
         self.game.player.update()
         self.wild_pokemon.update()
         if self.pokemon_in:
-
             self.players_pokemon.update()
             #print('Im running pokemon update')
         hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
@@ -195,7 +198,11 @@ class Battle:
             #print(pokemon)
             if pokemon.number == pokemon_index:
                 self.players_pokemon = pokemon
-        self.players_pokemon.center = self.spawn_pos
+        self.players_pokemon.pos = self.spawn_pos
+        self.players_pokemon.update()
+        self.players_pokemon.is_controlled = True
+        self.game.player.cap_pokemon.remove(self.players_pokemon)
+        print(self.players_pokemon)
 
 
 

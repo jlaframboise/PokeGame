@@ -126,6 +126,8 @@ class Pokemon(pg.sprite.Sprite):
         self.in_battle = False
         self.freeze = False
         self.is_controlled = False
+        # TODO remove this
+        #self.number = 1
 
     def move(self):
         # The following code is enables control of all pokemon with the ijkl keys.
@@ -145,7 +147,9 @@ class Pokemon(pg.sprite.Sprite):
             self.rot = choice([0, 90, 180, 270])
             self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
 
+
     def update(self):
+        self.freeze = False
         if not self.freeze:
             if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
                 self.move()
