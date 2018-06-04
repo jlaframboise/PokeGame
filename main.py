@@ -33,8 +33,6 @@ class Game:
         self.leafcoon_img = pg.image.load(path.join(img_folder, LEAFCOON_IMG)).convert_alpha()
         self.woterpitter_img = pg.image.load(path.join(img_folder, WOTERPITTER_IMG)).convert_alpha()
 
-
-
     def new(self):
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
@@ -42,7 +40,7 @@ class Game:
 
         self.camera = Camera(self.map1.width, self.map1.height)
         for obj in self.map1.tmxdata.objects:
-            obj_center = vec(obj.x+obj.width/2, obj.y+obj.height/2)
+            obj_center = vec(obj.x + obj.width / 2, obj.y + obj.height / 2)
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.type == 'pokemon':
@@ -59,8 +57,8 @@ class Game:
         self.debug_mode = False
 
         self.menu = Menu(self)
-        # TODO remove this
-        self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
+        # uncomment the following line if a pokemon is to be added by default
+        # self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
 
     def run(self):
         # game loop
@@ -84,7 +82,6 @@ class Game:
             self.on_contact_pokemon(hits[0])
 
     def on_contact_pokemon(self, pokemon):
-        # print('Collided with pokemon!')
         self.player.before_battle_pos = self.player.pos
         battle = Battle(self, pokemon)
 
@@ -103,7 +100,6 @@ class Game:
                 pg.draw.rect(self.screen, CYAN, self.camera.apply(wall), 1)
         self.screen.blit(self.menu.bg_image, self.menu.bg_rect)
         pg.display.flip()
-        # if self.debug_mode:
 
     def events(self):
         for event in pg.event.get():
@@ -114,7 +110,7 @@ class Game:
                     self.quit()
                 if event.key == pg.K_h:
                     self.debug_mode = not self.debug_mode
-                if event.key==pg.K_f:
+                if event.key == pg.K_f:
                     self.player.freeze = not self.player.freeze
 
 
@@ -145,7 +141,7 @@ class Battle:
         # BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
         self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH + MENU_WIDTH, HEIGHT))
         for obj in self.b_map.tmxdata.objects:
-            obj_center = vec(obj.x+obj.width/2, obj.y+obj.height/2)
+            obj_center = vec(obj.x + obj.width / 2, obj.y + obj.height / 2)
             if obj.name == 'trained_pokemon':
                 self.spawn_pos = vec(obj_center.x, obj_center.y)
             if obj.name == 'wild_pokemon':
@@ -177,13 +173,12 @@ class Battle:
         self.wild_pokemon.update()
         if self.pokemon_in:
             self.players_pokemon.update()
-            #print('Im running pokemon update')
         if not self.pokemon_in:
             hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
         if self.pokemon_in:
             hits = pg.sprite.spritecollide(self.players_pokemon, self.sprites_in_battle, True, collide_hit_rect)
         if hits:
-            self.wild_pokemon.number = len(self.game.player.cap_pokemon)+1
+            self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
             self.game.player.cap_pokemon.add(self.wild_pokemon)
             self.sprites_in_battle.remove(self.wild_pokemon)
             self.game.pokemon.remove(self.wild_pokemon)
@@ -197,18 +192,13 @@ class Battle:
         self.game.player.pos = self.standby_spot
         self.game.player.update()
         self.game.player.freeze = True
-        #print(self.game.player.cap_pokemon)
         for pokemon in self.game.player.cap_pokemon:
-            #print(pokemon)
             if pokemon.number == pokemon_index:
                 self.players_pokemon = pokemon
         self.players_pokemon.pos = self.spawn_pos
         self.players_pokemon.is_controlled = True
         self.game.player.cap_pokemon.remove(self.players_pokemon)
         print(self.players_pokemon)
-
-
-
 
     def leave_battle(self):
         self.fighting = False
@@ -217,7 +207,6 @@ class Battle:
         self.game.player.in_battle = False
         self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
-
 
     def draw(self):
         self.game.screen.fill(BLACK)
