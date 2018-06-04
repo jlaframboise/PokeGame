@@ -151,9 +151,13 @@ class Pokemon(pg.sprite.Sprite):
     def update(self):
         self.freeze = False
         if not self.freeze:
-            if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
+
+            if self.is_controlled:
                 self.move()
-                self.last_moved = pg.time.get_ticks()
+            else:
+                if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
+                    self.move()
+                    self.last_moved = pg.time.get_ticks()
 
             self.pos += self.vel * self.game.dt
 

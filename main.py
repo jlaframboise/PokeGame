@@ -42,20 +42,20 @@ class Game:
 
         self.camera = Camera(self.map1.width, self.map1.height)
         for obj in self.map1.tmxdata.objects:
-            obj_center = vec(obj.x, obj.y)
+            obj_center = vec(obj.x+obj.width/2, obj.y+obj.height/2)
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.type == 'pokemon':
                 if obj.name == 'leafcoon':
-                    Leafcoon(self, obj.x, obj.y)
+                    Leafcoon(self, obj_center.x, obj_center.y)
                 elif obj.name == 'firepenguin':
-                    FirePenguin(self, obj.x, obj.y)
+                    FirePenguin(self, obj_center.x, obj_center.y)
                 elif obj.name == 'woterpitter':
-                    Woterpitter(self, obj.x, obj.y)
+                    Woterpitter(self, obj_center.x, obj_center.y)
                 elif obj.name == 'turtle':
-                    Pokemon(self, obj.x, obj.y)
+                    Pokemon(self, obj_center.x, obj_center.y)
             if obj.name == 'player':
-                self.player = Player(self, obj.x, obj.y)
+                self.player = Player(self, obj_center.x, obj_center.y)
         self.debug_mode = False
 
         self.menu = Menu(self)
@@ -145,14 +145,15 @@ class Battle:
         # BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
         self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH + MENU_WIDTH, HEIGHT))
         for obj in self.b_map.tmxdata.objects:
+            obj_center = vec(obj.x+obj.width/2, obj.y+obj.height/2)
             if obj.name == 'trained_pokemon':
-                self.spawn_pos = vec(obj.x, obj.y)
+                self.spawn_pos = vec(obj_center.x, obj_center.y)
             if obj.name == 'wild_pokemon':
-                self.wild_pokemon.pos = vec(obj.x, obj.y)
+                self.wild_pokemon.pos = vec(obj_center.x, obj_center.y)
             if obj.name == 'wall':
                 Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.name == 'standby_spot':
-                self.standby_spot = vec(obj.x, obj.y)
+                self.standby_spot = vec(obj_center.x, obj_center.y)
         self.game.player.rot = 90
         self.pokemon_in = False
 
@@ -177,7 +178,10 @@ class Battle:
         if self.pokemon_in:
             self.players_pokemon.update()
             #print('Im running pokemon update')
-        hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
+        if not self.pokemon_in:
+            hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
+        if self.pokemon_in:
+            hits = pg.sprite.spritecollide(self.players_pokemon, self.sprites_in_battle, True, collide_hit_rect)
         if hits:
             self.wild_pokemon.number = len(self.game.player.cap_pokemon)+1
             self.game.player.cap_pokemon.add(self.wild_pokemon)
@@ -199,7 +203,6 @@ class Battle:
             if pokemon.number == pokemon_index:
                 self.players_pokemon = pokemon
         self.players_pokemon.pos = self.spawn_pos
-        self.players_pokemon.update()
         self.players_pokemon.is_controlled = True
         self.game.player.cap_pokemon.remove(self.players_pokemon)
         print(self.players_pokemon)
