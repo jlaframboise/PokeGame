@@ -110,6 +110,8 @@ class Game:
                     self.quit()
                 if event.key == pg.K_h:
                     self.debug_mode = not self.debug_mode
+                if event.key==pg.K_f:
+                    self.player.freeze = not self.player.freeze
 
 
 class Battle:
@@ -145,7 +147,10 @@ class Battle:
                 self.wild_pokemon.pos = vec(obj.x, obj.y)
             if obj.name == 'wall':
                 Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
+            if obj.name == 'standby_spot':
+                self.standby_spot = vec(obj.x, obj.y)
         self.game.player.rot = 90
+        self.pokemon_in = False
 
     def events(self):
         for event in pg.event.get():
@@ -154,13 +159,24 @@ class Battle:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_h:
                     self.game.debug_mode = not self.game.debug_mode
+                if event.key == pg.K_f:
+                    self.game.player.freeze = not self.game.player.freeze
+                if event.key == pg.K_1:
+                    self.deploy_pokemon(1)
+                if event.key == pg.K_c:
+                    self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
 
     def update(self):
         self.game.player.get_keys()
         self.game.player.update()
         self.wild_pokemon.update()
+        if self.pokemon_in:
+
+            self.players_pokemon.update()
+            #print('Im running pokemon update')
         hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
         if hits:
+            self.wild_pokemon.number = len(self.game.player.cap_pokemon)+1
             self.game.player.cap_pokemon.add(self.wild_pokemon)
             self.sprites_in_battle.remove(self.wild_pokemon)
             self.game.pokemon.remove(self.wild_pokemon)
@@ -169,12 +185,29 @@ class Battle:
             self.game.menu.update()
         self.game.menu.update()
 
+    def deploy_pokemon(self, pokemon_index):
+        self.pokemon_in = True
+        self.game.player.pos = self.standby_spot
+        self.game.player.update()
+        self.game.player.freeze = True
+        #print(self.game.player.cap_pokemon)
+        for pokemon in self.game.player.cap_pokemon:
+            #print(pokemon)
+            if pokemon.number == pokemon_index:
+                self.players_pokemon = pokemon
+        self.players_pokemon.center = self.spawn_pos
+
+
+
+
     def leave_battle(self):
         self.fighting = False
         self.game.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
+        self.game.player.freeze = False
         self.game.player.in_battle = False
         self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
+
 
     def draw(self):
         self.game.screen.fill(BLACK)
@@ -189,7 +222,9 @@ class Battle:
             for pokemon in self.sprites_in_battle:
                 pg.draw.rect(self.game.screen, CYAN, pokemon.hit_rect, 1)
         self.game.screen.blit(self.game.menu.bg_image, self.game.menu.bg_rect)
-
+        if self.pokemon_in:
+            self.game.screen.blit(self.game.player.image, self.game.player.rect)
+            self.game.screen.blit(self.players_pokemon.image, self.players_pokemon.rect)
         pg.display.flip()
 
     def run(self):

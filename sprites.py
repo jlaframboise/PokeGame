@@ -43,6 +43,7 @@ class Player(pg.sprite.Sprite):
         self.rot_speed = 0
         self.in_battle = False
         self.cap_pokemon = pg.sprite.Group()
+        self.freeze = False
 
     def get_keys(self):
 
@@ -60,23 +61,24 @@ class Player(pg.sprite.Sprite):
             self.vel = vec(-PLAYER_SPEED / 1.5, 0).rotate(-self.rot)
 
     def update(self):
-        self.get_keys()
-        self.rot += (self.rot_speed * self.game.dt) % 360
-        self.image = pg.transform.rotate(self.game.player_img, self.rot)
-        self.rect = self.image.get_rect()
-        self.rect.center = self.pos
-        self.pos += self.vel * self.game.dt
-        self.hit_rect.centerx = self.pos.x
-        if not self.in_battle:
-            collide_with_walls(self, self.game.walls, 'x')
-        elif self.in_battle:
-            collide_with_walls(self, self.game.battle.battle_walls, 'x')
-        self.hit_rect.centery = self.pos.y
-        if not self.in_battle:
-            collide_with_walls(self, self.game.walls, 'y')
-        elif self.in_battle:
-            collide_with_walls(self, self.game.battle.battle_walls, 'y')
-        self.rect.center = self.hit_rect.center
+        if not self.freeze:
+            self.get_keys()
+            self.rot += (self.rot_speed * self.game.dt) % 360
+            self.image = pg.transform.rotate(self.game.player_img, self.rot)
+            self.rect = self.image.get_rect()
+            self.rect.center = self.pos
+            self.pos += self.vel * self.game.dt
+            self.hit_rect.centerx = self.pos.x
+            if not self.in_battle:
+                collide_with_walls(self, self.game.walls, 'x')
+            elif self.in_battle:
+                collide_with_walls(self, self.game.battle.battle_walls, 'x')
+            self.hit_rect.centery = self.pos.y
+            if not self.in_battle:
+                collide_with_walls(self, self.game.walls, 'y')
+            elif self.in_battle:
+                collide_with_walls(self, self.game.battle.battle_walls, 'y')
+            self.rect.center = self.hit_rect.center
 
 
 class Wall(pg.sprite.Sprite):
@@ -122,45 +124,48 @@ class Pokemon(pg.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.in_battle = False
+        self.freeze = False
+        self.is_controlled = False
 
     def move(self):
         # The following code is enables control of all pokemon with the ijkl keys.
-        '''
-        self.vel = vec(0, 0)
-        keys = pg.key.get_pressed()
-        if keys[pg.K_i]:
-            self.vel = vec(POKEMON_SPEED, 0).rotate(-90)
-        if keys[pg.K_j]:
-            self.vel = vec(POKEMON_SPEED, 0).rotate(-180)
-        if keys[pg.K_k]:
-            self.vel = vec(POKEMON_SPEED, 0).rotate(-270)
-        if keys[pg.K_l]:
-            self.vel = vec(POKEMON_SPEED, 0).rotate(-360)
-        '''
+        if self.is_controlled:
+            self.vel = vec(0, 0)
+            keys = pg.key.get_pressed()
+            if keys[pg.K_i]:
+                self.vel = vec(POKEMON_SPEED, 0).rotate(-90)
+            if keys[pg.K_j]:
+                self.vel = vec(POKEMON_SPEED, 0).rotate(-180)
+            if keys[pg.K_k]:
+                self.vel = vec(POKEMON_SPEED, 0).rotate(-270)
+            if keys[pg.K_l]:
+                self.vel = vec(POKEMON_SPEED, 0).rotate(-360)
+        else:
 
-        self.rot = choice([0, 90, 180, 270])
-        self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
+            self.rot = choice([0, 90, 180, 270])
+            self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
 
     def update(self):
-        if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
-            self.move()
-            self.last_moved = pg.time.get_ticks()
+        if not self.freeze:
+            if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
+                self.move()
+                self.last_moved = pg.time.get_ticks()
 
-        self.pos += self.vel * self.game.dt
+            self.pos += self.vel * self.game.dt
 
-        self.hit_rect.centerx = self.pos.x
-        if not self.in_battle:
-            collide_with_walls(self, self.game.walls, 'x')
-        if self.in_battle:
-            collide_with_walls(self, self.game.battle.battle_walls, 'x')
-        self.hit_rect.centery = self.pos.y
-        if not self.in_battle:
-            collide_with_walls(self, self.game.walls, 'y')
-        if self.in_battle:
-            collide_with_walls(self, self.game.battle.battle_walls, 'y')
+            self.hit_rect.centerx = self.pos.x
+            if not self.in_battle:
+                collide_with_walls(self, self.game.walls, 'x')
+            if self.in_battle:
+                collide_with_walls(self, self.game.battle.battle_walls, 'x')
+            self.hit_rect.centery = self.pos.y
+            if not self.in_battle:
+                collide_with_walls(self, self.game.walls, 'y')
+            if self.in_battle:
+                collide_with_walls(self, self.game.battle.battle_walls, 'y')
 
-        self.rect.center = self.hit_rect.center
-        # self.pos = self.rect.center
+            self.rect.center = self.hit_rect.center
+            # self.pos = self.rect.center
 
 
 class FirePenguin(Pokemon):
