@@ -60,7 +60,7 @@ class Game:
 
         self.menu = Menu(self)
         # TODO remove this
-        #self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
+        self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
 
     def run(self):
         # game loop

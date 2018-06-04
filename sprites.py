@@ -127,7 +127,7 @@ class Pokemon(pg.sprite.Sprite):
         self.freeze = False
         self.is_controlled = False
         # TODO remove this
-        #self.number = 1
+        self.number = 1
 
     def move(self):
         # The following code is enables control of all pokemon with the ijkl keys.
