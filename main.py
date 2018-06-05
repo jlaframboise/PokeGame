@@ -32,6 +32,10 @@ class Game:
         self.fire_penguin_img = pg.image.load(path.join(img_folder, FIRE_PENGUIN_IMG)).convert_alpha()
         self.leafcoon_img = pg.image.load(path.join(img_folder, LEAFCOON_IMG)).convert_alpha()
         self.woterpitter_img = pg.image.load(path.join(img_folder, WOTERPITTER_IMG)).convert_alpha()
+        self.floataphant_img = pg.image.load(path.join(img_folder, FLOATAPHANT_IMG)).convert_alpha()
+        self.beary_img = pg.image.load(path.join(img_folder, BEARY_IMG)).convert_alpha()
+        self.rocky_img = pg.image.load(path.join(img_folder, ROCKY_IMG)).convert_alpha()
+        self.flamingo_img = pg.image.load(path.join(img_folder, FLAMINGO_IMG)).convert_alpha()
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
@@ -44,14 +48,23 @@ class Game:
             if obj.name == 'wall':
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.type == 'pokemon':
-                if obj.name == 'leafcoon':
+                obj.name = choice(POKEMON_LIST)
+                if obj.name == 'Leafcoon':
                     Leafcoon(self, obj_center.x, obj_center.y)
-                elif obj.name == 'firepenguin':
+                elif obj.name == 'FirePenguin':
                     FirePenguin(self, obj_center.x, obj_center.y)
-                elif obj.name == 'woterpitter':
+                elif obj.name == 'Woterpitter':
                     Woterpitter(self, obj_center.x, obj_center.y)
-                elif obj.name == 'turtle':
+                elif obj.name == 'Turtle':
                     Pokemon(self, obj_center.x, obj_center.y)
+                elif obj.name == 'Beary':
+                    Beary(self, obj_center.x, obj_center.y)
+                elif obj.name == 'Rocky':
+                    Rocky(self, obj_center.x, obj_center.y)
+                elif obj.name == 'Flamingo':
+                    Flamingo(self, obj_center.x, obj_center.y)
+                elif obj.name == 'Floataphant':
+                    Floataphant(self, obj_center.x, obj_center.y)
             if obj.name == 'player':
                 self.player = Player(self, obj_center.x, obj_center.y)
         self.debug_mode = False
@@ -75,6 +88,7 @@ class Game:
         sys.exit()
 
     def update(self):
+        pg.display.set_caption(str(self.clock.get_fps()))
         self.all_sprites.update()
         self.camera.update(self.player)
         hits = pg.sprite.spritecollide(self.player, self.pokemon, True, collide_hit_rect)
@@ -194,6 +208,7 @@ class Battle:
         self.game.player.freeze = True
         for pokemon in self.game.player.cap_pokemon:
             if pokemon.number == pokemon_index:
+                print(' found pokemom ' , pokemon_index)
                 self.players_pokemon = pokemon
         self.players_pokemon.pos = self.spawn_pos
         self.players_pokemon.is_controlled = True
@@ -207,6 +222,8 @@ class Battle:
         self.game.player.in_battle = False
         self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
+        self.pokemon_in = False
+
 
     def draw(self):
         self.game.screen.fill(BLACK)

@@ -3,7 +3,7 @@ import pygame as pg
 WIDTH = 1024
 HEIGHT = 768
 TITLE = 'PokeGame'
-FPS = 60
+FPS = 100
 TILE_SIZE = 64
 
 # Menu Settings
@@ -34,9 +34,14 @@ PLAYER_IMG = 'trainer.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 
 # Pokemon settings
+POKEMON_LIST = ['Turtle', 'FirePenguin', 'Leafcoon', 'Woterpitter', 'Beary', 'Floataphant', 'Rocky', 'Flamingo']
 TURTLE_IMG = 'turtle.png'
 FIRE_PENGUIN_IMG = 'flaminghotpingu.png'
 LEAFCOON_IMG = 'leafcoon.png'
 WOTERPITTER_IMG = 'woterpitter.png'
+FLOATAPHANT_IMG = 'floataphant.png'
+FLAMINGO_IMG = 'flamingo.png'
+BEARY_IMG = 'beary.png'
+ROCKY_IMG = 'Rockey2.png'
 POKEMON_SPEED = 200
 POKEMON_MOVE_DELAY = 500

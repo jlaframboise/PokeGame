@@ -194,3 +194,29 @@ class Woterpitter(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'water'
         self.image = self.game.woterpitter_img
+
+class Beary(Pokemon):
+    def __init__(self, game, x, y):
+        Pokemon.__init__(self, game, x, y)
+        self.type = 'fairy'
+        self.image = self.game.beary_img
+
+class Floataphant(Pokemon):
+    def __init__(self, game, x, y):
+        Pokemon.__init__(self, game, x, y)
+        self.type = 'flying'
+        self.image = self.game.floataphant_img
+
+class Rocky(Pokemon):
+    def __init__(self, game, x, y):
+        Pokemon.__init__(self, game, x, y)
+        self.type = 'rock'
+        self.image = self.game.rocky_img
+
+class Flamingo(Pokemon):
+    def __init__(self, game, x, y):
+        Pokemon.__init__(self, game, x, y)
+        self.type = 'psychic'
+        self.image = self.game.flamingo_img
+
+
