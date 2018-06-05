@@ -33,7 +33,7 @@ class Menu:
             self.bg_rect.x = WIDTH
 
         for count, pokemon in enumerate(self.game.player.cap_pokemon):
-            pokemon.number = count+1
+            pokemon.number = count + 1
             y_location = HEADER_SPACE + int(
                 (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon) * (count + 0.5))
 

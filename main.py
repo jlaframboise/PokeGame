@@ -192,6 +192,8 @@ class Battle:
         if self.pokemon_in:
             hits = pg.sprite.spritecollide(self.players_pokemon, self.sprites_in_battle, True, collide_hit_rect)
         if hits:
+            if self.pokemon_in:
+                self.game.player.cap_pokemon.add(self.players_pokemon)
             self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
             self.game.player.cap_pokemon.add(self.wild_pokemon)
             self.sprites_in_battle.remove(self.wild_pokemon)
@@ -202,6 +204,9 @@ class Battle:
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
+        if self.pokemon_in:
+            self.game.player.cap_pokemon.add(self.players_pokemon)
+            self.game.menu.update()
         self.pokemon_in = True
         self.game.player.pos = self.standby_spot
         self.game.player.update()
@@ -223,6 +228,7 @@ class Battle:
         self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
         self.pokemon_in = False
+
 
 
     def draw(self):
