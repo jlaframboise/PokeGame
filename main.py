@@ -41,6 +41,7 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.pokemon = pg.sprite.Group()
+        self.projectiles = pg.sprite.Group()
 
         self.camera = Camera(self.map1.width, self.map1.height)
         for obj in self.map1.tmxdata.objects:

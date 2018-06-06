@@ -126,6 +126,7 @@ class Pokemon(pg.sprite.Sprite):
         self.in_battle = False
         self.freeze = False
         self.is_controlled = False
+        self.health = 100
         # Uncomment the following line if a pokemon is to be added by default
         # self.number = 1
 
@@ -219,4 +220,13 @@ class Flamingo(Pokemon):
         self.type = 'psychic'
         self.image = self.game.flamingo_img
 
+class Projectile(pg.sprite.Sprite):
+    def __init__(self, game, pos, dir):
+        self.pos = pos
+        self.dir = dir
+        self.groups = game.all_sprites, game.projectiles
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.image = pg.Surface((30,30))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
 
