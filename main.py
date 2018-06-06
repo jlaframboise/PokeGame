@@ -186,6 +186,7 @@ class Battle:
         self.game.player.get_keys()
         self.game.player.update()
         self.wild_pokemon.update()
+        self.game.projectiles.update()
         if self.pokemon_in:
             self.players_pokemon.update()
         if not self.pokemon_in:
@@ -202,6 +203,10 @@ class Battle:
             self.game.all_sprites.remove(self.wild_pokemon)
             self.leave_battle()
             self.game.menu.update()
+        hits = pg.sprite.groupcollide(self.game.projectiles, self.wild_pokemon, False, True)
+        for hit in hits:
+            hit.health -= 20
+            print(hit.health)
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
@@ -248,6 +253,8 @@ class Battle:
         if self.pokemon_in:
             self.game.screen.blit(self.game.player.image, self.game.player.rect)
             self.game.screen.blit(self.players_pokemon.image, self.players_pokemon.rect)
+        for sprite in self.game.projectiles:
+            self.game.screen.blit(sprite.image, sprite.rect)
         pg.display.flip()
 
     def run(self):

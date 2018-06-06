@@ -44,6 +44,7 @@ class Player(pg.sprite.Sprite):
         self.in_battle = False
         self.cap_pokemon = pg.sprite.Group()
         self.freeze = False
+        self.last_shot = 0
 
     def get_keys(self):
 
@@ -59,6 +60,11 @@ class Player(pg.sprite.Sprite):
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_s]:
             self.vel = vec(-PLAYER_SPEED / 1.5, 0).rotate(-self.rot)
+        if keys[pg.K_SPACE]:
+            now = pg.time.get_ticks()
+            if now - self.last_shot > POKEBALL_DELAY:
+                self.last_shot = now
+                Projectile(self.game, self.pos, self.rot, self.in_battle)
 
     def update(self):
         if not self.freeze:
@@ -79,6 +85,7 @@ class Player(pg.sprite.Sprite):
             elif self.in_battle:
                 collide_with_walls(self, self.game.battle.battle_walls, 'y')
             self.rect.center = self.hit_rect.center
+
 
 
 class Wall(pg.sprite.Sprite):
@@ -196,11 +203,13 @@ class Woterpitter(Pokemon):
         self.type = 'water'
         self.image = self.game.woterpitter_img
 
+
 class Beary(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'fairy'
         self.image = self.game.beary_img
+
 
 class Floataphant(Pokemon):
     def __init__(self, game, x, y):
@@ -208,11 +217,13 @@ class Floataphant(Pokemon):
         self.type = 'flying'
         self.image = self.game.floataphant_img
 
+
 class Rocky(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'rock'
         self.image = self.game.rocky_img
+
 
 class Flamingo(Pokemon):
     def __init__(self, game, x, y):
@@ -220,13 +231,32 @@ class Flamingo(Pokemon):
         self.type = 'psychic'
         self.image = self.game.flamingo_img
 
+
 class Projectile(pg.sprite.Sprite):
-    def __init__(self, game, pos, dir):
-        self.pos = pos
+    def __init__(self, game, pos, dir, in_battle):
+        self.game = game
+        self.pos = vec(pos)
         self.dir = dir
         self.groups = game.all_sprites, game.projectiles
         pg.sprite.Sprite.__init__(self, self.groups)
-        self.image = pg.Surface((30,30))
+        self.image = pg.Surface((30, 30))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
+        self.hit_rect = self.rect
+        self.rect.center = self.pos
+        self.vel = vec(PROJECTILE_SPEED, 0).rotate(-self.dir)
+        self.spawn_time = pg.time.get_ticks()
+        self.in_battle = in_battle
 
+    def update(self):
+        self.pos += self.vel * self.game.dt
+        self.rect.center = self.pos
+        if not self.in_battle:
+            if pg.sprite.spritecollideany(self, self.game.walls):
+                self.kill()
+        else:
+            if pg.sprite.spritecollideany(self, self.game.battle.battle_walls):
+                self.kill()
+
+        if pg.time.get_ticks() - self.spawn_time > POKEBALL_LIFETIME:
+            self.kill()
