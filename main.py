@@ -134,8 +134,8 @@ class Battle:
         self.game = game
         game.battle = self
         self.wild_pokemon = pokemon
-        self.sprites_in_battle = pg.sprite.Group()
-        self.sprites_in_battle.add(self.wild_pokemon)
+        self.wild_pokemon_in_battle = pg.sprite.Group()
+        self.wild_pokemon_in_battle.add(self.wild_pokemon)
         self.battle_walls = pg.sprite.Group()
         self.load_battle_data()
         self.game.player.pos = self.spawn_pos
@@ -190,23 +190,25 @@ class Battle:
         if self.pokemon_in:
             self.players_pokemon.update()
         if not self.pokemon_in:
-            hits = pg.sprite.spritecollide(self.game.player, self.sprites_in_battle, True, collide_hit_rect)
+            hits = pg.sprite.spritecollide(self.game.player, self.wild_pokemon_in_battle, True, collide_hit_rect)
         if self.pokemon_in:
-            hits = pg.sprite.spritecollide(self.players_pokemon, self.sprites_in_battle, True, collide_hit_rect)
+            hits = pg.sprite.spritecollide(self.players_pokemon, self.wild_pokemon_in_battle, True, collide_hit_rect)
         if hits:
             if self.pokemon_in:
                 self.game.player.cap_pokemon.add(self.players_pokemon)
             self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
             self.game.player.cap_pokemon.add(self.wild_pokemon)
-            self.sprites_in_battle.remove(self.wild_pokemon)
+            self.wild_pokemon_in_battle.remove(self.wild_pokemon)
             self.game.pokemon.remove(self.wild_pokemon)
             self.game.all_sprites.remove(self.wild_pokemon)
             self.leave_battle()
             self.game.menu.update()
-        hits = pg.sprite.groupcollide(self.game.projectiles, self.wild_pokemon, False, True)
+        hits = pg.sprite.groupcollide(self.game.projectiles, self.wild_pokemon_in_battle, True, False, collide_hit_rect)
         for hit in hits:
-            hit.health -= 20
-            print(hit.health)
+            self.wild_pokemon.health -= 20
+            print(self.wild_pokemon.health)
+            if self.wild_pokemon.health<1:
+                self.wild_pokemon.kill()
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
@@ -240,14 +242,14 @@ class Battle:
     def draw(self):
         self.game.screen.fill(BLACK)
         self.game.screen.blit(self.b_map_img, self.b_map_rect)
-        for sprite in self.sprites_in_battle:
+        for sprite in self.wild_pokemon_in_battle:
             self.game.screen.blit(sprite.image, sprite.rect)
         self.game.screen.blit(self.game.player.image, self.game.player.rect)
         if self.game.debug_mode:
             for wall in self.battle_walls:
                 pg.draw.rect(self.game.screen, CYAN, wall.rect, 1)
             pg.draw.rect(self.game.screen, CYAN, self.game.player.hit_rect, 1)
-            for pokemon in self.sprites_in_battle:
+            for pokemon in self.wild_pokemon_in_battle:
                 pg.draw.rect(self.game.screen, CYAN, pokemon.hit_rect, 1)
         self.game.screen.blit(self.game.menu.bg_image, self.game.menu.bg_rect)
         if self.pokemon_in:
