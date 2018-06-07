@@ -42,7 +42,6 @@ class Game:
         self.walls = pg.sprite.Group()
         self.pokemon = pg.sprite.Group()
 
-
         self.camera = Camera(self.map1.width, self.map1.height)
         for obj in self.map1.tmxdata.objects:
             obj_center = vec(obj.x + obj.width / 2, obj.y + obj.height / 2)
@@ -168,6 +167,8 @@ class Battle:
                 self.standby_spot = vec(obj_center.x, obj_center.y)
         self.game.player.rot = 90
         self.pokemon_in = False
+        if len(self.game.player.cap_pokemon) > 0:
+            self.deploy_pokemon(1)
 
     def events(self):
         for event in pg.event.get():
@@ -182,7 +183,6 @@ class Battle:
                     self.deploy_pokemon(1)
                 if event.key == pg.K_c:
                     self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
-
 
     def capture_pokemon_and_leave(self):
         if self.pokemon_in:
@@ -211,10 +211,10 @@ class Battle:
         hits = pg.sprite.groupcollide(self.wild_pokemon_in_battle, self.projectiles, False, True, collide_hit_rect)
         if hits:
             self.capture_pokemon_and_leave()
-            #hit.health -= 20
-            #print(hit.health)
-            #if hit.health<1:
-                #hit.kill()
+            # hit.health -= 20
+            # print(hit.health)
+            # if hit.health<1:
+            # hit.kill()
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
@@ -223,15 +223,17 @@ class Battle:
             self.game.menu.update()
         self.pokemon_in = True
         self.game.player.pos = self.standby_spot
+        self.game.player.rect.center = self.game.player.pos
         self.game.player.update()
         self.game.player.freeze = True
         for pokemon in self.game.player.cap_pokemon:
             if pokemon.number == pokemon_index:
-                print(' found pokemom ' , pokemon_index)
+                print(' found pokemon ', pokemon_index)
                 self.players_pokemon = pokemon
         self.players_pokemon.pos = self.spawn_pos
         self.players_pokemon.is_controlled = True
         self.game.player.cap_pokemon.remove(self.players_pokemon)
+        #self.game.player.freeze = False
         print(self.players_pokemon)
 
     def leave_battle(self):
@@ -242,8 +244,6 @@ class Battle:
         self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
         self.pokemon_in = False
-
-
 
     def draw(self):
         self.game.screen.fill(BLACK)

@@ -45,6 +45,7 @@ class Player(pg.sprite.Sprite):
         self.cap_pokemon = pg.sprite.Group()
         self.freeze = False
         self.last_shot = 0
+        self.stick = False
 
     def get_keys(self):
 
@@ -73,19 +74,19 @@ class Player(pg.sprite.Sprite):
             self.image = pg.transform.rotate(self.game.player_img, self.rot)
             self.rect = self.image.get_rect()
             self.rect.center = self.pos
-            self.pos += self.vel * self.game.dt
-            self.hit_rect.centerx = self.pos.x
-            if not self.in_battle:
-                collide_with_walls(self, self.game.walls, 'x')
-            elif self.in_battle:
-                collide_with_walls(self, self.game.battle.battle_walls, 'x')
-            self.hit_rect.centery = self.pos.y
-            if not self.in_battle:
-                collide_with_walls(self, self.game.walls, 'y')
-            elif self.in_battle:
-                collide_with_walls(self, self.game.battle.battle_walls, 'y')
-            self.rect.center = self.hit_rect.center
-
+            if not self.stick:
+                self.pos += self.vel * self.game.dt
+                self.hit_rect.centerx = self.pos.x
+                if not self.in_battle:
+                    collide_with_walls(self, self.game.walls, 'x')
+                elif self.in_battle:
+                    collide_with_walls(self, self.game.battle.battle_walls, 'x')
+                self.hit_rect.centery = self.pos.y
+                if not self.in_battle:
+                    collide_with_walls(self, self.game.walls, 'y')
+                elif self.in_battle:
+                    collide_with_walls(self, self.game.battle.battle_walls, 'y')
+                self.rect.center = self.hit_rect.center
 
 
 class Wall(pg.sprite.Sprite):
