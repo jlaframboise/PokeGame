@@ -60,7 +60,7 @@ class Player(pg.sprite.Sprite):
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_s]:
             self.vel = vec(-PLAYER_SPEED / 1.5, 0).rotate(-self.rot)
-        if keys[pg.K_SPACE]:
+        if keys[pg.K_SPACE] and self.in_battle:
             now = pg.time.get_ticks()
             if now - self.last_shot > POKEBALL_DELAY:
                 self.last_shot = now
@@ -237,7 +237,7 @@ class Projectile(pg.sprite.Sprite):
         self.game = game
         self.pos = vec(pos)
         self.dir = dir
-        self.groups = game.all_sprites, game.projectiles
+        self.groups = game.all_sprites, game.battle.projectiles
         pg.sprite.Sprite.__init__(self, self.groups)
         self.image = pg.Surface((30, 30))
         self.image.fill(GREEN)

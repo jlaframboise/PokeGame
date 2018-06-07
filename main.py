@@ -41,7 +41,7 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.pokemon = pg.sprite.Group()
-        self.projectiles = pg.sprite.Group()
+
 
         self.camera = Camera(self.map1.width, self.map1.height)
         for obj in self.map1.tmxdata.objects:
@@ -135,6 +135,7 @@ class Battle:
         game.battle = self
         self.wild_pokemon = pokemon
         self.wild_pokemon_in_battle = pg.sprite.Group()
+        self.projectiles = pg.sprite.Group()
         self.wild_pokemon_in_battle.add(self.wild_pokemon)
         self.battle_walls = pg.sprite.Group()
         self.load_battle_data()
@@ -186,7 +187,7 @@ class Battle:
         self.game.player.get_keys()
         self.game.player.update()
         self.wild_pokemon.update()
-        self.game.projectiles.update()
+        self.projectiles.update()
         if self.pokemon_in:
             self.players_pokemon.update()
         if not self.pokemon_in:
@@ -203,12 +204,12 @@ class Battle:
             self.game.all_sprites.remove(self.wild_pokemon)
             self.leave_battle()
             self.game.menu.update()
-        hits = pg.sprite.groupcollide(self.game.projectiles, self.wild_pokemon_in_battle, True, False, collide_hit_rect)
+        hits = pg.sprite.groupcollide(self.wild_pokemon_in_battle, self.projectiles, False, True, collide_hit_rect)
         for hit in hits:
-            self.wild_pokemon.health -= 20
-            print(self.wild_pokemon.health)
-            if self.wild_pokemon.health<1:
-                self.wild_pokemon.kill()
+            hit.health -= 20
+            print(hit.health)
+            if hit.health<1:
+                hit.kill()
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
@@ -255,7 +256,7 @@ class Battle:
         if self.pokemon_in:
             self.game.screen.blit(self.game.player.image, self.game.player.rect)
             self.game.screen.blit(self.players_pokemon.image, self.players_pokemon.rect)
-        for sprite in self.game.projectiles:
+        for sprite in self.projectiles:
             self.game.screen.blit(sprite.image, sprite.rect)
         pg.display.flip()
 
