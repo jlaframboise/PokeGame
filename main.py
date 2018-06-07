@@ -224,6 +224,7 @@ class Battle:
         self.pokemon_in = True
         self.game.player.pos = self.standby_spot
         self.game.player.rect.center = self.game.player.pos
+        self.game.player.hit_rect.center = self.game.player.pos
         self.game.player.update()
         self.game.player.freeze = True
         for pokemon in self.game.player.cap_pokemon:
@@ -233,7 +234,7 @@ class Battle:
         self.players_pokemon.pos = self.spawn_pos
         self.players_pokemon.is_controlled = True
         self.game.player.cap_pokemon.remove(self.players_pokemon)
-        #self.game.player.freeze = False
+        self.game.player.freeze = False
         print(self.players_pokemon)
 
     def leave_battle(self):
