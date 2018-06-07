@@ -183,6 +183,18 @@ class Battle:
                 if event.key == pg.K_c:
                     self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
 
+
+    def capture_pokemon_and_leave(self):
+        if self.pokemon_in:
+            self.game.player.cap_pokemon.add(self.players_pokemon)
+        self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
+        self.game.player.cap_pokemon.add(self.wild_pokemon)
+        self.wild_pokemon_in_battle.remove(self.wild_pokemon)
+        self.game.pokemon.remove(self.wild_pokemon)
+        self.game.all_sprites.remove(self.wild_pokemon)
+        self.leave_battle()
+        self.game.menu.update()
+
     def update(self):
         self.game.player.get_keys()
         self.game.player.update()
@@ -195,21 +207,14 @@ class Battle:
         if self.pokemon_in:
             hits = pg.sprite.spritecollide(self.players_pokemon, self.wild_pokemon_in_battle, True, collide_hit_rect)
         if hits:
-            if self.pokemon_in:
-                self.game.player.cap_pokemon.add(self.players_pokemon)
-            self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
-            self.game.player.cap_pokemon.add(self.wild_pokemon)
-            self.wild_pokemon_in_battle.remove(self.wild_pokemon)
-            self.game.pokemon.remove(self.wild_pokemon)
-            self.game.all_sprites.remove(self.wild_pokemon)
-            self.leave_battle()
-            self.game.menu.update()
+            self.capture_pokemon_and_leave()
         hits = pg.sprite.groupcollide(self.wild_pokemon_in_battle, self.projectiles, False, True, collide_hit_rect)
-        for hit in hits:
-            hit.health -= 20
-            print(hit.health)
-            if hit.health<1:
-                hit.kill()
+        if hits:
+            self.capture_pokemon_and_leave()
+            #hit.health -= 20
+            #print(hit.health)
+            #if hit.health<1:
+                #hit.kill()
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
