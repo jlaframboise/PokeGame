@@ -137,6 +137,8 @@ class Battle:
         self.projectiles = pg.sprite.Group()
         self.wild_pokemon_in_battle.add(self.wild_pokemon)
         self.battle_walls = pg.sprite.Group()
+        self.permeable_battle_walls = pg.sprite.Group()
+        self.all_battle_walls = pg.sprite.Group()
         self.load_battle_data()
         self.game.player.pos = self.spawn_pos
         self.game.player.in_battle = True
@@ -163,6 +165,8 @@ class Battle:
                 self.wild_pokemon.pos = vec(obj_center.x, obj_center.y)
             if obj.name == 'wall':
                 Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
+            if obj.name == 'p_wall':
+                Permeable_Battle_Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.name == 'standby_spot':
                 self.standby_spot = vec(obj_center.x, obj_center.y)
         self.game.player.rot = 90

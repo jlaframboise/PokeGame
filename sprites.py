@@ -80,12 +80,12 @@ class Player(pg.sprite.Sprite):
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'x')
             elif self.in_battle:
-                collide_with_walls(self, self.game.battle.battle_walls, 'x')
+                collide_with_walls(self, self.game.battle.all_battle_walls, 'x')
             self.hit_rect.centery = self.pos.y
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'y')
             elif self.in_battle:
-                collide_with_walls(self, self.game.battle.battle_walls, 'y')
+                collide_with_walls(self, self.game.battle.all_battle_walls, 'y')
             self.rect.center = self.hit_rect.center
 
 
@@ -106,7 +106,7 @@ class Wall(pg.sprite.Sprite):
 class Battle_Wall(pg.sprite.Sprite):
     def __init__(self, battle, x, y, width, height):
         self.battle = battle
-        self.groups = self.battle.battle_walls
+        self.groups = self.battle.battle_walls, self.battle.all_battle_walls
         pg.sprite.Sprite.__init__(self, self.groups)
 
         self.x = x
@@ -115,6 +115,13 @@ class Battle_Wall(pg.sprite.Sprite):
         self.height = height
 
         self.rect = pg.Rect(x, y, width, height)
+
+class Permeable_Battle_Wall(Battle_Wall):
+    def __init__(self,battle, x, y, width, height):
+        super().__init__(battle, x, y, width, height)
+        self.battle.battle_walls.remove(self)
+        self.battle.permeable_battle_walls.add(self)
+
 
 
 class Pokemon(pg.sprite.Sprite):
@@ -173,15 +180,14 @@ class Pokemon(pg.sprite.Sprite):
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'x')
             if self.in_battle:
-                collide_with_walls(self, self.game.battle.battle_walls, 'x')
+                collide_with_walls(self, self.game.battle.all_battle_walls, 'x')
             self.hit_rect.centery = self.pos.y
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'y')
             if self.in_battle:
-                collide_with_walls(self, self.game.battle.battle_walls, 'y')
+                collide_with_walls(self, self.game.battle.all_battle_walls, 'y')
 
             self.rect.center = self.hit_rect.center
-            # self.pos = self.rect.center
 
 
 class FirePenguin(Pokemon):
