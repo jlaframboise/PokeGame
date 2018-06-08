@@ -243,6 +243,7 @@ class Flamingo(Pokemon):
 
 class Projectile(pg.sprite.Sprite):
     def __init__(self, game, pos, dir, in_battle):
+        self.type = 'pokeball'
         self.game = game
         self.pos = vec(pos)
         self.dir = dir
@@ -274,3 +275,4 @@ class WaterAttack(Projectile):
         super().__init__(game, pos, dir, in_battle)
         self.game.battle.projectiles.remove(self)
         self.game.battle.attacks.add(self)
+        self.type = 'attack'

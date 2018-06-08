@@ -55,3 +55,5 @@ POKEBALL_IMG = 'pokeball.png'
 GRASS_ATTACK_IMG = 'grass_attack.png'
 WATER_ATTACK_IMG = 'water_attack.png'
 FIRE_ATTACK_IMG = 'fire_attack.png'
+
+ATTACK_DAMAGE = 20

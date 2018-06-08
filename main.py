@@ -225,11 +225,21 @@ class Battle:
         hits = pg.sprite.groupcollide(self.wild_pokemon_in_battle, self.projectiles, False, True, collide_hit_rect)
         print(hits)
         for hit in hits:
+            #The sprite
             print('printing hit: ')
             print(hit)
+            #The projectile
             print('printing hits[hit]: ')
-            print(hits[hit])
-            self.capture_pokemon_and_leave()
+            print(hits[hit][0])
+
+            if isinstance(hit, Pokemon):
+
+                if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
+                    self.capture_pokemon_and_leave()
+                if isinstance(hits[hit][0], WaterAttack):
+                    hit.health -= ATTACK_DAMAGE
+
+
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
