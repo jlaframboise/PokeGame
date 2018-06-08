@@ -74,8 +74,11 @@ class Player(pg.sprite.Sprite):
             self.image = pg.transform.rotate(self.game.player_img, self.rot)
             self.rect = self.image.get_rect()
             self.rect.center = self.pos
+            #only code controlled by self.stick
             if not self.stick:
                 self.pos += self.vel * self.game.dt
+
+
             self.hit_rect.centerx = self.pos.x
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'x')

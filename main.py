@@ -97,7 +97,7 @@ class Game:
             self.on_contact_pokemon(hits[0])
 
     def on_contact_pokemon(self, pokemon):
-        self.player.before_battle_pos = self.player.pos
+        self.player.before_battle_pos = vec(self.player.pos)
         battle = Battle(self, pokemon)
 
     def draw_grid(self):
@@ -140,8 +140,9 @@ class Battle:
         self.battle_walls = pg.sprite.Group()
         self.permeable_battle_walls = pg.sprite.Group()
         self.all_battle_walls = pg.sprite.Group()
+
         self.load_battle_data()
-        self.game.player.pos = self.spawn_pos
+
         self.game.player.in_battle = True
         self.wild_pokemon.in_battle = True
         self.game.menu.in_battle = True
@@ -172,8 +173,10 @@ class Battle:
                 self.standby_spot = vec(obj_center.x, obj_center.y)
         self.game.player.rot = 90
         self.pokemon_in = False
-        #if len(self.game.player.cap_pokemon) > 0:
-            #self.deploy_pokemon(1)
+        if len(self.game.player.cap_pokemon) > 0:
+            self.deploy_pokemon(1)
+        else:
+            self.game.player.pos = self.spawn_pos
 
     def events(self):
         for event in pg.event.get():
@@ -190,6 +193,8 @@ class Battle:
                     self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
                 if event.key == pg.K_g:
                     self.game.player.stick = not self.game.player.stick
+                if event.key == pg.K_SPACE:
+                    print('Called player at: ', self.game.player.pos)
 
     def capture_pokemon_and_leave(self):
         if self.pokemon_in:
@@ -221,11 +226,11 @@ class Battle:
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
+
         if self.pokemon_in:
             self.game.player.cap_pokemon.add(self.players_pokemon)
             self.game.menu.update()
         self.pokemon_in = True
-        self.game.player.pos = vec(self.standby_spot)
 
         for pokemon in self.game.player.cap_pokemon:
             if pokemon.number == pokemon_index:
@@ -237,8 +242,6 @@ class Battle:
 
         self.game.player.pos = vec(self.standby_spot)
         self.game.player.stick = True
-
-        print(self.players_pokemon)
 
     def leave_battle(self):
         self.fighting = False

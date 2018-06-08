@@ -44,6 +44,6 @@
   <object id="10" name="trained_pokemon" x="304" y="592" width="32" height="32"/>
   <object id="11" name="p_wall" x="160" y="608" width="32" height="96"/>
   <object id="12" name="p_wall" x="64" y="576" width="128" height="32"/>
-  <object id="14" name="standby_spot" x="64" y="688" width="16" height="16"/>
+  <object id="14" name="standby_spot" x="112" y="640" width="16" height="16"/>
  </objectgroup>
 </map>
