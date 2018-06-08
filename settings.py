@@ -46,8 +46,12 @@ ROCKY_IMG = 'Rockey2.png'
 POKEMON_SPEED = 200
 POKEMON_MOVE_DELAY = 500
 
-#Projectile settings
+# Projectile settings
 PROJECTILE_SPEED = 800
 POKEBALL_DELAY = 800
 POKEBALL_LIFETIME = 1600
 POKEBALL_IMG = 'pokeball.png'
+
+GRASS_ATTACK_IMG = 'grass_attack.png'
+WATER_ATTACK_IMG = 'water_attack.png'
+FIRE_ATTACK_IMG = 'fire_attack.png'

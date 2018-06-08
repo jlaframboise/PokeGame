@@ -37,6 +37,9 @@ class Game:
         self.rocky_img = pg.image.load(path.join(img_folder, ROCKY_IMG)).convert_alpha()
         self.flamingo_img = pg.image.load(path.join(img_folder, FLAMINGO_IMG)).convert_alpha()
         self.pokeball_img = pg.image.load(path.join(img_folder, POKEBALL_IMG)).convert_alpha()
+        self.fire_attack_img = pg.image.load(path.join(img_folder, FIRE_ATTACK_IMG)).convert_alpha()
+        self.water_attack_img = pg.image.load(path.join(img_folder, WATER_ATTACK_IMG)).convert_alpha()
+        self.grass_attack_img = pg.image.load(path.join(img_folder, GRASS_ATTACK_IMG)).convert_alpha()
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
@@ -136,6 +139,7 @@ class Battle:
         self.wild_pokemon = pokemon
         self.wild_pokemon_in_battle = pg.sprite.Group()
         self.projectiles = pg.sprite.Group()
+        self.attacks = pg.sprite.Group()
         self.wild_pokemon_in_battle.add(self.wild_pokemon)
         self.battle_walls = pg.sprite.Group()
         self.permeable_battle_walls = pg.sprite.Group()
@@ -193,8 +197,6 @@ class Battle:
                     self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
                 if event.key == pg.K_g:
                     self.game.player.stick = not self.game.player.stick
-                if event.key == pg.K_SPACE:
-                    print('Called player at: ', self.game.player.pos)
 
     def capture_pokemon_and_leave(self):
         if self.pokemon_in:
@@ -221,7 +223,12 @@ class Battle:
         if hits:
             self.capture_pokemon_and_leave()
         hits = pg.sprite.groupcollide(self.wild_pokemon_in_battle, self.projectiles, False, True, collide_hit_rect)
-        if hits:
+        print(hits)
+        for hit in hits:
+            print('printing hit: ')
+            print(hit)
+            print('printing hits[hit]: ')
+            print(hits[hit])
             self.capture_pokemon_and_leave()
         self.game.menu.update()
 

@@ -74,10 +74,9 @@ class Player(pg.sprite.Sprite):
             self.image = pg.transform.rotate(self.game.player_img, self.rot)
             self.rect = self.image.get_rect()
             self.rect.center = self.pos
-            #only code controlled by self.stick
+            # only code controlled by self.stick
             if not self.stick:
                 self.pos += self.vel * self.game.dt
-
 
             self.hit_rect.centerx = self.pos.x
             if not self.in_battle:
@@ -119,12 +118,12 @@ class Battle_Wall(pg.sprite.Sprite):
 
         self.rect = pg.Rect(x, y, width, height)
 
+
 class Permeable_Battle_Wall(Battle_Wall):
-    def __init__(self,battle, x, y, width, height):
+    def __init__(self, battle, x, y, width, height):
         super().__init__(battle, x, y, width, height)
         self.battle.battle_walls.remove(self)
         self.battle.permeable_battle_walls.add(self)
-
 
 
 class Pokemon(pg.sprite.Sprite):
@@ -269,3 +268,9 @@ class Projectile(pg.sprite.Sprite):
 
         if pg.time.get_ticks() - self.spawn_time > POKEBALL_LIFETIME:
             self.kill()
+
+class WaterAttack(Projectile):
+    def __init__(self, game, pos, dir, in_battle):
+        super().__init__(game, pos, dir, in_battle)
+        self.game.battle.projectiles.remove(self)
+        self.game.battle.attacks.add(self)
