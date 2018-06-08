@@ -36,6 +36,7 @@ class Game:
         self.beary_img = pg.image.load(path.join(img_folder, BEARY_IMG)).convert_alpha()
         self.rocky_img = pg.image.load(path.join(img_folder, ROCKY_IMG)).convert_alpha()
         self.flamingo_img = pg.image.load(path.join(img_folder, FLAMINGO_IMG)).convert_alpha()
+        self.pokeball_img = pg.image.load(path.join(img_folder, POKEBALL_IMG)).convert_alpha()
 
     def new(self):
         self.all_sprites = pg.sprite.Group()

@@ -246,8 +246,7 @@ class Projectile(pg.sprite.Sprite):
         self.dir = dir
         self.groups = game.all_sprites, game.battle.projectiles
         pg.sprite.Sprite.__init__(self, self.groups)
-        self.image = pg.Surface((30, 30))
-        self.image.fill(GREEN)
+        self.image = self.game.pokeball_img
         self.rect = self.image.get_rect()
         self.hit_rect = self.rect
         self.rect.center = self.pos
