@@ -76,17 +76,17 @@ class Player(pg.sprite.Sprite):
             self.rect.center = self.pos
             if not self.stick:
                 self.pos += self.vel * self.game.dt
-                self.hit_rect.centerx = self.pos.x
-                if not self.in_battle:
-                    collide_with_walls(self, self.game.walls, 'x')
-                elif self.in_battle:
-                    collide_with_walls(self, self.game.battle.battle_walls, 'x')
-                self.hit_rect.centery = self.pos.y
-                if not self.in_battle:
-                    collide_with_walls(self, self.game.walls, 'y')
-                elif self.in_battle:
-                    collide_with_walls(self, self.game.battle.battle_walls, 'y')
-                self.rect.center = self.hit_rect.center
+            self.hit_rect.centerx = self.pos.x
+            if not self.in_battle:
+                collide_with_walls(self, self.game.walls, 'x')
+            elif self.in_battle:
+                collide_with_walls(self, self.game.battle.battle_walls, 'x')
+            self.hit_rect.centery = self.pos.y
+            if not self.in_battle:
+                collide_with_walls(self, self.game.walls, 'y')
+            elif self.in_battle:
+                collide_with_walls(self, self.game.battle.battle_walls, 'y')
+            self.rect.center = self.hit_rect.center
 
 
 class Wall(pg.sprite.Sprite):
