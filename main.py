@@ -233,13 +233,15 @@ class Battle:
             self.players_pokemon.update()
         if not self.pokemon_in:
             hits = pg.sprite.spritecollide(self.game.player, self.wild_pokemon_in_battle, True, collide_hit_rect)
-        if self.pokemon_in:
-            hits = pg.sprite.spritecollide(self.players_pokemon, self.wild_pokemon_in_battle, True, collide_hit_rect)
-        if hits:
-            self.capture_pokemon_and_leave()
+            if hits:
+                self.capture_pokemon_and_leave()
+        # the following 2 lines and 2 above enable the wild pokemon to be captured on touch by trained pokemon.
+        # if self.pokemon_in:
+        # hits = pg.sprite.spritecollide(self.players_pokemon, self.wild_pokemon_in_battle, True, collide_hit_rect)
+
         # For the attacks and pokeballs from trained pokemon
         hits = pg.sprite.groupcollide(self.wild_pokemon_in_battle, self.projectiles, False, True, collide_hit_rect)
-        #print(hits)
+        # print(hits)
         for hit in hits:
             # The sprite
             # print('printing hit: ')
@@ -254,7 +256,7 @@ class Battle:
                     self.capture_pokemon_and_leave()
                 if isinstance(hits[hit][0], WaterAttack):
                     hit.health -= ATTACK_DAMAGE
-                    print('enemy: {}, me: {}'.format(hit.health, self.players_pokemon.health))
+                    # print('enemy: {}, me: {}'.format(hit.health, self.players_pokemon.health))
         # For the attacks from wild pokemon
         if self.pokemon_in:
             hits = pg.sprite.groupcollide(self.players_pokemon_group, self.wild_projectiles, False, True,
@@ -264,29 +266,27 @@ class Battle:
                     if isinstance(hits[hit][0], WaterAttack):
                         hit.health -= ATTACK_DAMAGE
 
-
-        #check if wild pokemon is dead:
-        if self.wild_pokemon.health<1:
+        # check if wild pokemon is dead:
+        if self.wild_pokemon.health < 1:
             self.wild_pokemon.kill()
             self.leave_without_capture()
 
-        #check if player's pokemon is dead:
+        # check if player's pokemon is dead:
         if self.pokemon_in:
-            if self.players_pokemon.health<1:
+            if self.players_pokemon.health < 1:
                 self.players_pokemon.kill()
                 self.game.menu.update()
-                if len(self.game.player.cap_pokemon)<1:
+                if len(self.game.player.cap_pokemon) < 1:
                     self.battle_loss_leave()
                 else:
                     self.deploy_pokemon(1)
-
 
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
 
         if self.pokemon_in:
-            if self.players_pokemon.health>1:
+            if self.players_pokemon.health > 1:
                 self.game.player.cap_pokemon.add(self.players_pokemon)
                 self.game.menu.update()
             else:

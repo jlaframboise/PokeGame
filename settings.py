@@ -1,4 +1,5 @@
 import pygame as pg
+
 vec = pg.math.Vector2
 
 WIDTH = 1024
@@ -28,7 +29,7 @@ BROWN = (106, 55, 5)
 CYAN = (0, 255, 255)
 BLUE = (0, 0, 255)
 
-X_AXIS = vec(1,0)
+X_AXIS = vec(1, 0)
 
 # player settings:
 PLAYER_SPEED = 500
