@@ -145,6 +145,7 @@ class Pokemon(pg.sprite.Sprite):
         self.is_controlled = False
         self.health = 100
         self.last_attacked = pg.time.get_ticks()
+        self.type = 'grass'
         # Uncomment the following line if a pokemon is to be added by default
         # self.number = 1
 
@@ -165,8 +166,12 @@ class Pokemon(pg.sprite.Sprite):
                 now = pg.time.get_ticks()
                 if now - self.last_attacked > TRAINED_ATTACK_DELAY:
                     attack_vector = self.game.battle.wild_pokemon.pos - self.pos
-
-                    WaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                    if self.type == 'water':
+                        WaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                    if self.type == 'fire':
+                        FireAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                    if self.type == 'grass':
+                        GrassAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
                     self.last_attacked = now
         else:
 
@@ -188,7 +193,12 @@ class Pokemon(pg.sprite.Sprite):
                         now = pg.time.get_ticks()
                         if now - self.last_attacked > WILD_ATTACK_DELAY:
                             attack_vector = self.game.battle.players_pokemon.pos - self.pos
-                            WildWaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                            if self.type == 'water':
+                                WildWaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                            if self.type == 'grass':
+                                WildGrassAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                            if self.type == 'fire':
+                                WildFireAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
                             self.last_attacked = now
 
             self.pos += self.vel * self.game.dt
@@ -231,28 +241,28 @@ class Woterpitter(Pokemon):
 class Beary(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
-        self.type = 'fairy'
+        self.type = 'fire'
         self.image = self.game.beary_img
 
 
 class Floataphant(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
-        self.type = 'flying'
+        self.type = 'grass'
         self.image = self.game.floataphant_img
 
 
 class Rocky(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
-        self.type = 'rock'
+        self.type = 'fire'
         self.image = self.game.rocky_img
 
 
 class Flamingo(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
-        self.type = 'psychic'
+        self.type = 'water'
         self.image = self.game.flamingo_img
 
 

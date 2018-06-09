@@ -256,6 +256,10 @@ class Battle:
                     self.capture_pokemon_and_leave()
                 if isinstance(hits[hit][0], WaterAttack):
                     hit.health -= ATTACK_DAMAGE
+                if isinstance(hits[hit][0], FireAttack):
+                    hit.health -= ATTACK_DAMAGE
+                if isinstance(hits[hit][0], GrassAttack):
+                    hit.health -= ATTACK_DAMAGE
                     # print('enemy: {}, me: {}'.format(hit.health, self.players_pokemon.health))
         # For the attacks from wild pokemon
         if self.pokemon_in:
@@ -265,6 +269,11 @@ class Battle:
                 if isinstance(hit, Pokemon):
                     if isinstance(hits[hit][0], WaterAttack):
                         hit.health -= ATTACK_DAMAGE
+                    if isinstance(hits[hit][0], FireAttack):
+                        hit.health -= ATTACK_DAMAGE
+                    if isinstance(hits[hit][0], GrassAttack):
+                        hit.health -= ATTACK_DAMAGE
+
 
         # check if wild pokemon is dead:
         if self.wild_pokemon.health < 1:
