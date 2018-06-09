@@ -17,6 +17,7 @@ class Game:
         self.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
+        self.battle_on = False
         self.load_data()
 
     def load_data(self):
@@ -135,10 +136,13 @@ class Game:
 class Battle:
     def __init__(self, game, pokemon):
         self.game = game
+        self.game.battle_on = True
         game.battle = self
         self.wild_pokemon = pokemon
         self.wild_pokemon_in_battle = pg.sprite.Group()
+        self.players_pokemon_group = pg.sprite.Group()
         self.projectiles = pg.sprite.Group()
+        self.wild_projectiles = pg.sprite.Group()
         self.attacks = pg.sprite.Group()
         self.wild_pokemon_in_battle.add(self.wild_pokemon)
         self.battle_walls = pg.sprite.Group()
@@ -214,6 +218,7 @@ class Battle:
         self.game.player.update()
         self.wild_pokemon.update()
         self.projectiles.update()
+        self.wild_projectiles.update()
         if self.pokemon_in:
             self.players_pokemon.update()
         if not self.pokemon_in:
@@ -222,15 +227,16 @@ class Battle:
             hits = pg.sprite.spritecollide(self.players_pokemon, self.wild_pokemon_in_battle, True, collide_hit_rect)
         if hits:
             self.capture_pokemon_and_leave()
+        # For the attacks and pokeballs from trained pokemon
         hits = pg.sprite.groupcollide(self.wild_pokemon_in_battle, self.projectiles, False, True, collide_hit_rect)
         print(hits)
         for hit in hits:
-            #The sprite
-            print('printing hit: ')
-            print(hit)
-            #The projectile
-            print('printing hits[hit]: ')
-            print(hits[hit][0])
+            # The sprite
+            # print('printing hit: ')
+            # print(hit)
+            # The projectile
+            # print('printing hits[hit]: ')
+            # print(hits[hit][0])
 
             if isinstance(hit, Pokemon):
 
@@ -238,7 +244,13 @@ class Battle:
                     self.capture_pokemon_and_leave()
                 if isinstance(hits[hit][0], WaterAttack):
                     hit.health -= ATTACK_DAMAGE
-
+        # For the attacks from wild pokemon
+        if self.pokemon_in:
+            hits = pg.sprite.groupcollide(self.players_pokemon_group, self.wild_projectiles, False, True, collide_hit_rect)
+            for hit in hits:
+                if isinstance(hit, Pokemon):
+                    if isinstance(hits[hit][0], WaterAttack):
+                        hit.health -= ATTACK_DAMAGE
 
         self.game.menu.update()
 
@@ -256,11 +268,12 @@ class Battle:
         self.players_pokemon.pos = vec(self.spawn_pos)
         self.players_pokemon.is_controlled = True
         self.game.player.cap_pokemon.remove(self.players_pokemon)
-
+        self.players_pokemon_group.add(self.players_pokemon)
         self.game.player.pos = vec(self.standby_spot)
         self.game.player.stick = True
 
     def leave_battle(self):
+        self.game.battle_on = False
         self.fighting = False
         self.game.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
         self.game.player.freeze = False
@@ -287,6 +300,8 @@ class Battle:
             self.game.screen.blit(self.game.player.image, self.game.player.rect)
             self.game.screen.blit(self.players_pokemon.image, self.players_pokemon.rect)
         for sprite in self.projectiles:
+            self.game.screen.blit(sprite.image, sprite.rect)
+        for sprite in self.wild_projectiles:
             self.game.screen.blit(sprite.image, sprite.rect)
         pg.display.flip()
 

@@ -144,6 +144,7 @@ class Pokemon(pg.sprite.Sprite):
         self.freeze = False
         self.is_controlled = False
         self.health = 100
+        self.last_attacked = pg.time.get_ticks()
         # Uncomment the following line if a pokemon is to be added by default
         # self.number = 1
 
@@ -160,10 +161,18 @@ class Pokemon(pg.sprite.Sprite):
                 self.vel = vec(POKEMON_SPEED, 0).rotate(-270)
             if keys[pg.K_l]:
                 self.vel = vec(POKEMON_SPEED, 0).rotate(-360)
+            if keys[pg.K_m] and self.in_battle:
+                now = pg.time.get_ticks()
+                if now-self.last_attacked > TRAINED_ATTACK_DELAY:
+                    attack_vector = self.game.battle.wild_pokemon.pos - self.pos
+
+                    WaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                    self.last_attacked = now
         else:
 
             self.rot = choice([0, 90, 180, 270])
             self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
+
 
     def update(self):
         self.freeze = False
@@ -175,6 +184,13 @@ class Pokemon(pg.sprite.Sprite):
                 if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
                     self.move()
                     self.last_moved = pg.time.get_ticks()
+                if self.game.battle_on:
+                    if self.game.battle.pokemon_in:
+                        now = pg.time.get_ticks()
+                        if now - self.last_attacked > WILD_ATTACK_DELAY:
+                            attack_vector = self.game.battle.players_pokemon.pos - self.pos
+                            WildWaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
+                            self.last_attacked = now
 
             self.pos += self.vel * self.game.dt
 
@@ -273,6 +289,11 @@ class Projectile(pg.sprite.Sprite):
 class WaterAttack(Projectile):
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
-        self.game.battle.projectiles.remove(self)
-        self.game.battle.attacks.add(self)
         self.type = 'attack'
+        self.image = self.game.water_attack_img
+
+class WildWaterAttack(WaterAttack):
+    def __init__(self, game, pos, dir, in_battle):
+        super().__init__(game, pos, dir, in_battle)
+        self.game.battle.projectiles.remove(self)
+        self.game.battle.wild_projectiles.add(self)

@@ -1,4 +1,5 @@
 import pygame as pg
+vec = pg.math.Vector2
 
 WIDTH = 1024
 HEIGHT = 768
@@ -26,6 +27,8 @@ YELLOW = (255, 255, 0)
 BROWN = (106, 55, 5)
 CYAN = (0, 255, 255)
 BLUE = (0, 0, 255)
+
+X_AXIS = vec(1,0)
 
 # player settings:
 PLAYER_SPEED = 500
@@ -57,3 +60,5 @@ WATER_ATTACK_IMG = 'water_attack.png'
 FIRE_ATTACK_IMG = 'fire_attack.png'
 
 ATTACK_DAMAGE = 20
+TRAINED_ATTACK_DELAY = 400
+WILD_ATTACK_DELAY = 900
