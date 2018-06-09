@@ -53,9 +53,15 @@ class Player(pg.sprite.Sprite):
         self.rot_speed = 0
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
-            self.rot_speed = ROTATION_SPEED
+            if self.game.battle_on and self.game.battle.pokemon_in:
+                self.rot_speed = ROTATION_SPEED / 2
+            else:
+                self.rot_speed = ROTATION_SPEED
         if keys[pg.K_d]:
-            self.rot_speed = -ROTATION_SPEED
+            if self.game.battle_on and self.game.battle.pokemon_in:
+                self.rot_speed = -ROTATION_SPEED / 2
+            else:
+                self.rot_speed = -ROTATION_SPEED
 
         if keys[pg.K_w]:
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
