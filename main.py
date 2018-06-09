@@ -10,6 +10,21 @@ from menu import *
 vec = pg.math.Vector2
 
 
+def draw_health_bar(surf, x, y, pct):
+    if pct < 0:
+        pct = 0
+    outline_rect = pg.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
+    fill_rect = pg.Rect(x, y, HEALTH_LENGTH * pct, HEALTH_HEIGHT)
+    if pct > 0.6:
+        col = GREEN
+    elif pct > 0.3:
+        col = YELLOW
+    else:
+        col = RED
+    pg.draw.rect(surf, col, fill_rect)
+    pg.draw.rect(surf, WHITE, outline_rect, 2)
+
+
 class Game:
 
     def __init__(self):
@@ -205,6 +220,7 @@ class Battle:
     def capture_pokemon_and_leave(self):
         if self.pokemon_in:
             self.game.player.cap_pokemon.add(self.players_pokemon)
+        self.wild_pokemon.health = TRAINED_POKEMON_HEALTH
         self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
         self.game.player.cap_pokemon.add(self.wild_pokemon)
         self.wild_pokemon_in_battle.remove(self.wild_pokemon)
@@ -274,7 +290,6 @@ class Battle:
                     if isinstance(hits[hit][0], GrassAttack):
                         hit.health -= ATTACK_DAMAGE
 
-
         # check if wild pokemon is dead:
         if self.wild_pokemon.health < 1:
             self.wild_pokemon.kill()
@@ -303,7 +318,7 @@ class Battle:
         self.pokemon_in = True
 
         for pokemon in self.game.player.cap_pokemon:
-            pokemon.health = 100
+            pokemon.health = TRAINED_POKEMON_HEALTH
             if pokemon.number == pokemon_index:
                 self.players_pokemon = pokemon
 
@@ -345,6 +360,13 @@ class Battle:
             self.game.screen.blit(sprite.image, sprite.rect)
         for sprite in self.wild_projectiles:
             self.game.screen.blit(sprite.image, sprite.rect)
+        for sprite in self.wild_pokemon_in_battle:
+            if sprite.health < WILD_POKEMON_HEALTH:
+                draw_health_bar(self.game.screen, sprite.pos.x, sprite.pos.y, sprite.health / WILD_POKEMON_HEALTH)
+        if self.pokemon_in and self.players_pokemon.health < TRAINED_POKEMON_HEALTH:
+            draw_health_bar(self.game.screen, self.players_pokemon.pos.x, self.players_pokemon.pos.y,
+                            self.players_pokemon.health / TRAINED_POKEMON_HEALTH)
+
         pg.display.flip()
 
     def run(self):

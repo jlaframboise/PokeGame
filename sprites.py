@@ -149,7 +149,7 @@ class Pokemon(pg.sprite.Sprite):
         self.in_battle = False
         self.freeze = False
         self.is_controlled = False
-        self.health = 100
+        self.health = WILD_POKEMON_HEALTH
         self.last_attacked = pg.time.get_ticks()
         self.type = 'grass'
         # Uncomment the following line if a pokemon is to be added by default
