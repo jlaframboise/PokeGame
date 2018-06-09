@@ -163,7 +163,7 @@ class Pokemon(pg.sprite.Sprite):
                 self.vel = vec(POKEMON_SPEED, 0).rotate(-360)
             if keys[pg.K_m] and self.in_battle:
                 now = pg.time.get_ticks()
-                if now-self.last_attacked > TRAINED_ATTACK_DELAY:
+                if now - self.last_attacked > TRAINED_ATTACK_DELAY:
                     attack_vector = self.game.battle.wild_pokemon.pos - self.pos
 
                     WaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
@@ -172,7 +172,6 @@ class Pokemon(pg.sprite.Sprite):
 
             self.rot = choice([0, 90, 180, 270])
             self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
-
 
     def update(self):
         self.freeze = False
@@ -286,11 +285,13 @@ class Projectile(pg.sprite.Sprite):
         if pg.time.get_ticks() - self.spawn_time > POKEBALL_LIFETIME:
             self.kill()
 
+
 class WaterAttack(Projectile):
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
         self.type = 'attack'
         self.image = self.game.water_attack_img
+
 
 class WildWaterAttack(WaterAttack):
     def __init__(self, game, pos, dir, in_battle):
