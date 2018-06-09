@@ -298,3 +298,30 @@ class WildWaterAttack(WaterAttack):
         super().__init__(game, pos, dir, in_battle)
         self.game.battle.projectiles.remove(self)
         self.game.battle.wild_projectiles.add(self)
+
+class FireAttack(Projectile):
+    def __init__(self, game, pos, dir, in_battle):
+        super().__init__(game, pos, dir, in_battle)
+        self.type = 'attack'
+        self.image = self.game.fire_attack_img
+
+
+class WildFireAttack(FireAttack):
+    def __init__(self, game, pos, dir, in_battle):
+        super().__init__(game, pos, dir, in_battle)
+        self.game.battle.projectiles.remove(self)
+        self.game.battle.wild_projectiles.add(self)
+
+class GrassAttack(Projectile):
+    def __init__(self, game, pos, dir, in_battle):
+        super().__init__(game, pos, dir, in_battle)
+        self.type = 'attack'
+        self.image = self.game.grass_attack_img
+
+
+class WildGrassAttack(GrassAttack):
+    def __init__(self, game, pos, dir, in_battle):
+        super().__init__(game, pos, dir, in_battle)
+        self.game.battle.projectiles.remove(self)
+        self.game.battle.wild_projectiles.add(self)
+
