@@ -9,6 +9,13 @@ from menu import *
 
 vec = pg.math.Vector2
 
+font_name = pg.font.match_font('arial')
+def draw_text(surf, text, size, col, x, y):
+    font = pg.font.Font(font_name, size)
+    text_surface = font.render(text, True, col)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x,y)
+    surf.blit(text_surface, text_rect)
 
 def draw_health_bar(surf, x, y, pct):
     if pct < 0:
@@ -56,6 +63,10 @@ class Game:
         self.fire_attack_img = pg.image.load(path.join(img_folder, FIRE_ATTACK_IMG)).convert_alpha()
         self.water_attack_img = pg.image.load(path.join(img_folder, WATER_ATTACK_IMG)).convert_alpha()
         self.grass_attack_img = pg.image.load(path.join(img_folder, GRASS_ATTACK_IMG)).convert_alpha()
+
+        self.pokemon_images = [self.turtle_img, self.fire_penguin_img, self.leafcoon_img,
+                               self.woterpitter_img, self.floataphant_img, self.beary_img,
+                               self.rocky_img, self.flamingo_img]
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
@@ -118,9 +129,6 @@ class Game:
     def on_contact_pokemon(self, pokemon):
         self.player.before_battle_pos = vec(self.player.pos)
         battle = Battle(self, pokemon)
-
-    def draw_grid(self):
-        pass
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -379,6 +387,47 @@ class Battle:
             self.update()
             self.draw()
 
+
+
+class IntroScreen:
+    def __init__(self):
+        pg.init()
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption('Welcome')
+        self.clock = pg.time.Clock()
+        self.showing = True
+        Game.load_data(self)
+        self.run()
+
+    def update(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.showing = False
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    self.showing = False
+
+        self.draw()
+
+
+    def draw(self):
+        self.screen.fill(BLUE)
+        draw_text(self.screen, TITLE, 60, RED, WIDTH/2, HEIGHT/3)
+        self.number_of_images = len(self.pokemon_images)
+        for num, image in enumerate(self.pokemon_images):
+            image_pos = INTRO_CIRCLE_CENTER + vec(INTRO_RADIUS, 0).rotate(360 / self.number_of_images * num)
+            self.screen.blit(image, pg.Rect((image_pos), (1,1)))
+
+
+        pg.display.flip()
+
+    def run(self):
+        self.clock.tick(FPS)
+        while self.showing:
+            self.update()
+
+
+i = IntroScreen()
 
 g = Game()
 
