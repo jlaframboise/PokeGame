@@ -247,14 +247,14 @@ class Woterpitter(Pokemon):
 class Beary(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
-        self.type = 'fire'
+        self.type = 'grass'
         self.image = self.game.beary_img
 
 
 class Floataphant(Pokemon):
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
-        self.type = 'grass'
+        self.type = 'water'
         self.image = self.game.floataphant_img
 
 

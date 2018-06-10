@@ -247,10 +247,11 @@ class Battle:
         self.wild_projectiles.update()
         if self.pokemon_in:
             self.players_pokemon.update()
-        if not self.pokemon_in:
-            hits = pg.sprite.spritecollide(self.game.player, self.wild_pokemon_in_battle, True, collide_hit_rect)
-            if hits:
-                self.capture_pokemon_and_leave()
+        #the following if statement allows the trainer to capture a pokemon on contact.
+        #if not self.pokemon_in:
+            #hits = pg.sprite.spritecollide(self.game.player, self.wild_pokemon_in_battle, True, collide_hit_rect)
+            #if hits:
+                #self.capture_pokemon_and_leave()
         # the following 2 lines and 2 above enable the wild pokemon to be captured on touch by trained pokemon.
         # if self.pokemon_in:
         # hits = pg.sprite.spritecollide(self.players_pokemon, self.wild_pokemon_in_battle, True, collide_hit_rect)
