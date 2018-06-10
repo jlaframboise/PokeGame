@@ -10,12 +10,15 @@ from menu import *
 vec = pg.math.Vector2
 
 font_name = pg.font.match_font('arial')
+
+
 def draw_text(surf, text, size, col, x, y):
     font = pg.font.Font(font_name, size)
     text_surface = font.render(text, True, col)
     text_rect = text_surface.get_rect()
-    text_rect.midtop = (x,y)
+    text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
+
 
 def draw_health_bar(surf, x, y, pct):
     if pct < 0:
@@ -255,11 +258,11 @@ class Battle:
         self.wild_projectiles.update()
         if self.pokemon_in:
             self.players_pokemon.update()
-        #the following if statement allows the trainer to capture a pokemon on contact.
-        #if not self.pokemon_in:
-            #hits = pg.sprite.spritecollide(self.game.player, self.wild_pokemon_in_battle, True, collide_hit_rect)
-            #if hits:
-                #self.capture_pokemon_and_leave()
+        # the following if statement allows the trainer to capture a pokemon on contact.
+        # if not self.pokemon_in:
+        # hits = pg.sprite.spritecollide(self.game.player, self.wild_pokemon_in_battle, True, collide_hit_rect)
+        # if hits:
+        # self.capture_pokemon_and_leave()
         # the following 2 lines and 2 above enable the wild pokemon to be captured on touch by trained pokemon.
         # if self.pokemon_in:
         # hits = pg.sprite.spritecollide(self.players_pokemon, self.wild_pokemon_in_battle, True, collide_hit_rect)
@@ -388,7 +391,6 @@ class Battle:
             self.draw()
 
 
-
 class IntroScreen:
     def __init__(self):
         pg.init()
@@ -397,6 +399,7 @@ class IntroScreen:
         self.clock = pg.time.Clock()
         self.showing = True
         Game.load_data(self)
+        self.show_inst = False
         self.run()
 
     def update(self):
@@ -406,19 +409,44 @@ class IntroScreen:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     self.showing = False
+                if event.key == pg.K_r:
+                    self.show_inst = not self.show_inst
 
-        self.draw()
+        if self.show_inst:
+            self.draw_inst_page()
+        else:
+            self.draw_main_page()
 
+    def draw_main_page(self):
+        self.screen.fill(INTRO_BG_COLOUR)
+        draw_text(self.screen, TITLE, 60, RED, WIDTH / 2, HEIGHT / 3)
+        draw_text(self.screen, 'Press R for Instructions.', 30, RED, WIDTH / 2, HEIGHT / 100 * 45)
+        draw_text(self.screen, 'OR', 30, RED, WIDTH / 2, HEIGHT / 100 * 50)
+        draw_text(self.screen, 'Press Space to Play!', 30, RED, WIDTH / 2, HEIGHT / 100 * 55)
 
-    def draw(self):
-        self.screen.fill(BLUE)
-        draw_text(self.screen, TITLE, 60, RED, WIDTH/2, HEIGHT/3)
         self.number_of_images = len(self.pokemon_images)
         for num, image in enumerate(self.pokemon_images):
             image_pos = INTRO_CIRCLE_CENTER + vec(INTRO_RADIUS, 0).rotate(360 / self.number_of_images * num)
-            self.screen.blit(image, pg.Rect((image_pos), (1,1)))
+            self.screen.blit(image, pg.Rect(image_pos, (1, 1)))
+        pg.display.flip()
 
-
+    def draw_inst_page(self):
+        self.screen.fill(INTRO_INST_BG_COLOUR)
+        lines = ['Welcome to {}.'.format(TITLE), 'The objective of the game is to capture Pokemon.',
+                 'You move your player forward with W, and backwards with D.',
+                 'You may turn left and right with A and D.',
+                 'If your trainer encounters a Pokemon, a battle will begin.',
+                 'Your first encounter, decides your starter pokemon,',
+                 'and in your next battles, things get a little harder.',
+                 'You can control your pokemon with the IJKL keys as arrows,',
+                 'and you can press M for your pokemon to attack.',
+                 'To capture the pokemon, rotate your trainer with A and D,',
+                 'and hit SPACE to shoot a Pokeball at the enemy pokemon!',
+                 'Be careful, your pokemon can die if you let them take too many attacks,',
+                 "and you can't catch a wild pokemon if you kill it.",
+                 "Now go out there and catch 'em all!"]
+        for num, line in enumerate(lines):
+            draw_text(self.screen, line, 24, INTRO_INST_TEXT_COLOUR, WIDTH / 2, INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
         pg.display.flip()
 
     def run(self):
