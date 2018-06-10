@@ -446,7 +446,15 @@ class IntroScreen:
                  "and you can't catch a wild pokemon if you kill it.",
                  "Now go out there and catch 'em all!"]
         for num, line in enumerate(lines):
-            draw_text(self.screen, line, 24, INTRO_INST_TEXT_COLOUR, WIDTH / 2, INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
+            draw_text(self.screen, line, 24, INTRO_INST_TEXT_COLOUR, WIDTH / 2,
+                      INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
+
+        for num, image in enumerate(self.pokemon_images):
+            self.screen.blit(image, pg.Rect(30 + WIDTH / self.number_of_images * num, INTRO_INST_POKEMON_TOPLINE, 1, 1))
+            self.screen.blit(image,
+                             pg.Rect(30 + WIDTH / self.number_of_images * num, HEIGHT - INTRO_INST_POKEMON_BOTTOMLINE, 1,
+                                     1))
+
         pg.display.flip()
 
     def run(self):
