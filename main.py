@@ -12,8 +12,6 @@ from fonts import *
 vec = pg.math.Vector2
 
 
-
-
 def draw_health_bar(surf, x, y, pct):
     if pct < 0:
         pct = 0
@@ -39,7 +37,6 @@ class Game:
         self.battle_on = False
         self.need_to_delete_battle = False
         self.load_data()
-
 
     def load_data(self):
         game_folder = path.dirname(__file__)
@@ -128,7 +125,6 @@ class Game:
         if hits:
             self.on_contact_pokemon(hits[0])
         self.menu.update()
-
 
     def on_contact_pokemon(self, pokemon):
         self.player.before_battle_pos = vec(self.player.pos)
@@ -243,11 +239,11 @@ class Battle:
         self.game.pokemon.remove(self.wild_pokemon)
         self.game.all_sprites.remove(self.wild_pokemon)
         self.leave_battle()
-        #self.game.menu.update()
+        # self.game.menu.update()
 
     def leave_without_capture(self):
         if self.pokemon_in:
-            self.players_pokemon.kills +=1
+            self.players_pokemon.kills += 1
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.leave_battle()
 
@@ -357,7 +353,6 @@ class Battle:
         self.pokemon_in = False
         self.game.need_to_delete_battle = True
 
-
     def draw(self):
         self.game.screen.fill(BLACK)
         self.game.screen.blit(self.b_map_img, self.b_map_rect)
@@ -429,10 +424,9 @@ class IntroScreen:
         self.screen.fill(INTRO_BG_COLOUR)
 
         draw_text2(self.screen, intro_title_font_surface, WIDTH / 2, HEIGHT / 3)
-        draw_text2(self.screen, intro_title_subfont_surface,WIDTH / 2, HEIGHT / 100 * 45 )
+        draw_text2(self.screen, intro_title_subfont_surface, WIDTH / 2, HEIGHT / 100 * 45)
         draw_text2(self.screen, intro_title_subfont_surface2, WIDTH / 2, HEIGHT / 100 * 50)
         draw_text2(self.screen, intro_title_subfont_surface3, WIDTH / 2, HEIGHT / 100 * 55)
-
 
         self.number_of_images = len(self.pokemon_images)
 
@@ -451,22 +445,9 @@ class IntroScreen:
 
     def draw_inst_page(self):
         self.screen.fill(INTRO_INST_BG_COLOUR)
-        lines = ['Welcome to {}.'.format(TITLE), 'The objective of the game is to capture Pokemon.',
-                 'You move your player forward with W, and backwards with D.',
-                 'You may turn left and right with A and D.',
-                 'If your trainer encounters a Pokemon, a battle will begin.',
-                 'Your first encounter, decides your starter pokemon,',
-                 'and in your next battles, things get a little harder.',
-                 'You can control your pokemon with the IJKL keys as arrows,',
-                 'and you can press M for your pokemon to attack.',
-                 'To capture the pokemon, rotate your trainer with A and D,',
-                 'and hit SPACE to shoot a Pokeball at the enemy pokemon!',
-                 'Be careful, your pokemon can die if you let them take too many attacks,',
-                 "and you can't catch a wild pokemon if you kill it.",
-                 "Now go out there and catch 'em all!"]
-        for num, line in enumerate(lines):
-            draw_text(self.screen, line, INTRO_INST_TEXT_SIZE, INTRO_INST_TEXT_COLOUR, WIDTH / 2,
-                      INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
+
+        for num, line in enumerate(instruction_lines_surfaces):
+            draw_text2(self.screen, line, WIDTH / 2, INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
 
         for num, image in enumerate(self.pokemon_images):
             self.screen.blit(image, pg.Rect(30 + WIDTH / self.number_of_images * num, INTRO_INST_POKEMON_TOPLINE, 1, 1))
