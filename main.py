@@ -5,6 +5,7 @@ from random import choice, randint, uniform
 import sys
 from os import path
 import pygame as pg
+from math import sin, cos, pi
 from menu import *
 
 vec = pg.math.Vector2
@@ -400,6 +401,7 @@ class IntroScreen:
         self.showing = True
         Game.load_data(self)
         self.show_inst = False
+        self.player_x = 0
         self.run()
 
     def update(self):
@@ -415,6 +417,7 @@ class IntroScreen:
         if self.show_inst:
             self.draw_inst_page()
         else:
+            self.player_x = (self.player_x + INTRO_PLAYER_SPEED) % (WIDTH + 60)
             self.draw_main_page()
 
     def draw_main_page(self):
@@ -425,9 +428,18 @@ class IntroScreen:
         draw_text(self.screen, 'Press Space to Play!', 30, RED, WIDTH / 2, HEIGHT / 100 * 55)
 
         self.number_of_images = len(self.pokemon_images)
+
         for num, image in enumerate(self.pokemon_images):
-            image_pos = INTRO_CIRCLE_CENTER + vec(INTRO_RADIUS, 0).rotate(360 / self.number_of_images * num)
+            individual_phase_shift = 2 * pi / self.number_of_images * num
+            self.radius_change = sin(
+                pg.time.get_ticks() / 10000 / pi * 180 + individual_phase_shift) * INTRO_RADIUS_MAX_VAR
+
+            image_pos = INTRO_CIRCLE_CENTER + vec(INTRO_CIRCLE_RADIUS + self.radius_change, 0).rotate(
+                360 / self.number_of_images * num)
+
             self.screen.blit(image, pg.Rect(image_pos, (1, 1)))
+
+        self.screen.blit(self.player_img, pg.Rect(self.player_x - 60, INTRO_PLAYER_RUN_HEIGHT, 1, 1))
         pg.display.flip()
 
     def draw_inst_page(self):
@@ -452,13 +464,14 @@ class IntroScreen:
         for num, image in enumerate(self.pokemon_images):
             self.screen.blit(image, pg.Rect(30 + WIDTH / self.number_of_images * num, INTRO_INST_POKEMON_TOPLINE, 1, 1))
             self.screen.blit(image,
-                             pg.Rect(30 + WIDTH / self.number_of_images * num, HEIGHT - INTRO_INST_POKEMON_BOTTOMLINE, 1,
+                             pg.Rect(30 + WIDTH / self.number_of_images * num, HEIGHT - INTRO_INST_POKEMON_BOTTOMLINE,
+                                     1,
                                      1))
 
         pg.display.flip()
 
     def run(self):
-        self.clock.tick(FPS)
+        self.dt = self.clock.tick(FPS) / 1000
         while self.showing:
             self.update()
 
