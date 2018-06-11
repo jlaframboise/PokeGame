@@ -36,6 +36,7 @@ class Menu:
         # CIRCLE_WIDTH)
 
     def update(self):
+        pg.display.set_caption(str(self.game.clock.get_fps()))
         self.bg_image.fill(BLACK)
         if self.in_battle:
             self.bg_rect.x = BATTLE_SCREEN_WIDTH
@@ -52,10 +53,16 @@ class Menu:
             pokemon.rect.centerx = x_location
             pokemon.rect.centery = y_location
             self.bg_image.blit(pokemon.image, pokemon.rect)
+            vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
+            if vertical_spacing < CIRCLE_RADIUS:
+
+                self.circle_radius = vertical_spacing
+            else:
+                self.circle_radius = CIRCLE_RADIUS
             pg.draw.circle(self.bg_image, BLUE,
                            (x_location,
                             y_location),
-                           CIRCLE_RADIUS,
+                           self.circle_radius,
                            CIRCLE_WIDTH)
             # vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
             draw_text(self.bg_image, 'Name: {}'.format(pokemon.name), MENU_FONT_SIZE, MENU_FONT_COLOUR,

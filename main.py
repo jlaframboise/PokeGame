@@ -36,7 +36,9 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.battle_on = False
+        self.need_to_delete_battle = False
         self.load_data()
+
 
     def load_data(self):
         game_folder = path.dirname(__file__)
@@ -115,6 +117,9 @@ class Game:
         sys.exit()
 
     def update(self):
+        if self.need_to_delete_battle:
+            self.delete_battle()
+            self.need_to_delete_battle = False
         pg.display.set_caption(str(self.clock.get_fps()))
         self.all_sprites.update()
         self.camera.update(self.player)
@@ -123,9 +128,14 @@ class Game:
             self.on_contact_pokemon(hits[0])
         self.menu.update()
 
+
     def on_contact_pokemon(self, pokemon):
         self.player.before_battle_pos = vec(self.player.pos)
-        battle = Battle(self, pokemon)
+        self.battle = Battle(self, pokemon)
+
+    def delete_battle(self):
+        pass
+        del self.battle
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -232,18 +242,16 @@ class Battle:
         self.game.pokemon.remove(self.wild_pokemon)
         self.game.all_sprites.remove(self.wild_pokemon)
         self.leave_battle()
-        self.game.menu.update()
+        #self.game.menu.update()
 
     def leave_without_capture(self):
         if self.pokemon_in:
             self.players_pokemon.kills +=1
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.leave_battle()
-        self.game.menu.update()
 
     def battle_loss_leave(self):
         self.leave_battle()
-        self.game.menu.update()
 
     def update(self):
         self.game.player.get_keys()
@@ -346,6 +354,8 @@ class Battle:
         self.game.menu.in_battle = False
         self.game.player.pos = self.game.player.before_battle_pos
         self.pokemon_in = False
+        self.game.need_to_delete_battle = True
+
 
     def draw(self):
         self.game.screen.fill(BLACK)
