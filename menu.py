@@ -4,6 +4,7 @@ from tilemap import *
 from random import choice, randint, uniform
 import sys
 from os import path
+from fonts import *
 import pygame as pg
 
 vec = pg.math.Vector2
@@ -57,6 +58,7 @@ class Menu:
                            self.circle_radius,
                            CIRCLE_WIDTH)
             # vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
+            '''
             draw_text(self.bg_image, 'Name: {}'.format(pokemon.name), MENU_FONT_SIZE, MENU_FONT_COLOUR,
                       x_location + STATS_OFFSET,
                       y_location - 40)
@@ -69,3 +71,8 @@ class Menu:
             draw_text(self.bg_image, 'Kills: {}'.format(pokemon.kills), MENU_FONT_SIZE, MENU_FONT_COLOUR,
                       x_location + STATS_OFFSET,
                       y_location + 20)
+            '''
+            draw_text2(self.bg_image, name_lines_surfaces[0], x_location + STATS_OFFSET, y_location - 40)
+            draw_text2(self.bg_image, type_lines_surfaces[0], x_location + STATS_OFFSET, y_location - 20)
+            draw_text2(self.bg_image, health_line, x_location + STATS_OFFSET, y_location - 0)
+            draw_text2(self.bg_image, kills_line, x_location + STATS_OFFSET, y_location + 20)

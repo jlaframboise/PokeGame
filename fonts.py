@@ -45,3 +45,9 @@ lines = ['Welcome to {}.'.format(TITLE), 'The objective of the game is to captur
 
 intro_inst_font = pg.font.Font(font_name, INTRO_INST_TEXT_SIZE)
 instruction_lines_surfaces = [intro_inst_font.render(x, True, INTRO_INST_TEXT_COLOUR) for x in lines]
+
+stats_font = pg.font.Font(font_name, MENU_FONT_SIZE)
+name_lines_surfaces = [stats_font.render('Name: '+x, True, MENU_FONT_COLOUR) for x in POKEMON_LIST]
+type_lines_surfaces = [stats_font.render('Type: '+x, True, MENU_FONT_COLOUR) for x in TYPE_LIST]
+health_line = stats_font.render('Health: 100', True, MENU_FONT_COLOUR)
+kills_line = stats_font.render('Kills: 0', True, MENU_FONT_COLOUR)
