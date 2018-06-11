@@ -422,10 +422,10 @@ class IntroScreen:
 
     def draw_main_page(self):
         self.screen.fill(INTRO_BG_COLOUR)
-        draw_text(self.screen, TITLE, 60, RED, WIDTH / 2, HEIGHT / 3)
-        draw_text(self.screen, 'Press R for Instructions.', 30, RED, WIDTH / 2, HEIGHT / 100 * 45)
-        draw_text(self.screen, 'OR', 30, RED, WIDTH / 2, HEIGHT / 100 * 50)
-        draw_text(self.screen, 'Press Space to Play!', 30, RED, WIDTH / 2, HEIGHT / 100 * 55)
+        draw_text(self.screen, TITLE, 60, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 3)
+        draw_text(self.screen, 'Press R for Instructions.', 30, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 100 * 45)
+        draw_text(self.screen, 'OR', 30, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 100 * 50)
+        draw_text(self.screen, 'Press Space to Play!', 30, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 100 * 55)
 
         self.number_of_images = len(self.pokemon_images)
 
