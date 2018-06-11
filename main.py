@@ -7,6 +7,7 @@ from os import path
 import pygame as pg
 from math import sin, cos, pi
 from menu import *
+from fonts import *
 
 vec = pg.math.Vector2
 
@@ -426,10 +427,12 @@ class IntroScreen:
 
     def draw_main_page(self):
         self.screen.fill(INTRO_BG_COLOUR)
-        draw_text(self.screen, TITLE, 60, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 3)
-        draw_text(self.screen, 'Press R for Instructions.', 30, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 100 * 45)
-        draw_text(self.screen, 'OR', 30, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 100 * 50)
-        draw_text(self.screen, 'Press Space to Play!', 30, INTRO_TEXT_COLOUR, WIDTH / 2, HEIGHT / 100 * 55)
+
+        draw_text2(self.screen, intro_title_font_surface, WIDTH / 2, HEIGHT / 3)
+        draw_text2(self.screen, intro_title_subfont_surface,WIDTH / 2, HEIGHT / 100 * 45 )
+        draw_text2(self.screen, intro_title_subfont_surface2, WIDTH / 2, HEIGHT / 100 * 50)
+        draw_text2(self.screen, intro_title_subfont_surface3, WIDTH / 2, HEIGHT / 100 * 55)
+
 
         self.number_of_images = len(self.pokemon_images)
 
@@ -462,7 +465,7 @@ class IntroScreen:
                  "and you can't catch a wild pokemon if you kill it.",
                  "Now go out there and catch 'em all!"]
         for num, line in enumerate(lines):
-            draw_text(self.screen, line, 24, INTRO_INST_TEXT_COLOUR, WIDTH / 2,
+            draw_text(self.screen, line, INTRO_INST_TEXT_SIZE, INTRO_INST_TEXT_COLOUR, WIDTH / 2,
                       INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
 
         for num, image in enumerate(self.pokemon_images):

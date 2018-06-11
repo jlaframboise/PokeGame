@@ -8,15 +8,7 @@ import pygame as pg
 
 vec = pg.math.Vector2
 
-font_name = pg.font.match_font('arial')
 
-
-def draw_text(surf, text, size, col, x, y):
-    font = pg.font.Font(font_name, size)
-    text_surface = font.render(text, True, col)
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x, y)
-    surf.blit(text_surface, text_rect)
 
 
 class Menu:
