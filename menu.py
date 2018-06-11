@@ -8,6 +8,16 @@ import pygame as pg
 
 vec = pg.math.Vector2
 
+font_name = pg.font.match_font('arial')
+
+
+def draw_text(surf, text, size, col, x, y):
+    font = pg.font.Font(font_name, size)
+    text_surface = font.render(text, True, col)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
+
 
 class Menu:
     def __init__(self, game):
@@ -34,14 +44,29 @@ class Menu:
 
         for count, pokemon in enumerate(self.game.player.cap_pokemon):
             pokemon.number = count + 1
+
             y_location = HEADER_SPACE + int(
                 (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon) * (count + 0.5))
+            x_location = MENU_WIDTH // 4
 
-            pokemon.rect.centerx = MENU_WIDTH // 2
+            pokemon.rect.centerx = x_location
             pokemon.rect.centery = y_location
             self.bg_image.blit(pokemon.image, pokemon.rect)
             pg.draw.circle(self.bg_image, BLUE,
-                           (MENU_WIDTH // 2,
+                           (x_location,
                             y_location),
                            CIRCLE_RADIUS,
                            CIRCLE_WIDTH)
+            # vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
+            draw_text(self.bg_image, 'Name: {}'.format(pokemon.name), MENU_FONT_SIZE, MENU_FONT_COLOUR,
+                      x_location + STATS_OFFSET,
+                      y_location - 40)
+            draw_text(self.bg_image, 'Type: {}'.format(pokemon.type), MENU_FONT_SIZE, MENU_FONT_COLOUR,
+                      x_location + STATS_OFFSET,
+                      y_location - 20)
+            draw_text(self.bg_image, 'Health: {}'.format(pokemon.health), MENU_FONT_SIZE, MENU_FONT_COLOUR,
+                      x_location + STATS_OFFSET,
+                      y_location + 0)
+            draw_text(self.bg_image, 'Kills: {}'.format(pokemon.kills), MENU_FONT_SIZE, MENU_FONT_COLOUR,
+                      x_location + STATS_OFFSET,
+                      y_location + 20)

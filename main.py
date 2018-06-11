@@ -10,15 +10,7 @@ from menu import *
 
 vec = pg.math.Vector2
 
-font_name = pg.font.match_font('arial')
 
-
-def draw_text(surf, text, size, col, x, y):
-    font = pg.font.Font(font_name, size)
-    text_surface = font.render(text, True, col)
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x, y)
-    surf.blit(text_surface, text_rect)
 
 
 def draw_health_bar(surf, x, y, pct):
@@ -129,6 +121,7 @@ class Game:
         hits = pg.sprite.spritecollide(self.player, self.pokemon, True, collide_hit_rect)
         if hits:
             self.on_contact_pokemon(hits[0])
+        self.menu.update()
 
     def on_contact_pokemon(self, pokemon):
         self.player.before_battle_pos = vec(self.player.pos)
@@ -243,6 +236,7 @@ class Battle:
 
     def leave_without_capture(self):
         if self.pokemon_in:
+            self.players_pokemon.kills +=1
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.leave_battle()
         self.game.menu.update()

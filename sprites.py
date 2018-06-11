@@ -151,7 +151,9 @@ class Pokemon(pg.sprite.Sprite):
         self.is_controlled = False
         self.health = WILD_POKEMON_HEALTH
         self.last_attacked = pg.time.get_ticks()
+        self.name = 'Turtle'
         self.type = 'grass'
+        self.kills = 0
         # Uncomment the following line if a pokemon is to be added by default
         # self.number = 1
 
@@ -228,6 +230,7 @@ class FirePenguin(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'fire'
         self.image = self.game.fire_penguin_img
+        self.name = 'FlamingPingu'
 
 
 class Leafcoon(Pokemon):
@@ -235,6 +238,8 @@ class Leafcoon(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'grass'
         self.image = self.game.leafcoon_img
+        self.name = 'Leafcoon'
+
 
 
 class Woterpitter(Pokemon):
@@ -242,6 +247,7 @@ class Woterpitter(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'water'
         self.image = self.game.woterpitter_img
+        self.name = 'Woterpitter'
 
 
 class Beary(Pokemon):
@@ -249,6 +255,7 @@ class Beary(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'grass'
         self.image = self.game.beary_img
+        self.name = 'Beary'
 
 
 class Floataphant(Pokemon):
@@ -256,6 +263,7 @@ class Floataphant(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'water'
         self.image = self.game.floataphant_img
+        self.name = 'Floataphant'
 
 
 class Rocky(Pokemon):
@@ -263,6 +271,7 @@ class Rocky(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'fire'
         self.image = self.game.rocky_img
+        self.name = 'Rocky'
 
 
 class Flamingo(Pokemon):
@@ -270,6 +279,7 @@ class Flamingo(Pokemon):
         Pokemon.__init__(self, game, x, y)
         self.type = 'water'
         self.image = self.game.flamingo_img
+        self.name = 'Flamingo'
 
 
 class Projectile(pg.sprite.Sprite):
