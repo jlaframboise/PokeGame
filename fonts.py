@@ -26,6 +26,16 @@ def draw_text2(surf, text_surface, x, y):
 intro_title_font = pg.font.Font(font_name, INTRO_TEXT_SIZE)
 intro_title_font_surface = intro_title_font.render(TITLE, True, INTRO_TEXT_COLOUR)
 
+intro_name_font = pg.font.Font(font_name, INTRO_NAME_FONT_SIZE)
+intro_name_font_surface = intro_name_font.render('By Jacob Laframboise', True, INTRO_NAME_FONT_COLOUR)
+small_name_font = pg.font.Font(font_name, SMALL_NAME_FONT_SIZE)
+small_name_font_surface = small_name_font.render('Jacob Laframboise', True, SMALL_NAME_FONT_COLOUR)
+
+
+
+small_title_font = pg.font.Font(font_name, SMALL_TITLE_FONT_SIZE)
+small_title_font_surface = small_title_font.render(TITLE, True, SMALL_TITLE_FONT_COLOUR)
+
 # make the subfont font object
 intro_title_subfont = pg.font.Font(font_name, INTRO_SUBTEXT_SIZE)
 

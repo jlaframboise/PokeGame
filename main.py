@@ -491,10 +491,13 @@ class IntroScreen:
         self.screen.fill(INTRO_BG_COLOUR)
 
         # draw the title text
-        draw_text2(self.screen, intro_title_font_surface, WIDTH / 2, HEIGHT / 3)
-        draw_text2(self.screen, intro_title_subfont_surface, WIDTH / 2, HEIGHT / 100 * 45)
-        draw_text2(self.screen, intro_title_subfont_surface2, WIDTH / 2, HEIGHT / 100 * 50)
-        draw_text2(self.screen, intro_title_subfont_surface3, WIDTH / 2, HEIGHT / 100 * 55)
+        draw_text2(self.screen, intro_title_font_surface, WIDTH / 2, HEIGHT * 0.28)
+        draw_text2(self.screen, intro_name_font_surface, WIDTH / 2, HEIGHT * 0.4)
+        draw_text2(self.screen, intro_title_subfont_surface, WIDTH / 2, HEIGHT / 100 * 50)
+        draw_text2(self.screen, intro_title_subfont_surface2, WIDTH / 2, HEIGHT / 100 * 55)
+        draw_text2(self.screen, intro_title_subfont_surface3, WIDTH / 2, HEIGHT / 100 * 60)
+
+        pg.draw.rect(self.screen, INTRO_DIV_COLOUR, pg.Rect(INTRO_DIV_TOP_X-INTRO_DIV_TOP_WIDTH/2, INTRO_DIV_TOP_Y, INTRO_DIV_TOP_WIDTH, INTRO_DIV_TOP_THICK))
 
         self.number_of_images = len(self.pokemon_images)
 
