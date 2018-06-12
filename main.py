@@ -253,7 +253,7 @@ class Battle:
     def leave_without_capture(self):
         '''A function which leaves the battle without adding the wild pokemon to the players pokemon. '''
         if self.pokemon_in:
-            self.players_pokemon.kills += 1
+
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.leave_battle()
 
@@ -320,6 +320,7 @@ class Battle:
 
         # check if wild pokemon is dead:
         if self.wild_pokemon.health < 1:
+            self.players_pokemon.kills += 1
             self.wild_pokemon.kill()
             self.leave_without_capture()
 
