@@ -13,6 +13,7 @@ vec = pg.math.Vector2
 
 
 class Menu:
+    '''A class to hold the methods and attributes to maintain a sidebar menu on the right of the main surface. '''
     def __init__(self, game):
         self.game = game
         self.bg_image = pg.Surface((MENU_WIDTH, MENU_HEIGHT))
@@ -29,6 +30,7 @@ class Menu:
         # CIRCLE_WIDTH)
 
     def update(self):
+        '''A method to update the menu and redraw it each frame. '''
         pg.display.set_caption(str(self.game.clock.get_fps()))
         self.bg_image.fill(MENU_BG_COLOUR)
         if self.in_battle:

@@ -13,6 +13,7 @@ vec = pg.math.Vector2
 
 
 def draw_health_bar(surf, x, y, pct):
+    '''A function to draw a health bar on a sprite which is damaged. Will display green yellow or red based on damage taken.'''
     if pct < 0:
         pct = 0
     outline_rect = pg.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
@@ -28,8 +29,10 @@ def draw_health_bar(surf, x, y, pct):
 
 
 class Game:
+    '''A class to hold the methods and attributes which will be used and run to form the foundation of the game. Contains the game loop.'''
 
     def __init__(self):
+        '''Initializing the game object with no variables, as this starts fresh. '''
         pg.init()
         self.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
@@ -39,6 +42,7 @@ class Game:
         self.load_data()
 
     def load_data(self):
+        '''A method to load data and graphics from files and organize the folders using os.path.join. This function also calls the map rendering functions from tilemap.py'''
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'img')
         map_folder = path.join(game_folder, 'maps')
@@ -65,6 +69,7 @@ class Game:
                                self.rocky_img, self.flamingo_img]
 
     def new(self):
+        '''A function that will be run everytime a new game is created, and it initializes the sprites, groups, and camera. '''
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.pokemon = pg.sprite.Group()
@@ -101,23 +106,21 @@ class Game:
         # self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
 
     def run(self):
-        # game loop
+        '''The method that contains and runs the game loop, calling the evnts, update, draw and fps regulating functions'''
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
-        pass
 
     def quit(self):
+        '''A function to quit the game.'''
         pg.quit()
         sys.exit()
 
     def update(self):
-        if self.need_to_delete_battle:
-            self.delete_battle()
-            self.need_to_delete_battle = False
+        '''A function to update the game each frame, checking collisions between pokemon and player, and updating all sprites. '''
         pg.display.set_caption(str(self.clock.get_fps()))
         self.all_sprites.update()
         self.camera.update(self.player)
@@ -127,14 +130,12 @@ class Game:
         self.menu.update()
 
     def on_contact_pokemon(self, pokemon):
+        '''A function that will be run when a pokemon touches a player. Launches the battle. '''
         self.player.before_battle_pos = vec(self.player.pos)
         self.battle = Battle(self, pokemon)
 
-    def delete_battle(self):
-        pass
-        #del self.battle
-
     def draw(self):
+        '''A function to draw all the gam elements to the screen. '''
         self.screen.fill(BLACK)
         self.screen.blit(self.map1_img, self.camera.apply_rect(self.map_rect))
         for sprite in self.all_sprites:
@@ -148,6 +149,7 @@ class Game:
         pg.display.flip()
 
     def events(self):
+        '''A function to handle all the events that occur, namely triggering methods based on keyboard input. '''
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.quit()
@@ -161,6 +163,8 @@ class Game:
 
 
 class Battle:
+    '''A class to run the battle sequence, and holds the functions and attributes to run the battle. '''
+
     def __init__(self, game, pokemon):
         self.game = game
         self.game.battle_on = True
@@ -184,6 +188,7 @@ class Battle:
         self.run()
 
     def load_battle_data(self):
+        '''A function that loads all the resources for the battle to run and display.'''
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'img')
         map_folder = path.join(game_folder, 'maps')
@@ -214,6 +219,7 @@ class Battle:
             self.game.player.pos = self.spawn_pos
 
     def events(self):
+        '''A function which processes events to trigger actions based on keyboard input. '''
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.game.quit()
@@ -228,9 +234,12 @@ class Battle:
                     self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
                 if event.key == pg.K_g:
                     self.game.player.stick = not self.game.player.stick
+                if event.key == pg.K_0:
+                    self.leave_without_capture()
 
     def capture_pokemon_and_leave(self):
-        if self.pokemon_in :
+        '''A function which will add the wild pokemon to the players pokemon, and then exit the battle. '''
+        if self.pokemon_in:
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.wild_pokemon.health = TRAINED_POKEMON_HEALTH
         self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
@@ -242,15 +251,18 @@ class Battle:
         # self.game.menu.update()
 
     def leave_without_capture(self):
+        '''A function which leaves the battle without adding the wild pokemon to the players pokemon. '''
         if self.pokemon_in:
             self.players_pokemon.kills += 1
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.leave_battle()
 
     def battle_loss_leave(self):
+        '''A function to leave the battle when all the player's pokemon die. '''
         self.leave_battle()
 
     def update(self):
+        '''A method to update the battle at every frame, where collisions are checked for betweent he pokeball and pokemon, between the projectiles and wild pokemon, and between the projectiles and the trained pokemon. '''
         self.game.player.get_keys()
         self.game.player.update()
         self.wild_pokemon.update()
@@ -281,7 +293,7 @@ class Battle:
             if isinstance(hit, Pokemon):
 
                 if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
-                    if len(self.game.player.cap_pokemon)<MAX_POKEMON_LIMIT-1:
+                    if len(self.game.player.cap_pokemon) < MAX_POKEMON_LIMIT - 1:
                         self.capture_pokemon_and_leave()
                     else:
                         self.leave_without_capture()
@@ -324,7 +336,7 @@ class Battle:
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
-
+        '''A method to deploy a trianed pokemon into battle and lock the player's position to inside a tree box. '''
         if self.pokemon_in:
             if self.players_pokemon.health > 1:
                 self.game.player.cap_pokemon.add(self.players_pokemon)
@@ -346,6 +358,7 @@ class Battle:
         self.game.player.stick = True
 
     def leave_battle(self):
+        '''The method to leave the battle and cleanup, will be called by one of the leave type methods above. '''
         self.game.battle_on = False
         self.fighting = False
         self.game.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
@@ -358,6 +371,7 @@ class Battle:
         self.game.need_to_delete_battle = True
 
     def draw(self):
+        '''A function to draw all the battle elements to the screen each frame. '''
         self.game.screen.fill(BLACK)
         self.game.screen.blit(self.b_map_img, self.b_map_rect)
         for sprite in self.wild_pokemon_in_battle:
@@ -387,7 +401,7 @@ class Battle:
         pg.display.flip()
 
     def run(self):
-        # game loop
+        '''The function to run the battle loop and hold execution from returning to the main game loop. '''
         self.fighting = True
         while self.fighting:
             self.dt = self.game.clock.tick(FPS) / 1000
@@ -397,6 +411,8 @@ class Battle:
 
 
 class IntroScreen:
+    '''A class to hold the attributes and methods to create an intro screen and an instructions screen.'''
+
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -409,6 +425,7 @@ class IntroScreen:
         self.run()
 
     def update(self):
+        '''A method to update the intro screens. '''
         pg.display.set_caption(str(self.clock.get_fps()))
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -426,6 +443,7 @@ class IntroScreen:
             self.draw_main_page()
 
     def draw_main_page(self):
+        '''The fuction to draw the main intro page'''
         self.screen.fill(INTRO_BG_COLOUR)
 
         draw_text2(self.screen, intro_title_font_surface, WIDTH / 2, HEIGHT / 3)
@@ -449,6 +467,7 @@ class IntroScreen:
         pg.display.flip()
 
     def draw_inst_page(self):
+        '''The function to alternately draw the instructions page. '''
         self.screen.fill(INTRO_INST_BG_COLOUR)
 
         for num, line in enumerate(instruction_lines_surfaces):
@@ -464,15 +483,16 @@ class IntroScreen:
         pg.display.flip()
 
     def run(self):
+        '''The function to run the intro screens, until the user hits space. '''
         self.dt = self.clock.tick(FPS) / 1000
         while self.showing:
             self.update()
 
 
-i = IntroScreen()
+if __name__ == '__main__':
+    i = IntroScreen()
+    g = Game()
 
-g = Game()
-
-while True:
-    g.new()
-    g.run()
+    while True:
+        g.new()
+        g.run()
