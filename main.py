@@ -253,7 +253,6 @@ class Battle:
     def leave_without_capture(self):
         '''A function which leaves the battle without adding the wild pokemon to the players pokemon. '''
         if self.pokemon_in:
-
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.leave_battle()
 
@@ -394,9 +393,11 @@ class Battle:
             self.game.screen.blit(sprite.image, sprite.rect)
         for sprite in self.wild_pokemon_in_battle:
             if sprite.health < WILD_POKEMON_HEALTH:
-                draw_health_bar(self.game.screen, sprite.pos.x, sprite.pos.y, sprite.health / WILD_POKEMON_HEALTH)
+                draw_health_bar(self.game.screen, sprite.pos.x + HEALTH_BAR_OFFSET.x,
+                                sprite.pos.y + HEALTH_BAR_OFFSET.y, sprite.health / WILD_POKEMON_HEALTH)
         if self.pokemon_in and self.players_pokemon.health < TRAINED_POKEMON_HEALTH:
-            draw_health_bar(self.game.screen, self.players_pokemon.pos.x, self.players_pokemon.pos.y,
+            draw_health_bar(self.game.screen, self.players_pokemon.pos.x + HEALTH_BAR_OFFSET.x,
+                            self.players_pokemon.pos.y + HEALTH_BAR_OFFSET.y,
                             self.players_pokemon.health / TRAINED_POKEMON_HEALTH)
 
         pg.display.flip()
