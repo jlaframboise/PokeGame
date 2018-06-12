@@ -25,17 +25,17 @@ class Menu:
         '''A method to update the menu and redraw it each frame. '''
         pg.display.set_caption(str(self.game.clock.get_fps()))
         self.bg_image.fill(MENU_BG_COLOUR)
-        #move the menu rect based on whether in battle or main game
+        # move the menu rect based on whether in battle or main game
         if self.in_battle:
             self.bg_rect.x = BATTLE_SCREEN_WIDTH
         else:
             self.bg_rect.x = WIDTH
 
-        #for every pokemon the player has
+        # for every pokemon the player has
         for count, pokemon in enumerate(self.game.player.cap_pokemon):
-            pokemon.number = count + 1 #pokemon number not zero indexed
+            pokemon.number = count + 1  # pokemon number not zero indexed
 
-            #find y location that places them equidistant from eachother and centered vertically
+            # find y location that places them equidistant from eachother and centered vertically
             y_location = HEADER_SPACE + int(
                 (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon) * (count + 0.5))
             x_location = MENU_WIDTH // 4
@@ -45,13 +45,13 @@ class Menu:
             self.bg_image.blit(pokemon.image, pokemon.rect)
             vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
 
-            #shrink radius if the number of pokemon gets large
+            # shrink radius if the number of pokemon gets large
             if vertical_spacing < CIRCLE_RADIUS * 2:
                 self.circle_radius = vertical_spacing // 2
             else:
                 self.circle_radius = CIRCLE_RADIUS
 
-            #draw the circles
+            # draw the circles
             pg.draw.circle(self.bg_image, BLUE,
                            (x_location,
                             y_location),

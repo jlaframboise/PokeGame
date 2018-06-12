@@ -8,22 +8,26 @@ vec = pg.math.Vector2
 
 def collide_with_walls(sprite, group, dim):
     '''A function to reset the x and y coords of a spirte to a valid location when moving paced them inside a wall object. '''
-    if dim == 'x':
+    if dim == 'x':  # if in the x directions
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         if hits:
+            # move the x position to a valid spot
             if hits[0].rect.centerx > sprite.hit_rect.centerx:
                 sprite.pos.x = hits[0].rect.left - sprite.hit_rect.width / 2
             if hits[0].rect.centerx < sprite.hit_rect.centerx:
                 sprite.pos.x = hits[0].rect.right + sprite.hit_rect.width / 2
+            # stop sprite in x direction
             sprite.vel.x = 0
             sprite.hit_rect.centerx = sprite.pos.x
     if dim == 'y':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         if hits:
+            # move the y position to a valid spot
             if hits[0].rect.centery > sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.top - sprite.hit_rect.height / 2
             if hits[0].rect.centery < sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.bottom + sprite.hit_rect.height / 2
+            # stop the sprite in the y direction
             sprite.vel.y = 0
             sprite.hit_rect.centery = sprite.pos.y
 
@@ -56,6 +60,7 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         self.rot_speed = 0
         keys = pg.key.get_pressed()
+        # rotate player with A and D
         if keys[pg.K_a]:
             if self.game.battle_on and self.game.battle.pokemon_in:
                 self.rot_speed = ROTATION_SPEED / 2
@@ -67,10 +72,13 @@ class Player(pg.sprite.Sprite):
             else:
                 self.rot_speed = -ROTATION_SPEED
 
+        # move the player forward
         if keys[pg.K_w]:
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
+        # move backward
         if keys[pg.K_s]:
             self.vel = vec(-PLAYER_SPEED / 1.5, 0).rotate(-self.rot)
+        # shoot a pokeball
         if keys[pg.K_SPACE] and self.in_battle:
             now = pg.time.get_ticks()
             if now - self.last_shot > POKEBALL_DELAY:
@@ -82,23 +90,29 @@ class Player(pg.sprite.Sprite):
         if not self.freeze:
             self.get_keys()
             self.rot += (self.rot_speed * self.game.dt) % 360
+            # rotate player img
             self.image = pg.transform.rotate(self.game.player_img, self.rot)
             self.rect = self.image.get_rect()
             self.rect.center = self.pos
-            # only code controlled by self.stick
+            # if stuck, player does all but move
             if not self.stick:
                 self.pos += self.vel * self.game.dt
 
+            # move the hit_rect in the x direction, then check for collisions which will adjust its position
             self.hit_rect.centerx = self.pos.x
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'x')
             elif self.in_battle:
                 collide_with_walls(self, self.game.battle.all_battle_walls, 'x')
+
+            # move the hit_rect in the y direction, then check for collisions which will adjust its position
             self.hit_rect.centery = self.pos.y
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'y')
             elif self.in_battle:
                 collide_with_walls(self, self.game.battle.all_battle_walls, 'y')
+
+            # set the player's position to the hit_rect position after modification by collisions
             self.rect.center = self.hit_rect.center
 
 
@@ -114,7 +128,7 @@ class Wall(pg.sprite.Sprite):
         self.y = y
         self.width = width
         self.height = height
-
+        # create rect
         self.rect = pg.Rect(x, y, width, height)
 
 
@@ -176,6 +190,7 @@ class Pokemon(pg.sprite.Sprite):
         if self.is_controlled:
             self.vel = vec(0, 0)
             keys = pg.key.get_pressed()
+            # set velocity based on keyboard state
             if keys[pg.K_i]:
                 self.vel = vec(POKEMON_SPEED, 0).rotate(-90)
             if keys[pg.K_j]:
@@ -184,10 +199,13 @@ class Pokemon(pg.sprite.Sprite):
                 self.vel = vec(POKEMON_SPEED, 0).rotate(-270)
             if keys[pg.K_l]:
                 self.vel = vec(POKEMON_SPEED, 0).rotate(-360)
+            # make the pokemon attack
             if keys[pg.K_m] and self.in_battle:
                 now = pg.time.get_ticks()
                 if now - self.last_attacked > TRAINED_ATTACK_DELAY:
+                    # get vecotr from pokemon to wild pokemon
                     attack_vector = self.game.battle.wild_pokemon.pos - self.pos
+                    # perform right type attack
                     if self.type == 'water':
                         WaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
                     if self.type == 'fire':
@@ -196,7 +214,7 @@ class Pokemon(pg.sprite.Sprite):
                         GrassAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
                     self.last_attacked = now
         else:
-
+            # if the pokemon is not controlled, move randomly
             self.rot = choice([0, 90, 180, 270])
             self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
 
@@ -208,14 +226,18 @@ class Pokemon(pg.sprite.Sprite):
             if self.is_controlled:
                 self.move()
             else:
+                # after a delay, call move again
                 if pg.time.get_ticks() - self.last_moved > POKEMON_MOVE_DELAY:
                     self.move()
                     self.last_moved = pg.time.get_ticks()
+                # if there is a players pokemon to attack, attack
                 if self.game.battle_on:
                     if self.game.battle.pokemon_in:
                         now = pg.time.get_ticks()
                         if now - self.last_attacked > WILD_ATTACK_DELAY:
+                            # get vector to trained pokemon
                             attack_vector = self.game.battle.players_pokemon.pos - self.pos
+                            # select correct attack
                             if self.type == 'water':
                                 WildWaterAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
                             if self.type == 'grass':
@@ -223,9 +245,10 @@ class Pokemon(pg.sprite.Sprite):
                             if self.type == 'fire':
                                 WildFireAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
                             self.last_attacked = now
-
+            # add velocity to position
             self.pos += self.vel * self.game.dt
 
+            # do collisions  in battle or in game.
             self.hit_rect.centerx = self.pos.x
             if not self.in_battle:
                 collide_with_walls(self, self.game.walls, 'x')
@@ -333,13 +356,14 @@ class Projectile(pg.sprite.Sprite):
         '''The function to update th projectile, by adding velocity ot position, and check collisions with walls or battle walls. '''
         self.pos += self.vel * self.game.dt
         self.rect.center = self.pos
+        # check for collisions with walls, kill self if so
         if not self.in_battle:
             if pg.sprite.spritecollideany(self, self.game.walls):
                 self.kill()
         else:
             if pg.sprite.spritecollideany(self, self.game.battle.battle_walls):
                 self.kill()
-
+        # don't let them travel forever
         if pg.time.get_ticks() - self.spawn_time > POKEBALL_LIFETIME:
             self.kill()
 

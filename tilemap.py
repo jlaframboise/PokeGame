@@ -22,9 +22,9 @@ class TiledMap:
         '''A method to render the map image onto a surface tile by tile. '''
         ti = self.tmxdata.get_tile_image_by_gid
         for layer in self.tmxdata.visible_layers:
-            #if the object is a layer
+            # if the object is a layer
             if isinstance(layer, pytmx.TiledTileLayer):
-                #blit every tile in the layer
+                # blit every tile in the layer
                 for x, y, gid in layer:
                     tile = ti(gid)
                     if tile:
