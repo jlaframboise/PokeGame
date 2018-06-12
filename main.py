@@ -356,10 +356,8 @@ class Battle:
         # if statements to fix any glitch where the player ends up outside the map
         if self.game.player.rect.centerx - self.game.player.rect.width / 2 < 0 or self.game.player.rect.centerx + self.game.player.rect.width / 2 > BATTLE_SCREEN_WIDTH:
             self.game.player.pos = vec(BATTLE_SCREEN_WIDTH / 2, HEIGHT * 0.75)
-            print('triggered')
         if self.game.player.rect.centery - self.game.player.rect.height / 2 < 0 or self.game.player.rect.centery + self.game.player.rect.height / 2 > HEIGHT:
             self.game.player.pos = vec(BATTLE_SCREEN_WIDTH / 2, HEIGHT * 0.75)
-            print('triggered')
 
     def deploy_pokemon(self, pokemon_index):
         '''A method to deploy a trained pokemon into battle and lock the player's position to inside a tree box. '''
