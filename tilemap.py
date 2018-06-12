@@ -10,6 +10,7 @@ def collide_hit_rect(one, two):
 
 class TiledMap:
     '''A class to render the map based on the tiled map file. '''
+
     def __init__(self, filename):
         '''A method to initialize the class object with important info. '''
         tm = pytmx.load_pygame(filename, pixelalpha=True)
@@ -38,6 +39,7 @@ class TiledMap:
 
 class Camera:
     '''A class to hold the important methods for the camera to display elements with an offset relative to the player, to keep things on screen '''
+
     def __init__(self, width, height):
         self.rect = pg.Rect(0, 0, width, height)
         self.width = width

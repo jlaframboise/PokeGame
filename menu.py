@@ -10,10 +10,9 @@ import pygame as pg
 vec = pg.math.Vector2
 
 
-
-
 class Menu:
     '''A class to hold the methods and attributes to maintain a sidebar menu on the right of the main surface. '''
+
     def __init__(self, game):
         self.game = game
         self.bg_image = pg.Surface((MENU_WIDTH, MENU_HEIGHT))
@@ -50,8 +49,8 @@ class Menu:
             self.bg_image.blit(pokemon.image, pokemon.rect)
             vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
 
-            if vertical_spacing < CIRCLE_RADIUS*2:
-                self.circle_radius = vertical_spacing//2
+            if vertical_spacing < CIRCLE_RADIUS * 2:
+                self.circle_radius = vertical_spacing // 2
             else:
                 self.circle_radius = CIRCLE_RADIUS
 
@@ -61,7 +60,9 @@ class Menu:
                            self.circle_radius,
                            CIRCLE_WIDTH)
             # vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
-            draw_text2(self.bg_image, name_lines_surfaces[POKEMON_LIST.index(pokemon.name)], x_location + STATS_OFFSET, y_location - 40)
-            draw_text2(self.bg_image, type_lines_surfaces[TYPE_LIST.index(pokemon.type)], x_location + STATS_OFFSET, y_location - 20)
+            draw_text2(self.bg_image, name_lines_surfaces[POKEMON_LIST.index(pokemon.name)], x_location + STATS_OFFSET,
+                       y_location - 40)
+            draw_text2(self.bg_image, type_lines_surfaces[TYPE_LIST.index(pokemon.type)], x_location + STATS_OFFSET,
+                       y_location - 20)
             draw_text2(self.bg_image, health_line, x_location + STATS_OFFSET, y_location - 0)
             draw_text2(self.bg_image, kills_lines[pokemon.kills], x_location + STATS_OFFSET, y_location + 20)

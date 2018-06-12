@@ -2,6 +2,7 @@ import pygame as pg
 
 vec = pg.math.Vector2
 
+# basic game settings
 WIDTH = 1024
 HEIGHT = 768
 TITLE = 'PokeGame'

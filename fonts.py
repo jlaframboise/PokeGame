@@ -7,6 +7,7 @@ font_name = pg.font.match_font('arial')
 
 
 def draw_text(surf, text, size, col, x, y):
+    '''A function to render and display text'''
     font = pg.font.Font(font_name, size)
     text_surface = font.render(text, True, col)
     text_rect = text_surface.get_rect()
@@ -15,6 +16,7 @@ def draw_text(surf, text, size, col, x, y):
 
 
 def draw_text2(surf, text_surface, x, y):
+    '''A function to display a pre-rendered surface with text'''
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
@@ -47,8 +49,8 @@ intro_inst_font = pg.font.Font(font_name, INTRO_INST_TEXT_SIZE)
 instruction_lines_surfaces = [intro_inst_font.render(x, True, INTRO_INST_TEXT_COLOUR) for x in lines]
 
 stats_font = pg.font.Font(font_name, MENU_FONT_SIZE)
-name_lines_surfaces = [stats_font.render('Name: '+x, True, MENU_FONT_COLOUR) for x in POKEMON_LIST]
-type_lines_surfaces = [stats_font.render('Type: '+x, True, MENU_FONT_COLOUR) for x in TYPE_LIST]
+name_lines_surfaces = [stats_font.render('Name: ' + x, True, MENU_FONT_COLOUR) for x in POKEMON_LIST]
+type_lines_surfaces = [stats_font.render('Type: ' + x, True, MENU_FONT_COLOUR) for x in TYPE_LIST]
 health_line = stats_font.render('Health: 100', True, MENU_FONT_COLOUR)
 kills_line = stats_font.render('Kills: 0', True, MENU_FONT_COLOUR)
 kills_lines = [stats_font.render('Kills: {}'.format(str(x)), True, MENU_FONT_COLOUR) for x in range(41)]

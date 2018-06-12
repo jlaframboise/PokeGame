@@ -7,6 +7,7 @@ vec = pg.math.Vector2
 
 
 def collide_with_walls(sprite, group, dim):
+    '''A function to reset the x and y coords of a spirte to a valid location when moving paced them inside a wall object. '''
     if dim == 'x':
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         if hits:
@@ -28,7 +29,10 @@ def collide_with_walls(sprite, group, dim):
 
 
 class Player(pg.sprite.Sprite):
+    '''A class to hold the methods and attributes of the player/ trainer. '''
+
     def __init__(self, game, x, y):
+        '''A function to initialize the player object. '''
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -48,7 +52,7 @@ class Player(pg.sprite.Sprite):
         self.stick = False
 
     def get_keys(self):
-
+        '''A function to modify motion based on keyboard state. '''
         self.vel = vec(0, 0)
         self.rot_speed = 0
         keys = pg.key.get_pressed()
@@ -74,6 +78,7 @@ class Player(pg.sprite.Sprite):
                 Projectile(self.game, self.pos, self.rot, self.in_battle)
 
     def update(self):
+        '''A function to update the player if he is not frozen or stuck. '''
         if not self.freeze:
             self.get_keys()
             self.rot += (self.rot_speed * self.game.dt) % 360
@@ -98,6 +103,8 @@ class Player(pg.sprite.Sprite):
 
 
 class Wall(pg.sprite.Sprite):
+    '''A class to make walls, only holding their rect. '''
+
     def __init__(self, game, x, y, width, height):
         self.game = game
         self.groups = self.game.walls
@@ -112,6 +119,8 @@ class Wall(pg.sprite.Sprite):
 
 
 class Battle_Wall(pg.sprite.Sprite):
+    '''A class of walls that is meant to be used in a battle, not in the main game. '''
+
     def __init__(self, battle, x, y, width, height):
         self.battle = battle
         self.groups = self.battle.battle_walls, self.battle.all_battle_walls
@@ -126,6 +135,8 @@ class Battle_Wall(pg.sprite.Sprite):
 
 
 class Permeable_Battle_Wall(Battle_Wall):
+    '''A child class of battle wall that pokeballs can pass though, so the player can shoot out of his box. '''
+
     def __init__(self, battle, x, y, width, height):
         super().__init__(battle, x, y, width, height)
         self.battle.battle_walls.remove(self)
@@ -133,7 +144,10 @@ class Permeable_Battle_Wall(Battle_Wall):
 
 
 class Pokemon(pg.sprite.Sprite):
+    '''A class to hold the methods and attributes of pokemon objects. '''
+
     def __init__(self, game, x, y):
+        '''A function to setup the initial values for the pokemon object. '''
         self.game = game
         self.groups = self.game.all_sprites, self.game.pokemon
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -158,7 +172,7 @@ class Pokemon(pg.sprite.Sprite):
         # self.number = 1
 
     def move(self):
-        # The following code is enables control of all pokemon with the ijkl keys.
+        '''A method to enable control of pokemon with the ijkl keys if that pokemon's is_controlled flag is True.'''
         if self.is_controlled:
             self.vel = vec(0, 0)
             keys = pg.key.get_pressed()
@@ -187,6 +201,7 @@ class Pokemon(pg.sprite.Sprite):
             self.vel = vec(POKEMON_SPEED, 0).rotate(self.rot)
 
     def update(self):
+        '''A function to update the pokemon each frame based on if it is in game or battle, wild or trained. '''
         self.freeze = False
         if not self.freeze:
 
@@ -226,6 +241,8 @@ class Pokemon(pg.sprite.Sprite):
 
 
 class FirePenguin(Pokemon):
+    '''A child class of Pokemon with a different type, name, image. '''
+
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'fire'
@@ -234,6 +251,8 @@ class FirePenguin(Pokemon):
 
 
 class Leafcoon(Pokemon):
+    '''A child class of Pokemon with a different type, name, image. '''
+
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'grass'
@@ -241,8 +260,9 @@ class Leafcoon(Pokemon):
         self.name = 'Leafcoon'
 
 
-
 class Woterpitter(Pokemon):
+    '''A child class of Pokemon with a different type, name, image. '''
+
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'water'
@@ -251,6 +271,8 @@ class Woterpitter(Pokemon):
 
 
 class Beary(Pokemon):
+    '''A child class of Pokemon with a different type, name, image. '''
+
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'grass'
@@ -259,6 +281,8 @@ class Beary(Pokemon):
 
 
 class Floataphant(Pokemon):
+    '''A child class of Pokemon with a different type, name, image. '''
+
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'water'
@@ -267,6 +291,8 @@ class Floataphant(Pokemon):
 
 
 class Rocky(Pokemon):
+    '''A child class of Pokemon with a different type, name, image. '''
+
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'fire'
@@ -275,6 +301,8 @@ class Rocky(Pokemon):
 
 
 class Flamingo(Pokemon):
+    '''A child class of Pokemon with a different type, name, image. '''
+
     def __init__(self, game, x, y):
         Pokemon.__init__(self, game, x, y)
         self.type = 'water'
@@ -283,7 +311,10 @@ class Flamingo(Pokemon):
 
 
 class Projectile(pg.sprite.Sprite):
+    '''A class of objects to control and implement projectiles. Will hold attributes and methods to support motion and collisions. '''
+
     def __init__(self, game, pos, dir, in_battle):
+        '''A method to initialize the projectiles with initial values. '''
         self.type = 'pokeball'
         self.game = game
         self.pos = vec(pos)
@@ -299,6 +330,7 @@ class Projectile(pg.sprite.Sprite):
         self.in_battle = in_battle
 
     def update(self):
+        '''The function to update th projectile, by adding velocity ot position, and check collisions with walls or battle walls. '''
         self.pos += self.vel * self.game.dt
         self.rect.center = self.pos
         if not self.in_battle:
@@ -313,6 +345,8 @@ class Projectile(pg.sprite.Sprite):
 
 
 class WaterAttack(Projectile):
+    '''A child class of Projectile, with a new image and a type. '''
+
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
         self.type = 'attack'
@@ -320,6 +354,8 @@ class WaterAttack(Projectile):
 
 
 class WildWaterAttack(WaterAttack):
+    '''A child class of WaterAttack, with different groups for colliding with the player's pokemon instead of themselves. '''
+
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
         self.game.battle.projectiles.remove(self)
@@ -327,6 +363,8 @@ class WildWaterAttack(WaterAttack):
 
 
 class FireAttack(Projectile):
+    '''A child class of Projectile, with a new image and a type. '''
+
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
         self.type = 'attack'
@@ -334,6 +372,8 @@ class FireAttack(Projectile):
 
 
 class WildFireAttack(FireAttack):
+    '''A child class of FireAttack, with different groups for colliding with the player's pokemon instead of themselves. '''
+
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
         self.game.battle.projectiles.remove(self)
@@ -341,6 +381,8 @@ class WildFireAttack(FireAttack):
 
 
 class GrassAttack(Projectile):
+    '''A child class of Projectile, with a new image and a type. '''
+
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
         self.type = 'attack'
@@ -348,6 +390,8 @@ class GrassAttack(Projectile):
 
 
 class WildGrassAttack(GrassAttack):
+    '''A child class of GrassAttack, with different groups for colliding with the player's pokemon instead of themselves. '''
+
     def __init__(self, game, pos, dir, in_battle):
         super().__init__(game, pos, dir, in_battle)
         self.game.battle.projectiles.remove(self)
