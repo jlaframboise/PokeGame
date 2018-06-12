@@ -310,7 +310,12 @@ class Battle:
             if isinstance(hit, Pokemon):
                 if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
                     if len(self.game.player.cap_pokemon) < MAX_POKEMON_LIMIT - 1:
-                        self.capture_pokemon_and_leave()
+                        if self.pokemon_in:
+                            odds = hit.health//10
+                            if choice(range(odds)) == choice(range(odds)):
+                                self.capture_pokemon_and_leave()
+                        else:
+                            self.capture_pokemon_and_leave()
                     else:
                         self.leave_without_capture()
 
