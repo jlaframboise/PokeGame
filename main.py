@@ -16,14 +16,16 @@ def draw_health_bar(surf, x, y, pct):
     '''A function to draw a health bar on a sprite which is damaged. Will display green yellow or red based on damage taken.'''
     if pct < 0:
         pct = 0
-    outline_rect = pg.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)
+    outline_rect = pg.Rect(x, y, HEALTH_LENGTH, HEALTH_HEIGHT)  # make the outline and fill
     fill_rect = pg.Rect(x, y, HEALTH_LENGTH * pct, HEALTH_HEIGHT)
+    # change colours based on health
     if pct > 0.6:
         col = GREEN
     elif pct > 0.3:
         col = YELLOW
     else:
         col = RED
+    # draw them
     pg.draw.rect(surf, col, fill_rect)
     pg.draw.rect(surf, WHITE, outline_rect, 2)
 
@@ -43,10 +45,12 @@ class Game:
 
     def load_data(self):
         '''A method to load data and graphics from files and organize the folders using os.path.join. This function also calls the map rendering functions from tilemap.py'''
+        # set up directories
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'img')
         map_folder = path.join(game_folder, 'maps')
 
+        # load in images and maps
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.map1 = TiledMap(path.join(map_folder, 'map1.tmx'))
         self.map1_img = self.map1.make_map()
@@ -70,11 +74,14 @@ class Game:
 
     def new(self):
         '''A function that will be run everytime a new game is created, and it initializes the sprites, groups, and camera. '''
+        # initialize groups
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.pokemon = pg.sprite.Group()
 
         self.camera = Camera(self.map1.width, self.map1.height)
+
+        # load in sprites and walls on the map from the tmx file
         for obj in self.map1.tmxdata.objects:
             obj_center = vec(obj.x + obj.width / 2, obj.y + obj.height / 2)
             if obj.name == 'wall':
@@ -124,6 +131,7 @@ class Game:
         pg.display.set_caption(str(self.clock.get_fps()))
         self.all_sprites.update()
         self.camera.update(self.player)
+        # check for collisions between player and pokemon
         hits = pg.sprite.spritecollide(self.player, self.pokemon, True, collide_hit_rect)
         if hits:
             self.on_contact_pokemon(hits[0])
@@ -138,6 +146,8 @@ class Game:
         '''A function to draw all the gam elements to the screen. '''
         self.screen.fill(BLACK)
         self.screen.blit(self.map1_img, self.camera.apply_rect(self.map_rect))
+
+        # draw all the sprites and the cyan outline on hit_rects if debug mode is on
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply_rect(sprite.rect))
             if self.debug_mode:
@@ -153,6 +163,7 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.quit()
+                # get keyboard input
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.quit()
@@ -170,6 +181,7 @@ class Battle:
         self.game.battle_on = True
         game.battle = self
         self.wild_pokemon = pokemon
+        # init groups
         self.wild_pokemon_in_battle = pg.sprite.Group()
         self.players_pokemon_group = pg.sprite.Group()
         self.projectiles = pg.sprite.Group()
@@ -189,16 +201,18 @@ class Battle:
 
     def load_battle_data(self):
         '''A function that loads all the resources for the battle to run and display.'''
+        # setup directories
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'img')
         map_folder = path.join(game_folder, 'maps')
 
+        # set up map
         self.b_map = TiledMap(path.join(map_folder, 'b_map.tmx'))
         self.b_map_img = self.b_map.make_map()
         self.b_map_rect = self.b_map_img.get_rect()
 
-        # BATTLE_SCREEN_WIDTH = self.b_map.tmxdata.tilewidth * self.b_map.tmxdata.width
         self.game.screen = pg.display.set_mode((BATTLE_SCREEN_WIDTH + MENU_WIDTH, HEIGHT))
+        # load in sprites and walls
         for obj in self.b_map.tmxdata.objects:
             obj_center = vec(obj.x + obj.width / 2, obj.y + obj.height / 2)
             if obj.name == 'trained_pokemon':
@@ -213,6 +227,7 @@ class Battle:
                 self.standby_spot = vec(obj_center.x, obj_center.y)
         self.game.player.rot = 90
         self.pokemon_in = False
+        # auto deploy pokemon
         if len(self.game.player.cap_pokemon) > 0:
             self.deploy_pokemon(1)
         else:
@@ -223,6 +238,7 @@ class Battle:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.game.quit()
+                # get keybaord input
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_h:
                     self.game.debug_mode = not self.game.debug_mode
@@ -239,8 +255,9 @@ class Battle:
 
     def capture_pokemon_and_leave(self):
         '''A function which will add the wild pokemon to the players pokemon, and then exit the battle. '''
-        if self.pokemon_in:
+        if self.pokemon_in:  # return deployed pokemon
             self.game.player.cap_pokemon.add(self.players_pokemon)
+        # add the wild pokemon
         self.wild_pokemon.health = TRAINED_POKEMON_HEALTH
         self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
         self.game.player.cap_pokemon.add(self.wild_pokemon)
@@ -248,7 +265,6 @@ class Battle:
         self.game.pokemon.remove(self.wild_pokemon)
         self.game.all_sprites.remove(self.wild_pokemon)
         self.leave_battle()
-        # self.game.menu.update()
 
     def leave_without_capture(self):
         '''A function which leaves the battle without adding the wild pokemon to the players pokemon. '''
@@ -289,8 +305,8 @@ class Battle:
             # print('printing hits[hit]: ')
             # print(hits[hit][0])
 
+            # the following if statement chekcs to see what type of object collided
             if isinstance(hit, Pokemon):
-
                 if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
                     if len(self.game.player.cap_pokemon) < MAX_POKEMON_LIMIT - 1:
                         self.capture_pokemon_and_leave()
@@ -303,12 +319,13 @@ class Battle:
                     hit.health -= ATTACK_DAMAGE
                 if isinstance(hits[hit][0], GrassAttack):
                     hit.health -= ATTACK_DAMAGE
-                    # print('enemy: {}, me: {}'.format(hit.health, self.players_pokemon.health))
+
         # For the attacks from wild pokemon
         if self.pokemon_in:
             hits = pg.sprite.groupcollide(self.players_pokemon_group, self.wild_projectiles, False, True,
                                           collide_hit_rect)
             for hit in hits:
+                # check what type of objects collided
                 if isinstance(hit, Pokemon):
                     if isinstance(hits[hit][0], WaterAttack):
                         hit.health -= ATTACK_DAMAGE
@@ -336,8 +353,9 @@ class Battle:
         self.game.menu.update()
 
     def deploy_pokemon(self, pokemon_index):
-        '''A method to deploy a trianed pokemon into battle and lock the player's position to inside a tree box. '''
+        '''A method to deploy a trained pokemon into battle and lock the player's position to inside a tree box. '''
         if self.pokemon_in:
+            # return currently deployed pokemon
             if self.players_pokemon.health > 1:
                 self.game.player.cap_pokemon.add(self.players_pokemon)
                 self.game.menu.update()
@@ -345,11 +363,13 @@ class Battle:
                 self.players_pokemon.kill()
         self.pokemon_in = True
 
+        # restore health of players pokemon
         for pokemon in self.game.player.cap_pokemon:
             pokemon.health = TRAINED_POKEMON_HEALTH
             if pokemon.number == pokemon_index:
                 self.players_pokemon = pokemon
 
+        # update flags and groups
         self.players_pokemon.pos = vec(self.spawn_pos)
         self.players_pokemon.is_controlled = True
         self.game.player.cap_pokemon.remove(self.players_pokemon)
@@ -371,12 +391,14 @@ class Battle:
         self.game.need_to_delete_battle = True
 
     def draw(self):
-        '''A function to draw all the battle elements to the screen each frame. '''
+        '''A method to draw all the battle elements to the screen each frame. '''
         self.game.screen.fill(BLACK)
         self.game.screen.blit(self.b_map_img, self.b_map_rect)
+        # update wild pokemon
         for sprite in self.wild_pokemon_in_battle:
             self.game.screen.blit(sprite.image, sprite.rect)
         self.game.screen.blit(self.game.player.image, self.game.player.rect)
+        # blit the cyan hit_rects if debugging
         if self.game.debug_mode:
             for wall in self.battle_walls:
                 pg.draw.rect(self.game.screen, CYAN, wall.rect, 1)
@@ -384,17 +406,21 @@ class Battle:
             for pokemon in self.wild_pokemon_in_battle:
                 pg.draw.rect(self.game.screen, CYAN, pokemon.hit_rect, 1)
         self.game.screen.blit(self.game.menu.bg_image, self.game.menu.bg_rect)
+        # blit the player and his pokemon
         if self.pokemon_in:
             self.game.screen.blit(self.game.player.image, self.game.player.rect)
             self.game.screen.blit(self.players_pokemon.image, self.players_pokemon.rect)
+        # blit all projectiles
         for sprite in self.projectiles:
             self.game.screen.blit(sprite.image, sprite.rect)
         for sprite in self.wild_projectiles:
             self.game.screen.blit(sprite.image, sprite.rect)
+        # draw the wild pokemon sprite and health bar
         for sprite in self.wild_pokemon_in_battle:
             if sprite.health < WILD_POKEMON_HEALTH:
                 draw_health_bar(self.game.screen, sprite.pos.x + HEALTH_BAR_OFFSET.x,
                                 sprite.pos.y + HEALTH_BAR_OFFSET.y, sprite.health / WILD_POKEMON_HEALTH)
+        # draw the players pokemons sprite and health bar
         if self.pokemon_in and self.players_pokemon.health < TRAINED_POKEMON_HEALTH:
             draw_health_bar(self.game.screen, self.players_pokemon.pos.x + HEALTH_BAR_OFFSET.x,
                             self.players_pokemon.pos.y + HEALTH_BAR_OFFSET.y,
@@ -406,6 +432,7 @@ class Battle:
         '''The function to run the battle loop and hold execution from returning to the main game loop. '''
         self.fighting = True
         while self.fighting:
+            # keep track of time
             self.dt = self.game.clock.tick(FPS) / 1000
             self.events()
             self.update()
@@ -421,6 +448,7 @@ class IntroScreen:
         pg.display.set_caption('Welcome')
         self.clock = pg.time.Clock()
         self.showing = True
+        # need to load all the images used in the game, to make a nice intro
         Game.load_data(self)
         self.show_inst = False
         self.player_x = 0
@@ -432,15 +460,18 @@ class IntroScreen:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.showing = False
+            # let user change between intructions and intro, and launch game
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     self.showing = False
                 if event.key == pg.K_r:
                     self.show_inst = not self.show_inst
 
+        # draw the respective page
         if self.show_inst:
             self.draw_inst_page()
         else:
+            # move the player
             self.player_x = (self.player_x + INTRO_PLAYER_SPEED) % (WIDTH + 60)
             self.draw_main_page()
 
@@ -448,6 +479,7 @@ class IntroScreen:
         '''The fuction to draw the main intro page'''
         self.screen.fill(INTRO_BG_COLOUR)
 
+        # draw the title text
         draw_text2(self.screen, intro_title_font_surface, WIDTH / 2, HEIGHT / 3)
         draw_text2(self.screen, intro_title_subfont_surface, WIDTH / 2, HEIGHT / 100 * 45)
         draw_text2(self.screen, intro_title_subfont_surface2, WIDTH / 2, HEIGHT / 100 * 50)
@@ -455,11 +487,14 @@ class IntroScreen:
 
         self.number_of_images = len(self.pokemon_images)
 
+        # draw all the pokemon images in a circle, each pokemon moving periodically in and out of cirlce
         for num, image in enumerate(self.pokemon_images):
             individual_phase_shift = 2 * pi / self.number_of_images * num
+            # radius change will be added to position vecotr length, will vary with time.
             self.radius_change = sin(
                 pg.time.get_ticks() / 10000 / pi * 180 + individual_phase_shift) * INTRO_RADIUS_MAX_VAR
 
+            # add vectors and rotate
             image_pos = INTRO_CIRCLE_CENTER + vec(INTRO_CIRCLE_RADIUS + self.radius_change, 0).rotate(
                 360 / self.number_of_images * num)
 
@@ -472,9 +507,11 @@ class IntroScreen:
         '''The function to alternately draw the instructions page. '''
         self.screen.fill(INTRO_INST_BG_COLOUR)
 
+        # draw each instrutions line
         for num, line in enumerate(instruction_lines_surfaces):
             draw_text2(self.screen, line, WIDTH / 2, INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
 
+        # draw all the pokemon in two lines, above and below the text.
         for num, image in enumerate(self.pokemon_images):
             self.screen.blit(image, pg.Rect(30 + WIDTH / self.number_of_images * num, INTRO_INST_POKEMON_TOPLINE, 1, 1))
             self.screen.blit(image,
@@ -491,6 +528,7 @@ class IntroScreen:
             self.update()
 
 
+# launch the game
 if __name__ == '__main__':
     i = IntroScreen()
     g = Game()
