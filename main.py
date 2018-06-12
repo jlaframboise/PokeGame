@@ -78,7 +78,7 @@ class Game:
                 obj.name = choice(POKEMON_LIST)
                 if obj.name == 'Leafcoon':
                     Leafcoon(self, obj_center.x, obj_center.y)
-                elif obj.name == 'FirePenguin':
+                elif obj.name == 'FlamingPingu':
                     FirePenguin(self, obj_center.x, obj_center.y)
                 elif obj.name == 'Woterpitter':
                     Woterpitter(self, obj_center.x, obj_center.y)

@@ -50,7 +50,8 @@ PLAYER_IMG = 'trainer.png'
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 
 # Pokemon settings
-POKEMON_LIST = ['Turtle', 'FirePenguin', 'Leafcoon', 'Woterpitter', 'Beary', 'Floataphant', 'Rocky', 'Flamingo']
+POKEMON_LIST = ['Turtle', 'FlamingPingu', 'Leafcoon', 'Woterpitter', 'Beary', 'Floataphant', 'Rocky', 'Flamingo']
+
 TYPE_LIST = ['grass', 'fire', 'water']
 TURTLE_IMG = 'turtle.png'
 FIRE_PENGUIN_IMG = 'flaminghotpingu.png'

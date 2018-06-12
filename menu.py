@@ -59,7 +59,7 @@ class Menu:
                            self.circle_radius,
                            CIRCLE_WIDTH)
             # vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
-            draw_text2(self.bg_image, name_lines_surfaces[0], x_location + STATS_OFFSET, y_location - 40)
-            draw_text2(self.bg_image, type_lines_surfaces[0], x_location + STATS_OFFSET, y_location - 20)
+            draw_text2(self.bg_image, name_lines_surfaces[POKEMON_LIST.index(pokemon.name)], x_location + STATS_OFFSET, y_location - 40)
+            draw_text2(self.bg_image, type_lines_surfaces[TYPE_LIST.index(pokemon.type)], x_location + STATS_OFFSET, y_location - 20)
             draw_text2(self.bg_image, health_line, x_location + STATS_OFFSET, y_location - 0)
             draw_text2(self.bg_image, kills_line, x_location + STATS_OFFSET, y_location + 20)
