@@ -112,29 +112,19 @@ class Game:
         # uncomment the following line if a pokemon is to be added by default
         # self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
 
+    def run(self):
+        '''The method that contains and runs the game loop, calling the evnts, update, draw and fps regulating functions'''
+        self.playing = True
+        while self.playing:
+            self.dt = self.clock.tick(FPS) / 1000
+            self.events()
+            self.update()
+            self.draw()
+
     def quit(self):
         '''A function to quit the game.'''
         pg.quit()
         sys.exit()
-
-    def on_contact_pokemon(self, pokemon):
-        '''A function that will be run when a pokemon touches a player. Launches the battle. '''
-        self.player.before_battle_pos = vec(self.player.pos)
-        self.battle = Battle(self, pokemon)
-
-    def events(self):
-        '''A function to handle all the events that occur, namely triggering methods based on keyboard input. '''
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                self.quit()
-                # get keyboard input
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
-                    self.quit()
-                if event.key == pg.K_h:
-                    self.debug_mode = not self.debug_mode
-                if event.key == pg.K_f:
-                    self.player.freeze = not self.player.freeze
 
     def update(self):
         '''A function to update the game each frame, checking collisions between pokemon and player, and updating all sprites. '''
@@ -146,6 +136,11 @@ class Game:
         if hits:
             self.on_contact_pokemon(hits[0])
         self.menu.update()
+
+    def on_contact_pokemon(self, pokemon):
+        '''A function that will be run when a pokemon touches a player. Launches the battle. '''
+        self.player.before_battle_pos = vec(self.player.pos)
+        self.battle = Battle(self, pokemon)
 
     def draw(self):
         '''A function to draw all the gam elements to the screen. '''
@@ -163,14 +158,19 @@ class Game:
         self.screen.blit(self.menu.bg_image, self.menu.bg_rect)
         pg.display.flip()
 
-    def run(self):
-        '''The method that contains and runs the game loop, calling the evnts, update, draw and fps regulating functions'''
-        self.playing = True
-        while self.playing:
-            self.dt = self.clock.tick(FPS) / 1000
-            self.events()
-            self.update()
-            self.draw()
+    def events(self):
+        '''A function to handle all the events that occur, namely triggering methods based on keyboard input. '''
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.quit()
+                # get keyboard input
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.quit()
+                if event.key == pg.K_h:
+                    self.debug_mode = not self.debug_mode
+                if event.key == pg.K_f:
+                    self.player.freeze = not self.player.freeze
 
 
 class Battle:
@@ -198,7 +198,6 @@ class Battle:
         self.game.player.in_battle = True
         self.wild_pokemon.in_battle = True
         self.game.menu.in_battle = True
-        self.game.menu.update()
         self.run()
 
     def load_battle_data(self):
@@ -235,30 +234,25 @@ class Battle:
         else:
             self.game.player.pos = self.spawn_pos
 
-    def deploy_pokemon(self, pokemon_index):
-        '''A method to deploy a trained pokemon into battle and lock the player's position to inside a tree box. '''
-        if self.pokemon_in:
-            # return currently deployed pokemon
-            if self.players_pokemon.health > 1:
-                self.game.player.cap_pokemon.add(self.players_pokemon)
-            else:
-                self.players_pokemon.kill()
-        self.pokemon_in = True
-
-
-        # select pokemon to deploy
-        for pokemon in self.game.player.cap_pokemon:
-            if pokemon.number == pokemon_index:
-                self.players_pokemon = pokemon
-
-        # update flags and groups
-        self.players_pokemon.pos = vec(self.spawn_pos)
-        self.players_pokemon.is_controlled = True
-        self.game.player.cap_pokemon.remove(self.players_pokemon)
-        self.players_pokemon_group.add(self.players_pokemon)
-        self.game.player.pos = vec(self.standby_spot)
-        self.game.player.stick = True
-        self.game.menu.update()
+    def events(self):
+        '''A function which processes events to trigger actions based on keyboard input. '''
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.game.quit()
+                # get keybaord input
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_h:
+                    self.game.debug_mode = not self.game.debug_mode
+                if event.key == pg.K_f:
+                    self.game.player.freeze = not self.game.player.freeze
+                if event.key == pg.K_1:
+                    self.deploy_pokemon(1)
+                if event.key == pg.K_c:
+                    self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
+                if event.key == pg.K_g:
+                    self.game.player.stick = not self.game.player.stick
+                if event.key == pg.K_0:
+                    self.leave_without_capture()
 
     def capture_pokemon_and_leave(self):
         '''A function which will add the wild pokemon to the players pokemon, and then exit the battle. '''
@@ -282,41 +276,6 @@ class Battle:
     def battle_loss_leave(self):
         '''A function to leave the battle when all the player's pokemon die. '''
         self.leave_battle()
-
-    def leave_battle(self):
-        '''The method to leave the battle and cleanup, will be called by one of the leave type methods above. '''
-        self.game.battle_on = False
-        self.fighting = False
-        self.game.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
-        self.game.player.freeze = False
-        self.game.player.stick = False
-        self.game.player.in_battle = False
-        self.game.menu.in_battle = False
-        self.game.player.pos = self.game.player.before_battle_pos
-        self.pokemon_in = False
-        self.game.need_to_delete_battle = True
-        for pokemon in self.game.player.cap_pokemon:
-            pokemon.health = TRAINED_POKEMON_HEALTH
-
-    def events(self):
-        '''A function which processes events to trigger actions based on keyboard input. '''
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                self.game.quit()
-                # get keybaord input
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_h:
-                    self.game.debug_mode = not self.game.debug_mode
-                if event.key == pg.K_f:
-                    self.game.player.freeze = not self.game.player.freeze
-                if event.key == pg.K_1:
-                    self.deploy_pokemon(1)
-                if event.key == pg.K_c:
-                    self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
-                if event.key == pg.K_g:
-                    self.game.player.stick = not self.game.player.stick
-                if event.key == pg.K_0:
-                    self.leave_without_capture()
 
     def update(self):
         '''A method to update the battle at every frame, where collisions are checked for betweent he pokeball and pokemon, between the projectiles and wild pokemon, and between the projectiles and the trained pokemon. '''
@@ -351,12 +310,7 @@ class Battle:
             if isinstance(hit, Pokemon):
                 if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
                     if len(self.game.player.cap_pokemon) < MAX_POKEMON_LIMIT - 1:
-                        if self.pokemon_in:
-                            odds = max(hit.health//30, 1)
-                            if choice(range(odds)) == 0:
-                                self.capture_pokemon_and_leave()
-                        else:
-                            self.capture_pokemon_and_leave()
+                        self.capture_pokemon_and_leave()
                     else:
                         self.leave_without_capture()
 
@@ -397,14 +351,51 @@ class Battle:
                 else:
                     self.deploy_pokemon(1)
 
-        if pg.time.get_ticks()//1000 %5 == 0:
-            self.game.menu.update()
+        self.game.menu.update()
 
         # if statements to fix any glitch where the player ends up outside the map
         if self.game.player.rect.centerx - self.game.player.rect.width / 2 < 0 or self.game.player.rect.centerx + self.game.player.rect.width / 2 > BATTLE_SCREEN_WIDTH:
             self.game.player.pos = vec(BATTLE_SCREEN_WIDTH / 2, HEIGHT * 0.75)
         if self.game.player.rect.centery - self.game.player.rect.height / 2 < 0 or self.game.player.rect.centery + self.game.player.rect.height / 2 > HEIGHT:
             self.game.player.pos = vec(BATTLE_SCREEN_WIDTH / 2, HEIGHT * 0.75)
+
+    def deploy_pokemon(self, pokemon_index):
+        '''A method to deploy a trained pokemon into battle and lock the player's position to inside a tree box. '''
+        if self.pokemon_in:
+            # return currently deployed pokemon
+            if self.players_pokemon.health > 1:
+                self.game.player.cap_pokemon.add(self.players_pokemon)
+                self.game.menu.update()
+            else:
+                self.players_pokemon.kill()
+        self.pokemon_in = True
+
+        # restore health of players pokemon
+        for pokemon in self.game.player.cap_pokemon:
+            pokemon.health = TRAINED_POKEMON_HEALTH
+            if pokemon.number == pokemon_index:
+                self.players_pokemon = pokemon
+
+        # update flags and groups
+        self.players_pokemon.pos = vec(self.spawn_pos)
+        self.players_pokemon.is_controlled = True
+        self.game.player.cap_pokemon.remove(self.players_pokemon)
+        self.players_pokemon_group.add(self.players_pokemon)
+        self.game.player.pos = vec(self.standby_spot)
+        self.game.player.stick = True
+
+    def leave_battle(self):
+        '''The method to leave the battle and cleanup, will be called by one of the leave type methods above. '''
+        self.game.battle_on = False
+        self.fighting = False
+        self.game.screen = pg.display.set_mode((WIDTH + MENU_WIDTH, HEIGHT))
+        self.game.player.freeze = False
+        self.game.player.stick = False
+        self.game.player.in_battle = False
+        self.game.menu.in_battle = False
+        self.game.player.pos = self.game.player.before_battle_pos
+        self.pokemon_in = False
+        self.game.need_to_delete_battle = True
 
     def draw(self):
         '''A method to draw all the battle elements to the screen each frame. '''
@@ -421,7 +412,6 @@ class Battle:
             pg.draw.rect(self.game.screen, CYAN, self.game.player.hit_rect, 1)
             for pokemon in self.wild_pokemon_in_battle:
                 pg.draw.rect(self.game.screen, CYAN, pokemon.hit_rect, 1)
-        # draw the menu
         self.game.screen.blit(self.game.menu.bg_image, self.game.menu.bg_rect)
         # blit the player and his pokemon
         if self.pokemon_in:
