@@ -177,6 +177,7 @@ class Battle:
     '''A class to run the battle sequence, and holds the functions and attributes to run the battle. '''
 
     def __init__(self, game, pokemon):
+        '''A method to initialize the battle class with variables and groups'''
         self.game = game
         self.game.battle_on = True
         game.battle = self
@@ -443,6 +444,7 @@ class IntroScreen:
     '''A class to hold the attributes and methods to create an intro screen and an instructions screen.'''
 
     def __init__(self):
+        '''A method to initialize the intro screen with variables and loading data from game '''
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption('Welcome')
