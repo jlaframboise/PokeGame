@@ -64,5 +64,5 @@ class Menu:
                        y_location - 40)
             draw_text2(self.bg_image, type_lines_surfaces[TYPE_LIST.index(pokemon.type)], x_location + STATS_OFFSET,
                        y_location - 20)
-            draw_text2(self.bg_image, health_line, x_location + STATS_OFFSET, y_location - 0)
+            draw_text2(self.bg_image, health_lines[pokemon.kills], x_location + STATS_OFFSET, y_location - 0)
             draw_text2(self.bg_image, kills_lines[pokemon.kills], x_location + STATS_OFFSET, y_location + 20)

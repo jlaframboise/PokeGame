@@ -60,6 +60,7 @@ stats_font = pg.font.Font(font_name, MENU_FONT_SIZE)
 name_lines_surfaces = [stats_font.render('Name: ' + x, True, MENU_FONT_COLOUR) for x in POKEMON_LIST]
 # repeat for the type
 type_lines_surfaces = [stats_font.render('Type: ' + x, True, MENU_FONT_COLOUR) for x in TYPE_LIST]
-health_line = stats_font.render('Health: 100', True, MENU_FONT_COLOUR)
+
+health_lines = [stats_font.render('Health: {}'.format(str(100 + 20 * x)), True, MENU_FONT_COLOUR) for x in range(41)]
 # make a list of rendered lines corresponding to number of kills, which cannot exceed 40
 kills_lines = [stats_font.render('Kills: {}'.format(str(x)), True, MENU_FONT_COLOUR) for x in range(41)]

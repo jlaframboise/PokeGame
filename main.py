@@ -431,10 +431,10 @@ class Battle:
                 draw_health_bar(self.game.screen, sprite.pos.x + HEALTH_BAR_OFFSET.x,
                                 sprite.pos.y + HEALTH_BAR_OFFSET.y, sprite.health / sprite.max_health)
         # draw the players pokemons sprite and health bar
-        if self.pokemon_in and self.players_pokemon.health < TRAINED_POKEMON_HEALTH:
+        if self.pokemon_in and self.players_pokemon.health < self.players_pokemon.max_health:
             draw_health_bar(self.game.screen, self.players_pokemon.pos.x + HEALTH_BAR_OFFSET.x,
                             self.players_pokemon.pos.y + HEALTH_BAR_OFFSET.y,
-                            self.players_pokemon.health / TRAINED_POKEMON_HEALTH)
+                            self.players_pokemon.health / self.players_pokemon.max_health)
 
         pg.display.flip()
 
