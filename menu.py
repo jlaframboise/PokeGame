@@ -30,7 +30,7 @@ class Menu:
 
     def update(self):
         pg.display.set_caption(str(self.game.clock.get_fps()))
-        self.bg_image.fill(BLACK)
+        self.bg_image.fill(MENU_BG_COLOUR)
         if self.in_battle:
             self.bg_rect.x = BATTLE_SCREEN_WIDTH
         else:
@@ -47,31 +47,18 @@ class Menu:
             pokemon.rect.centery = y_location
             self.bg_image.blit(pokemon.image, pokemon.rect)
             vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
-            if vertical_spacing < CIRCLE_RADIUS:
 
-                self.circle_radius = vertical_spacing
+            if vertical_spacing < CIRCLE_RADIUS*2:
+                self.circle_radius = vertical_spacing//2
             else:
                 self.circle_radius = CIRCLE_RADIUS
+
             pg.draw.circle(self.bg_image, BLUE,
                            (x_location,
                             y_location),
                            self.circle_radius,
                            CIRCLE_WIDTH)
             # vertical_spacing = (MENU_HEIGHT - HEADER_SPACE) // len(self.game.player.cap_pokemon)
-            '''
-            draw_text(self.bg_image, 'Name: {}'.format(pokemon.name), MENU_FONT_SIZE, MENU_FONT_COLOUR,
-                      x_location + STATS_OFFSET,
-                      y_location - 40)
-            draw_text(self.bg_image, 'Type: {}'.format(pokemon.type), MENU_FONT_SIZE, MENU_FONT_COLOUR,
-                      x_location + STATS_OFFSET,
-                      y_location - 20)
-            draw_text(self.bg_image, 'Health: {}'.format(pokemon.health), MENU_FONT_SIZE, MENU_FONT_COLOUR,
-                      x_location + STATS_OFFSET,
-                      y_location + 0)
-            draw_text(self.bg_image, 'Kills: {}'.format(pokemon.kills), MENU_FONT_SIZE, MENU_FONT_COLOUR,
-                      x_location + STATS_OFFSET,
-                      y_location + 20)
-            '''
             draw_text2(self.bg_image, name_lines_surfaces[0], x_location + STATS_OFFSET, y_location - 40)
             draw_text2(self.bg_image, type_lines_surfaces[0], x_location + STATS_OFFSET, y_location - 20)
             draw_text2(self.bg_image, health_line, x_location + STATS_OFFSET, y_location - 0)

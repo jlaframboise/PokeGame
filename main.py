@@ -132,7 +132,7 @@ class Game:
 
     def delete_battle(self):
         pass
-        del self.battle
+        #del self.battle
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -405,6 +405,7 @@ class IntroScreen:
         self.run()
 
     def update(self):
+        pg.display.set_caption(str(self.clock.get_fps()))
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.showing = False
