@@ -1,7 +1,7 @@
 from sprites import *
 from settings import *
 from tilemap import *
-from random import choice, randint, uniform
+from random import choice, randint, uniform, randrange
 import sys
 from os import path
 import pygame as pg
@@ -310,7 +310,8 @@ class Battle:
             if isinstance(hit, Pokemon):
                 if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
                     if len(self.game.player.cap_pokemon) < MAX_POKEMON_LIMIT - 1:
-                        self.capture_pokemon_and_leave()
+                        if randrange(0, hit.health)<=20 or len(self.game.player.cap_pokemon)<1:
+                            self.capture_pokemon_and_leave()
                     else:
                         self.leave_without_capture()
 
