@@ -51,3 +51,4 @@ name_lines_surfaces = [stats_font.render('Name: '+x, True, MENU_FONT_COLOUR) for
 type_lines_surfaces = [stats_font.render('Type: '+x, True, MENU_FONT_COLOUR) for x in TYPE_LIST]
 health_line = stats_font.render('Health: 100', True, MENU_FONT_COLOUR)
 kills_line = stats_font.render('Kills: 0', True, MENU_FONT_COLOUR)
+kills_lines = [stats_font.render('Kills: {}'.format(str(x)), True, MENU_FONT_COLOUR) for x in range(41)]
