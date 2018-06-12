@@ -310,7 +310,7 @@ class Battle:
             if isinstance(hit, Pokemon):
                 if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
                     if len(self.game.player.cap_pokemon) < MAX_POKEMON_LIMIT - 1:
-                        if randrange(0, hit.health)<=20 or len(self.game.player.cap_pokemon)<1:
+                        if randrange(0, hit.health) <= 20 or len(self.game.player.cap_pokemon) < 1:
                             self.capture_pokemon_and_leave()
                     else:
                         self.leave_without_capture()
@@ -339,6 +339,8 @@ class Battle:
         # check if wild pokemon is dead:
         if self.wild_pokemon.health < 1:
             self.players_pokemon.kills += 1
+            self.players_pokemon.max_health += 20
+            self.players_pokemon.health = self.players_pokemon.max_health
             self.wild_pokemon.kill()
             self.leave_without_capture()
 
@@ -373,7 +375,7 @@ class Battle:
 
         # restore health of players pokemon
         for pokemon in self.game.player.cap_pokemon:
-            pokemon.health = TRAINED_POKEMON_HEALTH
+            pokemon.health = pokemon.max_health
             if pokemon.number == pokemon_index:
                 self.players_pokemon = pokemon
 
@@ -425,9 +427,9 @@ class Battle:
             self.game.screen.blit(sprite.image, sprite.rect)
         # draw the wild pokemon sprite and health bar
         for sprite in self.wild_pokemon_in_battle:
-            if sprite.health < WILD_POKEMON_HEALTH:
+            if sprite.health < sprite.max_health:
                 draw_health_bar(self.game.screen, sprite.pos.x + HEALTH_BAR_OFFSET.x,
-                                sprite.pos.y + HEALTH_BAR_OFFSET.y, sprite.health / WILD_POKEMON_HEALTH)
+                                sprite.pos.y + HEALTH_BAR_OFFSET.y, sprite.health / sprite.max_health)
         # draw the players pokemons sprite and health bar
         if self.pokemon_in and self.players_pokemon.health < TRAINED_POKEMON_HEALTH:
             draw_health_bar(self.game.screen, self.players_pokemon.pos.x + HEALTH_BAR_OFFSET.x,

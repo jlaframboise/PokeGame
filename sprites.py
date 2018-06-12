@@ -178,6 +178,7 @@ class Pokemon(pg.sprite.Sprite):
         self.freeze = False
         self.is_controlled = False
         self.health = WILD_POKEMON_HEALTH
+        self.max_health = self.health
         self.last_attacked = pg.time.get_ticks()
         self.name = 'Turtle'
         self.type = 'grass'
@@ -245,6 +246,7 @@ class Pokemon(pg.sprite.Sprite):
                             if self.type == 'fire':
                                 WildFireAttack(self.game, self.pos, attack_vector.angle_to(X_AXIS), self.in_battle)
                             self.last_attacked = now
+
             # add velocity to position
             self.pos += self.vel * self.game.dt
 
