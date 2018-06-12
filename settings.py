@@ -51,7 +51,6 @@ PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 
 # Pokemon settings
 POKEMON_LIST = ['Turtle', 'FlamingPingu', 'Leafcoon', 'Woterpitter', 'Beary', 'Floataphant', 'Rocky', 'Flamingo']
-
 TYPE_LIST = ['grass', 'fire', 'water']
 TURTLE_IMG = 'turtle.png'
 FIRE_PENGUIN_IMG = 'flaminghotpingu.png'
@@ -65,6 +64,7 @@ POKEMON_SPEED = 200
 POKEMON_MOVE_DELAY = 500
 WILD_POKEMON_HEALTH = 100
 TRAINED_POKEMON_HEALTH = 100
+MAX_POKEMON_LIMIT = 8
 
 # Projectile settings
 PROJECTILE_SPEED = 500

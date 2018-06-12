@@ -230,7 +230,7 @@ class Battle:
                     self.game.player.stick = not self.game.player.stick
 
     def capture_pokemon_and_leave(self):
-        if self.pokemon_in:
+        if self.pokemon_in :
             self.game.player.cap_pokemon.add(self.players_pokemon)
         self.wild_pokemon.health = TRAINED_POKEMON_HEALTH
         self.wild_pokemon.number = len(self.game.player.cap_pokemon) + 1
@@ -281,7 +281,11 @@ class Battle:
             if isinstance(hit, Pokemon):
 
                 if isinstance(hits[hit][0], Projectile) and hits[hit][0].type == 'pokeball':
-                    self.capture_pokemon_and_leave()
+                    if len(self.game.player.cap_pokemon)<MAX_POKEMON_LIMIT-1:
+                        self.capture_pokemon_and_leave()
+                    else:
+                        self.leave_without_capture()
+
                 if isinstance(hits[hit][0], WaterAttack):
                     hit.health -= ATTACK_DAMAGE
                 if isinstance(hits[hit][0], FireAttack):
