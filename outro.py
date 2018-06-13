@@ -6,9 +6,7 @@ import sys
 from os import path
 from fonts import *
 import pygame as pg
-
-# only import main if running without main
-# from main import *
+from main import *
 
 vec = pg.math.Vector2
 

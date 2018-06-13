@@ -8,7 +8,9 @@ import pygame as pg
 from math import sin, cos, pi
 from menu import *
 from fonts import *
-#from outro import Ending
+
+#comment out the outro import if running outro by itself
+from outro import *
 
 vec = pg.math.Vector2
 
@@ -145,10 +147,11 @@ class Game:
         self.captured_names_list = [pokemon.name for pokemon in self.player.cap_pokemon]
         if sorted(self.captured_names_list)==sorted(POKEMON_LIST):
             print('wowza, you got em all!')
+            self.playing = False
 
         #temporary end game condition
-        if len(self.player.cap_pokemon)>2:
-            self.playing = False
+        #if len(self.player.cap_pokemon)>0:
+            #self.playing = False
 
     def trigger_ending(self):
         e = Ending(self.pokeballs_used, self.attacks_used, self.total_kills)
