@@ -31,8 +31,8 @@ class Menu:
         else:
             self.bg_rect.x = WIDTH
 
-        draw_text2(self.bg_image, small_title_font_surface, MENU_WIDTH/2, HEADER_SPACE*.2)
-        draw_text2(self.bg_image, small_name_font_surface, MENU_WIDTH/2, HEADER_SPACE*.7)
+        draw_text2(self.bg_image, small_title_font_surface, MENU_WIDTH / 2, HEADER_SPACE * .2)
+        draw_text2(self.bg_image, small_name_font_surface, MENU_WIDTH / 2, HEADER_SPACE * .7)
 
         # for every pokemon the player has
         for count, pokemon in enumerate(self.game.player.cap_pokemon):

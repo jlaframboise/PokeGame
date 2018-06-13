@@ -31,8 +31,6 @@ intro_name_font_surface = intro_name_font.render('By Jacob Laframboise', True, I
 small_name_font = pg.font.Font(font_name, SMALL_NAME_FONT_SIZE)
 small_name_font_surface = small_name_font.render('Jacob Laframboise', True, SMALL_NAME_FONT_COLOUR)
 
-
-
 small_title_font = pg.font.Font(font_name, SMALL_TITLE_FONT_SIZE)
 small_title_font_surface = small_title_font.render(TITLE, True, SMALL_TITLE_FONT_COLOUR)
 
@@ -45,7 +43,7 @@ intro_title_subfont_surface2 = intro_title_subfont.render('OR', True, INTRO_TEXT
 intro_title_subfont_surface3 = intro_title_subfont.render('Press Space to Play!', True, INTRO_TEXT_COLOUR)
 
 # instructions
-lines = ['Welcome to {}.'.format(TITLE), 'The objective of the game is to capture Pokemon.',
+lines = ['Welcome to {}.'.format(TITLE), 'The objective of the game is to capture all the Pokemon.',
          'You move your player forward with W, and backwards with D.',
          'You may turn left and right with A and D.',
          'If your trainer encounters a Pokemon, a battle will begin.',
@@ -56,7 +54,8 @@ lines = ['Welcome to {}.'.format(TITLE), 'The objective of the game is to captur
          'To capture the pokemon, rotate your trainer with A and D,',
          'and hit SPACE to shoot a Pokeball at the enemy pokemon!',
          'Be careful, your pokemon can die if you let them take too many attacks,',
-         "and you can't catch a wild pokemon if you kill it.",
+         "and you can't catch a wild pokemon if you already have 8 pokemon, or you kill it.",
+         "Beware, if a glitch in the battle occurs, press zero to exit the battle.",
          "Now go out there and catch 'em all!"]
 
 # make font object for instructions
@@ -74,6 +73,3 @@ type_lines_surfaces = [stats_font.render('Type: ' + x, True, MENU_FONT_COLOUR) f
 health_lines = [stats_font.render('Health: {}'.format(str(100 + 20 * x)), True, MENU_FONT_COLOUR) for x in range(41)]
 # make a list of rendered lines corresponding to number of kills, which cannot exceed 40
 kills_lines = [stats_font.render('Kills: {}'.format(str(x)), True, MENU_FONT_COLOUR) for x in range(41)]
-
-
-

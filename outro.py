@@ -71,18 +71,18 @@ class Ending:
         self.sprite_vertical_shift += self.sprite_scroll_rate
         self.text_vertical_shift += self.text_scroll_rate
 
-        self.player_vertical_pos = OUTRO_HEIGHT - OUTRO_HEIGHT*(self.text_vertical_shift / (OUTRO_TEXT_LENGTH+OUTRO_HEIGHT))
+        self.player_vertical_pos = OUTRO_HEIGHT - OUTRO_HEIGHT * (
+                    self.text_vertical_shift / (OUTRO_TEXT_LENGTH + OUTRO_HEIGHT))
 
         # end the scene
         if self.text_vertical_shift > OUTRO_TEXT_LENGTH + OUTRO_HEIGHT:
             self.run_end = False
 
-            draw_text2(self.screen, intro_title_font_surface, OUTRO_WIDTH/2, OUTRO_HEIGHT*0.4)
-            draw_text2(self.screen, intro_name_font_surface, OUTRO_WIDTH/2, OUTRO_HEIGHT*0.6)
+            draw_text2(self.screen, intro_title_font_surface, OUTRO_WIDTH / 2, OUTRO_HEIGHT * 0.4)
+            draw_text2(self.screen, intro_name_font_surface, OUTRO_WIDTH / 2, OUTRO_HEIGHT * 0.6)
             pg.display.flip()
 
             pg.time.wait(6000)
-
 
     def draw(self):
         '''A method to draw all the sprites and text to the screen. '''
@@ -106,7 +106,7 @@ class Ending:
 
             draw_text2(self.screen, line, OUTRO_WIDTH / 2, vertical_pos)
 
-        self.screen.blit(self.player_img, pg.Rect(OUTRO_WIDTH*0.3, self.player_vertical_pos,1,1))
+        self.screen.blit(self.player_img, pg.Rect(OUTRO_WIDTH * 0.3, self.player_vertical_pos, 1, 1))
 
         pg.display.flip()
 
@@ -122,7 +122,5 @@ class Ending:
                 if event.type == pg.QUIT:
                     self.run_end = False
 
-
-
-#e = Ending()
-#e.run()
+# e = Ending()
+# e.run()

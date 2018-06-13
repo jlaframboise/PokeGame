@@ -9,7 +9,7 @@ from math import sin, cos, pi
 from menu import *
 from fonts import *
 
-#comment out the outro import if running outro by itself
+# comment out the outro import if running outro by itself
 from outro import *
 
 vec = pg.math.Vector2
@@ -143,17 +143,18 @@ class Game:
             self.on_contact_pokemon(hits[0])
         self.menu.update()
 
-        #check if all pokemon types are captured
+        # check if all pokemon types are captured
         self.captured_names_list = [pokemon.name for pokemon in self.player.cap_pokemon]
-        if sorted(self.captured_names_list)==sorted(POKEMON_LIST):
+        if sorted(self.captured_names_list) == sorted(POKEMON_LIST):
             print('wowza, you got em all!')
             self.playing = False
 
-        #temporary end game condition
-        #if len(self.player.cap_pokemon)>0:
-            #self.playing = False
+        # temporary end game condition
+        # if len(self.player.cap_pokemon)>0:
+        # self.playing = False
 
     def trigger_ending(self):
+        '''A method to run the ending scene with the three stats below. '''
         e = Ending(self.pokeballs_used, self.attacks_used, self.total_kills)
         e.run()
 
@@ -359,7 +360,7 @@ class Battle:
         # check if wild pokemon is dead:
         if self.wild_pokemon.health < 1:
             self.players_pokemon.kills += 1
-            self.game.total_kills+=1
+            self.game.total_kills += 1
             self.players_pokemon.max_health += 20
             self.players_pokemon.health = self.players_pokemon.max_health
             self.wild_pokemon.kill()
@@ -518,7 +519,9 @@ class IntroScreen:
         draw_text2(self.screen, intro_title_subfont_surface2, WIDTH / 2, HEIGHT / 100 * 55)
         draw_text2(self.screen, intro_title_subfont_surface3, WIDTH / 2, HEIGHT / 100 * 60)
 
-        pg.draw.rect(self.screen, INTRO_DIV_COLOUR, pg.Rect(INTRO_DIV_TOP_X-INTRO_DIV_TOP_WIDTH/2, INTRO_DIV_TOP_Y, INTRO_DIV_TOP_WIDTH, INTRO_DIV_TOP_THICK))
+        pg.draw.rect(self.screen, INTRO_DIV_COLOUR,
+                     pg.Rect(INTRO_DIV_TOP_X - INTRO_DIV_TOP_WIDTH / 2, INTRO_DIV_TOP_Y, INTRO_DIV_TOP_WIDTH,
+                             INTRO_DIV_TOP_THICK))
 
         self.number_of_images = len(self.pokemon_images)
 
@@ -544,7 +547,7 @@ class IntroScreen:
 
         # draw each instrutions line
         for num, line in enumerate(instruction_lines_surfaces):
-            draw_text2(self.screen, line, WIDTH / 2, INTRO_INST_TOP_BUFFER + HEIGHT / 100 * 5 * num)
+            draw_text2(self.screen, line, WIDTH / 2, INTRO_INST_TOP_BUFFER - 4 + HEIGHT / 100 * 5 * num)
 
         # draw all the pokemon in two lines, above and below the text.
         for num, image in enumerate(self.pokemon_images):
