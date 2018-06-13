@@ -165,7 +165,9 @@ class Game:
 
         # draw all the sprites and the cyan outline on hit_rects if debug mode is on
         for sprite in self.all_sprites:
-            self.screen.blit(sprite.image, self.camera.apply_rect(sprite.rect))
+            #placing the blit function in the if statement stops game from drawing sprites that are offscreen, efficiency
+            if abs(sprite.rect.x - self.player.rect.x) < WIDTH/2 + 60 and abs(sprite.rect.y - self.player.rect.y) < HEIGHT/2 + 60:
+                self.screen.blit(sprite.image, self.camera.apply_rect(sprite.rect))
             if self.debug_mode:
                 pg.draw.rect(self.screen, CYAN, self.camera.apply_rect(sprite.hit_rect), 1)
         for wall in self.walls:
