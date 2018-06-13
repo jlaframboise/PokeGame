@@ -8,6 +8,7 @@ import pygame as pg
 from math import sin, cos, pi
 from menu import *
 from fonts import *
+#from outro import Ending
 
 vec = pg.math.Vector2
 
@@ -41,6 +42,9 @@ class Game:
         self.clock = pg.time.Clock()
         self.battle_on = False
         self.need_to_delete_battle = False
+        self.total_kills = 0
+        self.pokeballs_used = 0
+        self.attacks_used = 0
         self.load_data()
 
     def load_data(self):
@@ -113,7 +117,7 @@ class Game:
         # self.player.cap_pokemon.add(FirePenguin(self, 400, 400))
 
     def run(self):
-        '''The method that contains and runs the game loop, calling the evnts, update, draw and fps regulating functions'''
+        '''The method that contains and runs the game loop, calling the events, update, draw and fps regulating functions'''
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
@@ -136,6 +140,19 @@ class Game:
         if hits:
             self.on_contact_pokemon(hits[0])
         self.menu.update()
+
+        #check if all pokemon types are captured
+        self.captured_names_list = [pokemon.name for pokemon in self.player.cap_pokemon]
+        if sorted(self.captured_names_list)==sorted(POKEMON_LIST):
+            print('wowza, you got em all!')
+
+        #temporary end game condition
+        if len(self.player.cap_pokemon)>2:
+            self.playing = False
+
+    def trigger_ending(self):
+        e = Ending(self.pokeballs_used, self.attacks_used, self.total_kills)
+        e.run()
 
     def on_contact_pokemon(self, pokemon):
         '''A function that will be run when a pokemon touches a player. Launches the battle. '''
@@ -339,6 +356,7 @@ class Battle:
         # check if wild pokemon is dead:
         if self.wild_pokemon.health < 1:
             self.players_pokemon.kills += 1
+            self.game.total_kills+=1
             self.players_pokemon.max_health += 20
             self.players_pokemon.health = self.players_pokemon.max_health
             self.wild_pokemon.kill()
@@ -548,3 +566,4 @@ if __name__ == '__main__':
     g = Game()
     g.new()
     g.run()
+    g.trigger_ending()

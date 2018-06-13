@@ -83,6 +83,7 @@ class Player(pg.sprite.Sprite):
             now = pg.time.get_ticks()
             if now - self.last_shot > POKEBALL_DELAY:
                 self.last_shot = now
+                self.game.pokeballs_used+=1
                 Projectile(self.game, self.pos, self.rot, self.in_battle)
 
     def update(self):
@@ -204,6 +205,7 @@ class Pokemon(pg.sprite.Sprite):
             if keys[pg.K_m] and self.in_battle:
                 now = pg.time.get_ticks()
                 if now - self.last_attacked > TRAINED_ATTACK_DELAY:
+                    self.game.attacks_used +=1
                     # get vecotr from pokemon to wild pokemon
                     attack_vector = self.game.battle.wild_pokemon.pos - self.pos
                     # perform right type attack

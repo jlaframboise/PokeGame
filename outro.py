@@ -5,8 +5,10 @@ from random import choice, randint, uniform
 import sys
 from os import path
 from fonts import *
-from main import *
 import pygame as pg
+
+# only import main if running without main
+# from main import *
 
 vec = pg.math.Vector2
 
@@ -21,10 +23,12 @@ class Ending:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         Game.load_data(self)
+        self.player_img = pg.transform.rotate(self.player_img, 90)
         self.sprite_vertical_shift = 0
         self.sprite_scroll_rate = 2
         self.text_vertical_shift = 0
         self.text_scroll_rate = 0.5
+        self.player_vertical_pos = OUTRO_HEIGHT
         self.pokeballs_used = pokeballs_used
         self.attacks_used = attacks_used
         self.total_kills = total_kills
@@ -68,9 +72,19 @@ class Ending:
         '''A method to move sprites and text down the screen and end the instance when done.'''
         self.sprite_vertical_shift += self.sprite_scroll_rate
         self.text_vertical_shift += self.text_scroll_rate
+
+        self.player_vertical_pos = OUTRO_HEIGHT - OUTRO_HEIGHT*(self.text_vertical_shift / (OUTRO_TEXT_LENGTH+OUTRO_HEIGHT))
+
         # end the scene
         if self.text_vertical_shift > OUTRO_TEXT_LENGTH + OUTRO_HEIGHT:
             self.run_end = False
+
+            draw_text2(self.screen, intro_title_font_surface, OUTRO_WIDTH/2, OUTRO_HEIGHT*0.4)
+            draw_text2(self.screen, intro_name_font_surface, OUTRO_WIDTH/2, OUTRO_HEIGHT*0.6)
+            pg.display.flip()
+
+            pg.time.wait(6000)
+
 
     def draw(self):
         '''A method to draw all the sprites and text to the screen. '''
@@ -94,6 +108,8 @@ class Ending:
 
             draw_text2(self.screen, line, OUTRO_WIDTH / 2, vertical_pos)
 
+        self.screen.blit(self.player_img, pg.Rect(OUTRO_WIDTH*0.3, self.player_vertical_pos,1,1))
+
         pg.display.flip()
 
     def run(self):
@@ -107,3 +123,8 @@ class Ending:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.run_end = False
+
+
+
+#e = Ending()
+#e.run()
