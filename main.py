@@ -367,6 +367,7 @@ class Battle:
         if self.pokemon_in:
             if self.players_pokemon.health < 1:
                 self.players_pokemon.kill()
+                self.game.total_kills+=1
                 self.game.menu.update()
                 if len(self.game.player.cap_pokemon) < 1:
                     self.battle_loss_leave()
