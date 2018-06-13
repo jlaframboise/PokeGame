@@ -74,3 +74,6 @@ type_lines_surfaces = [stats_font.render('Type: ' + x, True, MENU_FONT_COLOUR) f
 health_lines = [stats_font.render('Health: {}'.format(str(100 + 20 * x)), True, MENU_FONT_COLOUR) for x in range(41)]
 # make a list of rendered lines corresponding to number of kills, which cannot exceed 40
 kills_lines = [stats_font.render('Kills: {}'.format(str(x)), True, MENU_FONT_COLOUR) for x in range(41)]
+
+
+
