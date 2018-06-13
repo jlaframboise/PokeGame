@@ -421,7 +421,7 @@ class Battle:
         self.game.captured_names_list = [pokemon.name for pokemon in self.game.player.cap_pokemon]
         if sorted(self.game.captured_names_list) == sorted(POKEMON_LIST):
             print('wowza, you got em all!')
-            self.playing = False
+            self.game.playing = False
 
     def draw(self):
         '''A method to draw all the battle elements to the screen each frame. '''
