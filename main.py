@@ -546,7 +546,5 @@ class IntroScreen:
 if __name__ == '__main__':
     i = IntroScreen()
     g = Game()
-
-    while True:
-        g.new()
-        g.run()
+    g.new()
+    g.run()
