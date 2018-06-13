@@ -190,7 +190,7 @@ class Game:
                     self.quit()
                 if event.key == pg.K_h:
                     self.debug_mode = not self.debug_mode
-                if event.key == pg.K_f:
+                if event.key == pg.K_f and self.debug_mode:
                     self.player.freeze = not self.player.freeze
 
 
@@ -264,13 +264,13 @@ class Battle:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_h:
                     self.game.debug_mode = not self.game.debug_mode
-                if event.key == pg.K_f:
+                if event.key == pg.K_f and self.game.debug_mode:
                     self.game.player.freeze = not self.game.player.freeze
-                if event.key == pg.K_1:
+                if event.key == pg.K_q:
                     self.deploy_pokemon(1)
-                if event.key == pg.K_c:
+                if event.key == pg.K_c and self.game.debug_mode:
                     self.players_pokemon.is_controlled = not self.players_pokemon.is_controlled
-                if event.key == pg.K_g:
+                if event.key == pg.K_g and self.game.debug_mode:
                     self.game.player.stick = not self.game.player.stick
                 if event.key == pg.K_0:
                     self.leave_without_capture()
@@ -547,7 +547,7 @@ class IntroScreen:
 
         # draw each instrutions line
         for num, line in enumerate(instruction_lines_surfaces):
-            draw_text2(self.screen, line, WIDTH / 2, INTRO_INST_TOP_BUFFER - 4 + HEIGHT / 100 * 5 * num)
+            draw_text2(self.screen, line, WIDTH / 2, INTRO_INST_TOP_BUFFER - 4 + HEIGHT / 100 * 4.6 * num)
 
         # draw all the pokemon in two lines, above and below the text.
         for num, image in enumerate(self.pokemon_images):

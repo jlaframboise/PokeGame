@@ -53,8 +53,9 @@ lines = ['Welcome to {}.'.format(TITLE), 'The objective of the game is to captur
          'and you can press M for your pokemon to attack.',
          'To capture the pokemon, rotate your trainer with A and D,',
          'and hit SPACE to shoot a Pokeball at the enemy pokemon!',
+         "You can swap out your active pokemon with Q.",
          'Be careful, your pokemon can die if you let them take too many attacks,',
-         "and you can't catch a wild pokemon if you already have 8 pokemon, or you kill it.",
+         "and you can't catch a pokemon if you already have 8 pokemon, or if you kill it.",
          "Beware, if a glitch in the battle occurs, press zero to exit the battle.",
          "Now go out there and catch 'em all!"]
 
