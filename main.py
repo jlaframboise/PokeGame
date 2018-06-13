@@ -143,11 +143,6 @@ class Game:
             self.on_contact_pokemon(hits[0])
         self.menu.update()
 
-        # check if all pokemon types are captured
-        self.captured_names_list = [pokemon.name for pokemon in self.player.cap_pokemon]
-        if sorted(self.captured_names_list) == sorted(POKEMON_LIST):
-            print('wowza, you got em all!')
-            self.playing = False
 
         # temporary end game condition
         # if len(self.player.cap_pokemon)>0:
@@ -421,6 +416,12 @@ class Battle:
         self.game.player.pos = self.game.player.before_battle_pos
         self.pokemon_in = False
         self.game.need_to_delete_battle = True
+
+        # check if all pokemon types are captured
+        self.game.captured_names_list = [pokemon.name for pokemon in self.game.player.cap_pokemon]
+        if sorted(self.game.captured_names_list) == sorted(POKEMON_LIST):
+            print('wowza, you got em all!')
+            self.playing = False
 
     def draw(self):
         '''A method to draw all the battle elements to the screen each frame. '''
