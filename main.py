@@ -94,7 +94,7 @@ class Game:
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.type == 'pokemon':
                 if obj.name[-4:] == 'sure':
-                    obj.name =obj.name[:-5]
+                    obj.name = obj.name[:-5]
                 else:
                     obj.name = choice(POKEMON_LIST)
                 if obj.name == 'Leafcoon':
@@ -146,7 +146,6 @@ class Game:
             self.on_contact_pokemon(hits[0])
         self.menu.update()
 
-
         # temporary end game condition
         # if len(self.player.cap_pokemon)>0:
         # self.playing = False
@@ -168,8 +167,9 @@ class Game:
 
         # draw all the sprites and the cyan outline on hit_rects if debug mode is on
         for sprite in self.all_sprites:
-            #placing the blit function in the if statement stops game from drawing sprites that are offscreen, efficiency
-            if abs(sprite.rect.x - self.player.rect.x) < WIDTH/2 + 60 and abs(sprite.rect.y - self.player.rect.y) < HEIGHT/2 + 60:
+            # placing the blit function in the if statement stops game from drawing sprites that are offscreen, efficiency
+            if abs(sprite.rect.x - self.player.rect.x) < WIDTH / 2 + 60 and abs(
+                    sprite.rect.y - self.player.rect.y) < HEIGHT / 2 + 60:
                 self.screen.blit(sprite.image, self.camera.apply_rect(sprite.rect))
             if self.debug_mode:
                 pg.draw.rect(self.screen, CYAN, self.camera.apply_rect(sprite.hit_rect), 1)
@@ -370,7 +370,7 @@ class Battle:
         if self.pokemon_in:
             if self.players_pokemon.health < 1:
                 self.players_pokemon.kill()
-                self.game.total_kills+=1
+                self.game.total_kills += 1
                 self.game.menu.update()
                 if len(self.game.player.cap_pokemon) < 1:
                     self.battle_loss_leave()
