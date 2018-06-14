@@ -1,3 +1,8 @@
+# settings.py
+# Jacob Laframboise
+# June 14th, 2018
+# This file holds the settings for all the files in this game
+
 import pygame as pg
 
 vec = pg.math.Vector2

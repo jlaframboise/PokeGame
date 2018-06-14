@@ -1,3 +1,9 @@
+# tilemap.py
+# Jacob Laframboise
+# June 14th, 2018
+# This file holds the classes for the Map creation, and the camera
+
+
 import pytmx
 from settings import *
 import pygame as pg

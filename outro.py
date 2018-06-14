@@ -1,3 +1,8 @@
+# outro.py
+# Jacob Laframboise
+# June 14th, 2018
+# This file holds the class for the outro
+
 from sprites import *
 from settings import *
 from tilemap import *
@@ -72,7 +77,7 @@ class Ending:
         self.text_vertical_shift += self.text_scroll_rate
 
         self.player_vertical_pos = OUTRO_HEIGHT - OUTRO_HEIGHT * (
-                    self.text_vertical_shift / (OUTRO_TEXT_LENGTH + OUTRO_HEIGHT))
+                self.text_vertical_shift / (OUTRO_TEXT_LENGTH + OUTRO_HEIGHT))
 
         # end the scene
         if self.text_vertical_shift > OUTRO_TEXT_LENGTH + OUTRO_HEIGHT:

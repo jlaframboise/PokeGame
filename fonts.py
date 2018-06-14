@@ -1,3 +1,8 @@
+# fonts.py
+# Jacob Laframboise
+# June 14th, 2018
+# This file creates the text surfaces and fonts to be used in the program
+
 import pygame as pg
 from settings import *
 

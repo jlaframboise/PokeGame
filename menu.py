@@ -1,3 +1,8 @@
+# menu.py
+# Jacob Laframboise
+# June 14th, 2018
+# This file holds the class for the menu
+
 from sprites import *
 from settings import *
 from tilemap import *

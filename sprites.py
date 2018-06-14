@@ -1,3 +1,8 @@
+# sprites.py
+# Jacob Laframboise
+# June 14th, 2018
+# This file holds the classes for all the sprites, and the collide with walls function
+
 import pygame as pg
 from settings import *
 from tilemap import collide_hit_rect
