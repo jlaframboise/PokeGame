@@ -94,10 +94,7 @@ class Game:
                 Wall(self, obj.x, obj.y, obj.width, obj.height)
             if obj.type == 'pokemon':
                 if obj.name[-4:] == 'sure':
-                    print('worksssss')
                     obj.name =obj.name[:-5]
-                    print('workksss 222')
-                    print(obj.name)
                 else:
                     obj.name = choice(POKEMON_LIST)
                 if obj.name == 'Leafcoon':
