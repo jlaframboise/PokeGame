@@ -1,0 +1,5 @@
+.idea
+settings.pyc
+sprites.pyc
+tilemap.pyc
+__pycache__/
